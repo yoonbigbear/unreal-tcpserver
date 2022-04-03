@@ -1,0 +1,3 @@
+,id,name,path,bisduplicated,bfullscreen,zorder
+1,1,Title,/Game/Blueprint/UI/Window/TitleWindow_BP.TitleWindow_BP,FALSE,TRUE,100
+2,2,CharacterSelect,/Game/Blueprint/UI/Window/CharacterSelectWindow_BP,FALSE,TRUE,100

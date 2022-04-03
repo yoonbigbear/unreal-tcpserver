@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{b62a61cd-e491-4832-a39a-db20a128e310}</ProjectGuid>
+    <RootNamespace>server</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Users\admin\Desktop\library\boost_1_73_0;$(IncludePath);E:\Project2\asio-1.20.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\3rdParty\boost_1_78_0\stage\lib;E:\3rdParty\flatbuffers-master\Debug;E:\Project2\server\x64\Debug;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SourcePath)</SourcePath>
+    <PublicIncludeDirectories>E:\Project2\server\server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
+    <ExternalIncludePath>E:\3rdParty\flatbuffers-master\include;E:\Project2\server\packet;E:\3rdParty\BehaviorTree.CPP-master\include;E:\3rdParty\boost_1_78_0;E:\3rdParty\recastnavigation-master\DetourCrowd\Include;E:\3rdParty\recastnavigation-master\Detour\Include;E:\Project2\server\net;$(ExternalIncludePath)</ExternalIncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Users\admin\Desktop\library\boost_1_73_0;$(IncludePath);E:\Project2\asio-1.20.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\3rdParty\boost_1_78_0\stage\lib;E:\3rdParty\flatbuffers-master\Debug;E:\Project2\server\x64\Debug;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SourcePath)</SourcePath>
+    <PublicIncludeDirectories>E:\Project2\server\server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
+    <ExternalIncludePath>E:\3rdParty\flatbuffers-master\include;E:\Project2\server\packet;E:\3rdParty\BehaviorTree.CPP-master\include;E:\3rdParty\boost_1_78_0;E:\3rdParty\recastnavigation-master\DetourCrowd\Include;E:\3rdParty\recastnavigation-master\Detour\Include;E:\Project2\server\net;$(ExternalIncludePath)</ExternalIncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);;E:\Project2\asio-1.20.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\3rdParty\boost_1_78_0\stage\lib;E:\3rdParty\flatbuffers-master\Debug;E:\Project2\server\x64\Debug;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SourcePath)</SourcePath>
+    <PublicIncludeDirectories>E:\Project2\server\server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
+    <ExternalIncludePath>E:\3rdParty\flatbuffers-master\include;E:\Project2\server\packet;E:\3rdParty\BehaviorTree.CPP-master\include;E:\3rdParty\boost_1_78_0;E:\3rdParty\recastnavigation-master\DetourCrowd\Include;E:\3rdParty\recastnavigation-master\Detour\Include;E:\Project2\server\net;$(ExternalIncludePath)</ExternalIncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);;E:\Project2\asio-1.20.0\include;$(IncludePath)</IncludePath>
+    <LibraryPath>E:\3rdParty\boost_1_78_0\stage\lib;E:\3rdParty\flatbuffers-master\Debug;E:\Project2\server\x64\Debug;$(LibraryPath)</LibraryPath>
+    <SourcePath>$(SourcePath)</SourcePath>
+    <PublicIncludeDirectories>E:\Project2\server\server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
+    <ExternalIncludePath>E:\3rdParty\flatbuffers-master\include;E:\Project2\server\packet;E:\3rdParty\BehaviorTree.CPP-master\include;E:\3rdParty\boost_1_78_0;E:\3rdParty\recastnavigation-master\DetourCrowd\Include;E:\3rdParty\recastnavigation-master\Detour\Include;E:\Project2\server\net;$(ExternalIncludePath)</ExternalIncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <LanguageStandard>stdcpp20</LanguageStandard>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard_C>stdc17</LanguageStandard_C>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\action_node.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\basic_types.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\behavior_tree.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\blackboard.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\bt_factory.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\condition_node.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\fallback_node.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\if_then_else_node.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\parallel_node.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\reactive_fallback.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\reactive_sequence.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\sequence_node.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\sequence_star_node.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\switch_node.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\while_do_else_node.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\control_node.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\decorators\delay_node.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\decorators\inverter_node.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\decorators\repeat_node.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\decorators\retry_node.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\decorators\subtree_node.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\decorator_node.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\private\tinyxml2.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\shared_library.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\shared_library_WIN.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\tree_node.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\xml_parsing.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\recastnavigation-master\DetourCrowd\Source\DetourCrowd.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\recastnavigation-master\DetourCrowd\Source\DetourLocalBoundary.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\recastnavigation-master\DetourCrowd\Source\DetourObstacleAvoidance.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\recastnavigation-master\DetourCrowd\Source\DetourPathCorridor.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\recastnavigation-master\DetourCrowd\Source\DetourPathQueue.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\recastnavigation-master\DetourCrowd\Source\DetourProximityGrid.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\recastnavigation-master\Detour\Source\DetourAlloc.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\recastnavigation-master\Detour\Source\DetourAssert.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\recastnavigation-master\Detour\Source\DetourCommon.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\recastnavigation-master\Detour\Source\DetourNavMesh.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\recastnavigation-master\Detour\Source\DetourNavMeshBuilder.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\recastnavigation-master\Detour\Source\DetourNavMeshQuery.cpp" />
+    <ClCompile Include="..\..\..\3rdParty\recastnavigation-master\Detour\Source\DetourNode.cpp" />
+    <ClCompile Include="behaiviour_tree\btree.cpp" />
+    <ClCompile Include="database\DB.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="nanodbc\nanodbc.cpp" />
+    <ClCompile Include="network\samplepacket\samplepacket_handler.cpp" />
+    <ClCompile Include="user\character.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\action_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\basic_types.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\behavior_tree.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\blackboard.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\bt_factory.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\bt_parser.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\condition_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\fallback_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\if_then_else_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\parallel_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\reactive_fallback.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\reactive_sequence.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\sequence_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\sequence_star_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\switch_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\while_do_else_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\control_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\blackboard_precondition.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\delay_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\force_failure_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\force_success_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\inverter_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\keep_running_until_failure_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\repeat_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\retry_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\subtree_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\timeout_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\timer_queue.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorator_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\exceptions.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\leaf_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\tree_node.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\xml_parsing.h" />
+    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\private\tinyxml2.h" />
+    <ClInclude Include="..\..\..\3rdParty\recastnavigation-master\DetourCrowd\Include\DetourCrowd.h" />
+    <ClInclude Include="..\..\..\3rdParty\recastnavigation-master\DetourCrowd\Include\DetourLocalBoundary.h" />
+    <ClInclude Include="..\..\..\3rdParty\recastnavigation-master\DetourCrowd\Include\DetourObstacleAvoidance.h" />
+    <ClInclude Include="..\..\..\3rdParty\recastnavigation-master\DetourCrowd\Include\DetourPathCorridor.h" />
+    <ClInclude Include="..\..\..\3rdParty\recastnavigation-master\DetourCrowd\Include\DetourPathQueue.h" />
+    <ClInclude Include="..\..\..\3rdParty\recastnavigation-master\DetourCrowd\Include\DetourProximityGrid.h" />
+    <ClInclude Include="..\..\..\3rdParty\recastnavigation-master\Detour\Include\DetourAlloc.h" />
+    <ClInclude Include="..\..\..\3rdParty\recastnavigation-master\Detour\Include\DetourAssert.h" />
+    <ClInclude Include="..\..\..\3rdParty\recastnavigation-master\Detour\Include\DetourCommon.h" />
+    <ClInclude Include="..\..\..\3rdParty\recastnavigation-master\Detour\Include\DetourMath.h" />
+    <ClInclude Include="..\..\..\3rdParty\recastnavigation-master\Detour\Include\DetourNavMesh.h" />
+    <ClInclude Include="..\..\..\3rdParty\recastnavigation-master\Detour\Include\DetourNavMeshBuilder.h" />
+    <ClInclude Include="..\..\..\3rdParty\recastnavigation-master\Detour\Include\DetourNavMeshQuery.h" />
+    <ClInclude Include="..\..\..\3rdParty\recastnavigation-master\Detour\Include\DetourNode.h" />
+    <ClInclude Include="..\..\..\3rdParty\recastnavigation-master\Detour\Include\DetourStatus.h" />
+    <ClInclude Include="..\packet\SamplePacket_generated.h" />
+    <ClInclude Include="behaiviour_tree\btree.h" />
+    <ClInclude Include="client_session.h" />
+    <ClInclude Include="database\DB.h" />
+    <ClInclude Include="enums.h" />
+    <ClInclude Include="header_only\csv.hpp" />
+    <ClInclude Include="header_only\json.hpp" />
+    <ClInclude Include="nanodbc\nanodbc.h" />
+    <ClInclude Include="network\protocol.h" />
+    <ClInclude Include="network\samplepacket\samplepacket_handler.h" />
+    <ClInclude Include="network\samplepacket\samplepacket_helper.h" />
+    <ClInclude Include="net_server.h" />
+    <ClInclude Include="pch.h" />
+    <ClInclude Include="user\character.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\procedure\add_chat.sql" />
+    <None Include="database\add_data.sql" />
+    <None Include="database\create_table_sample.sql" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

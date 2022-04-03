@@ -1,0 +1,69 @@
+
+22.03.28
+한거 
+ 디렉토리 분리함
+ 
+ KDevelopManager 생성
+ KLogManager 생성
+ Headers ( common_enum, common_macro ) 생성
+ 
+해야할 것
+
+tablemanager 만들고 
+window table 만들어서 
+table 이용하여 createwindow하기 
+
+kdevelopmentsetting 싱글톤화하기
+LogManager 세팅
+------------------
+
+22.03.29
+레벨 간단하게 나누고 OK
+
+아이피, 포트만 바인딩 해주고 OK
+하면서 getgameinstnace 세팅 OK 
+신 이동하는거 먼저 만들기 아직..
+
+tablemanager 만들어서 setting
+table 만들고..
+
+window manager에서 table 불러와서 viewport에 띄우게 하려고 하는중...
+
+----------------------
+22.03.30 
+뷰포트 띄우기 작업 계속해서 진행...
+
+테이블이 제대로 불러오는지확인
+
+아마 page createpage에서 막혓을거야 어제
+
+
+--------------------
+22.03.31
+page create 완료
+table에서 불러와 window 생성하고 window의 page로 creatwidget(page)하여 viewport까지 띄웠음.
+
+출력 컴파일 message가 언리얼에서 안먹는걸로 보여
+messagelog 라는 모듈을 사용하려다가 말았음 안되서
+
+window change 만들었고 (winddow 지우기 코드 추가필요)
+
+ui는 cm_화 시켜서 관리하도록 하였음
+background image를 property화 하려고하는데 안된 상ㅇ태이다.
+
+------------------------
+22.04.01
+
+git 업로드를 위한 자동화 진행 필요
+
+slate brush 사용을 위해 slate, slatecore 모듈 로드
+
+
+isinviewport로 검사함. 
+page z값 업데이트에 대해 고민해봐야함.
+---------------
+04.02 
+
+네트워크 매니저 패킷 코드 추가
+로그인, 캐릭터 생성 패킷 네트워크 매니저에 적용
+
