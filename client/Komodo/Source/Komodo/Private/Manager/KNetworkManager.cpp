@@ -41,47 +41,41 @@ void UKNetworkManager::ReceiveProtocol()
 	}
 	try
 	{
-		std::thread msg_recv([this]() {
+		if (!C_.Incoming().empty())
+		{
+			auto msg = C_.Incoming().pop_front().msg;
 
-			while (1)
+			UE_LOG(LogTemp, Log, TEXT("ReceiveProtocol:%s"), *UKTextTransition::EnumToFString<EDisplayProtocol>(static_cast<EDisplayProtocol>(msg.header.id)));
+
+			//msg 수신
+			switch (msg.header.id)
 			{
-				if (!C_.Incoming().empty())
+			case protocol::kTextSend:
+			{
+				auto text = flatbuffers::GetRoot<SamplePacket::textREQ>(msg.body.data());
+			}
+			case protocol::kResultCode:
+			{
+				auto res = flatbuffers::GetRoot<SamplePacket::ResultCode>(msg.body.data());
+				auto code = static_cast<result_code>(res->rescode());
+				switch (code)
 				{
-					auto msg = C_.Incoming().pop_front().msg;
-
-					UE_LOG(LogTemp, Log, TEXT("ReceiveProtocol:%s"), *UKTextTransition::EnumToFString<EDisplayProtocol>(static_cast<EDisplayProtocol>(msg.header.id)));
-
-					//msg 수신
-					switch (msg.header.id)
-					{
-					case protocol::kTextSend:
-					{
-						auto text = flatbuffers::GetRoot<SamplePacket::textREQ>(msg.body.data());
-					}
-					case protocol::kResultCode:
-					{
-						auto res = flatbuffers::GetRoot<SamplePacket::ResultCode>(msg.body.data());
-						auto code = static_cast<result_code>(res->rescode());
-						switch (code)
-						{
-						case result_code::kLoginSuccess:
-							UE_LOG(LogTemp, Log, TEXT("login success"));
-							SCLoginReq();
-							break;
-						case result_code::kAleadyExist:
-							UE_LOG(LogTemp, Log, TEXT("login kAleadyExist"));
-							break;
-						case result_code::kLoginFailed:
-							UE_LOG(LogTemp, Log, TEXT("login kLoginFailed"));
-							break;
-						}
-					}
+				case result_code::kLoginSuccess:
+					UE_LOG(LogTemp, Log, TEXT("login success"));
+					SCLoginReq();
 					break;
-
-					}
+				case result_code::kAleadyExist:
+					UE_LOG(LogTemp, Log, TEXT("login kAleadyExist"));
+					break;
+				case result_code::kLoginFailed:
+					UE_LOG(LogTemp, Log, TEXT("login kLoginFailed"));
+					break;
 				}
-			}});
+			}
+			break;
 
+			}
+		}
 	}
 	catch (std::exception& e)
 	{
@@ -194,7 +188,7 @@ void UKNetworkManager::StartNetworkTick()
 	UKGameInstance* KGameInstance = UKUtill::GetKGameInstance();
 	if (KGameInstance)
 	{
-		KGameInstance->GetWorld()->GetTimerManager().SetTimer(tNetHandle_, this, &UKNetworkManager::CheckPacket, NETWORK_TICK_DELAY_, false);
+		KGameInstance->GetWorld()->GetTimerManager().SetTimer(tNetHandle_, this, &UKNetworkManager::CheckPacket, NETWORK_TICK_DELAY_, true);
 	}
 }
 
