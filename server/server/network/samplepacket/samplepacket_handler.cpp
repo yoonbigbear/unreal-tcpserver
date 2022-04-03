@@ -31,7 +31,15 @@ void SamplePacketHandler::CreateCharacter(ClientSession::Shared session, net::Me
 
    boost::asio::post([session, nickname, class_id, id]() {
 
-        auto ret = DB::create_character(id, nickname, class_id);
+       int ret = -1;
+       try 
+       {
+           ret = DB::create_character(id, nickname, class_id);
+       }
+       catch (std::exception e)
+       {
+       }
+
         if (!session)
         {
             std::cout << "lose session" << std::endl;
