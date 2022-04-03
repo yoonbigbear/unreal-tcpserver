@@ -72,23 +72,27 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <ExternalIncludePath>E:\3rdParty\flatbuffers-master\include;E:\Project2\server\packet;E:\3rdParty\boost_1_78_0;E:\Project2\server\net;$(ExternalIncludePath)</ExternalIncludePath>
-    <LibraryPath>E:\3rdParty\flatbuffers-master\Debug;E:\Project2\server\x64\Debug;$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>$(SolutionDir)..\3rdParty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdParty\boost_1_78_0;$(SolutionDir)\net;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>$(SolutionDir)..\3rdParty\flatbuffers-master\$(Configuration);$(SolutionDir)..\bin\$(Configuration);$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <ExternalIncludePath>E:\3rdParty\flatbuffers-master\include;E:\Project2\server\packet;E:\3rdParty\boost_1_78_0;E:\Project2\server\net;$(ExternalIncludePath)</ExternalIncludePath>
-    <LibraryPath>E:\3rdParty\flatbuffers-master\Debug;E:\Project2\server\x64\Debug;$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>$(SolutionDir)..\3rdParty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdParty\boost_1_78_0;$(SolutionDir)\net;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>$(SolutionDir)..\3rdParty\flatbuffers-master\$(Configuration);$(SolutionDir)..\bin\$(Configuration);$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <ExternalIncludePath>E:\3rdParty\flatbuffers-master\include;E:\Project2\server\packet;E:\3rdParty\boost_1_78_0;E:\Project2\server\net;$(ExternalIncludePath)</ExternalIncludePath>
-    <LibraryPath>E:\3rdParty\flatbuffers-master\Debug;E:\Project2\server\x64\Debug;$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>$(SolutionDir)..\3rdParty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdParty\boost_1_78_0;$(SolutionDir)\net;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>$(SolutionDir)..\3rdParty\flatbuffers-master\$(Configuration);$(SolutionDir)..\bin\$(Configuration);$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <ExternalIncludePath>E:\3rdParty\flatbuffers-master\include;E:\Project2\server\packet;E:\3rdParty\boost_1_78_0;E:\Project2\server\net;$(ExternalIncludePath)</ExternalIncludePath>
-    <LibraryPath>E:\3rdParty\flatbuffers-master\Debug;E:\Project2\server\x64\Debug;$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>$(SolutionDir)..\3rdParty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdParty\boost_1_78_0;$(SolutionDir)\net;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>$(SolutionDir)..\3rdParty\flatbuffers-master\$(Configuration);$(SolutionDir)..\bin\$(Configuration);$(LibraryPath)</LibraryPath>
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

@@ -73,34 +73,38 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Users\admin\Desktop\library\boost_1_73_0;$(IncludePath);E:\Project2\asio-1.20.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\3rdParty\boost_1_78_0\stage\lib;E:\3rdParty\flatbuffers-master\Debug;E:\Project2\server\x64\Debug;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\bin\$(Configuration)\;$(SolutionDir)..\3rdparty\boost_1_78_0\stage\lib;$(SolutionDir)..\3rdparty\flatbuffers-master\Debug;$(LibraryPath)</LibraryPath>
     <SourcePath>$(SourcePath)</SourcePath>
-    <PublicIncludeDirectories>E:\Project2\server\server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <ExternalIncludePath>E:\3rdParty\flatbuffers-master\include;E:\Project2\server\packet;E:\3rdParty\BehaviorTree.CPP-master\include;E:\3rdParty\boost_1_78_0;E:\3rdParty\recastnavigation-master\DetourCrowd\Include;E:\3rdParty\recastnavigation-master\Detour\Include;E:\Project2\server\net;$(ExternalIncludePath)</ExternalIncludePath>
+    <PublicIncludeDirectories>$(SolutionDir)server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
+    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(SolutionDir)net;$(ExternalIncludePath)</ExternalIncludePath>
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Users\admin\Desktop\library\boost_1_73_0;$(IncludePath);E:\Project2\asio-1.20.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\3rdParty\boost_1_78_0\stage\lib;E:\3rdParty\flatbuffers-master\Debug;E:\Project2\server\x64\Debug;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\bin\$(Configuration)\;$(SolutionDir)..\3rdparty\boost_1_78_0\stage\lib;$(SolutionDir)..\3rdparty\flatbuffers-master\Debug;$(LibraryPath)</LibraryPath>
     <SourcePath>$(SourcePath)</SourcePath>
-    <PublicIncludeDirectories>E:\Project2\server\server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <ExternalIncludePath>E:\3rdParty\flatbuffers-master\include;E:\Project2\server\packet;E:\3rdParty\BehaviorTree.CPP-master\include;E:\3rdParty\boost_1_78_0;E:\3rdParty\recastnavigation-master\DetourCrowd\Include;E:\3rdParty\recastnavigation-master\Detour\Include;E:\Project2\server\net;$(ExternalIncludePath)</ExternalIncludePath>
+    <PublicIncludeDirectories>$(SolutionDir)server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
+    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(SolutionDir)net;$(ExternalIncludePath)</ExternalIncludePath>
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);;E:\Project2\asio-1.20.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\3rdParty\boost_1_78_0\stage\lib;E:\3rdParty\flatbuffers-master\Debug;E:\Project2\server\x64\Debug;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\bin\$(Configuration)\;$(SolutionDir)..\3rdparty\boost_1_78_0\stage\lib;$(SolutionDir)..\3rdparty\flatbuffers-master\Debug;$(LibraryPath)</LibraryPath>
     <SourcePath>$(SourcePath)</SourcePath>
-    <PublicIncludeDirectories>E:\Project2\server\server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <ExternalIncludePath>E:\3rdParty\flatbuffers-master\include;E:\Project2\server\packet;E:\3rdParty\BehaviorTree.CPP-master\include;E:\3rdParty\boost_1_78_0;E:\3rdParty\recastnavigation-master\DetourCrowd\Include;E:\3rdParty\recastnavigation-master\Detour\Include;E:\Project2\server\net;$(ExternalIncludePath)</ExternalIncludePath>
+    <PublicIncludeDirectories>$(SolutionDir)server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
+    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(SolutionDir)net;$(ExternalIncludePath)</ExternalIncludePath>
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);;E:\Project2\asio-1.20.0\include;$(IncludePath)</IncludePath>
-    <LibraryPath>E:\3rdParty\boost_1_78_0\stage\lib;E:\3rdParty\flatbuffers-master\Debug;E:\Project2\server\x64\Debug;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(SolutionDir)..\bin\$(Configuration)\;$(SolutionDir)..\3rdparty\boost_1_78_0\stage\lib;$(SolutionDir)..\3rdparty\flatbuffers-master\Debug;$(LibraryPath)</LibraryPath>
     <SourcePath>$(SourcePath)</SourcePath>
-    <PublicIncludeDirectories>E:\Project2\server\server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <ExternalIncludePath>E:\3rdParty\flatbuffers-master\include;E:\Project2\server\packet;E:\3rdParty\BehaviorTree.CPP-master\include;E:\3rdParty\boost_1_78_0;E:\3rdParty\recastnavigation-master\DetourCrowd\Include;E:\3rdParty\recastnavigation-master\Detour\Include;E:\Project2\server\net;$(ExternalIncludePath)</ExternalIncludePath>
+    <PublicIncludeDirectories>$(SolutionDir)server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
+    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(SolutionDir)net;$(ExternalIncludePath)</ExternalIncludePath>
+    <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

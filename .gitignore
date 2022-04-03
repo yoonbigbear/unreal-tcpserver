@@ -499,3 +499,5 @@ bin/
 # Ignore all text files in test directories
 test/**.txt
 
+# 3rdparties
+3rdparty/*
