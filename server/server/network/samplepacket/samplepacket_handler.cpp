@@ -38,6 +38,7 @@ void SamplePacketHandler::CreateCharacter(ClientSession::Shared session, net::Me
        }
        catch (std::exception e)
        {
+           
        }
 
         if (!session)

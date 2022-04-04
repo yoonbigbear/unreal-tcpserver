@@ -9,6 +9,11 @@
 #pragma warning(disable:4996)
 #pragma comment(lib, "flatbuffers.lib")
 #pragma comment(lib, "net.lib")
+#ifdef _DEBUG
+#pragma comment(lib, "spdlogd.lib")
+#else
+#pragma comment(lib, "spdlog.lib")
+#endif
 
 #include <iostream>
 #include <vector>
@@ -31,7 +36,6 @@
 
 #include <DbgHelp.h>
 #pragma comment(lib, "dbghelp.lib")
-
 
 
 using json = nlohmann::json;

@@ -2,6 +2,7 @@
 
 #include "net_server.h"
 
+//덤프파일을 남겨준다.
 LONG __stdcall ExceptionCallBack(EXCEPTION_POINTERS* e)
 {
     MINIDUMP_EXCEPTION_INFORMATION info = {0};
@@ -22,9 +23,13 @@ LONG __stdcall ExceptionCallBack(EXCEPTION_POINTERS* e)
 
 int main(int argc, char* argv[])
 {
+    LOG_INFO("DEBUG_INFO");
+    //덤프파일을 남겨준다. 미리 호출
     SetUnhandledExceptionFilter(ExceptionCallBack);
+
     try
     {
+
         net::CustomServer server(60000);
         server.Start();
 
@@ -36,7 +41,7 @@ int main(int argc, char* argv[])
     }
     catch (std::exception e)
     {
-        std::cerr << "Exception: " << e.what() << std::endl;
+        DEBUG_FMT_ERROR("Exception: %s", e.what());
     }
 
     return 0;

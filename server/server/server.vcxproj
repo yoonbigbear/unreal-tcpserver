@@ -76,7 +76,7 @@
     <LibraryPath>$(SolutionDir)..\bin\$(Configuration)\;$(SolutionDir)..\3rdparty\boost_1_78_0\stage\lib;$(SolutionDir)..\3rdparty\flatbuffers-master\Debug;$(LibraryPath)</LibraryPath>
     <SourcePath>$(SourcePath)</SourcePath>
     <PublicIncludeDirectories>$(SolutionDir)server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(SolutionDir)net;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\spdlog-1.x\build\include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(SolutionDir)net;$(ExternalIncludePath)</ExternalIncludePath>
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -85,7 +85,7 @@
     <LibraryPath>$(SolutionDir)..\bin\$(Configuration)\;$(SolutionDir)..\3rdparty\boost_1_78_0\stage\lib;$(SolutionDir)..\3rdparty\flatbuffers-master\Debug;$(LibraryPath)</LibraryPath>
     <SourcePath>$(SourcePath)</SourcePath>
     <PublicIncludeDirectories>$(SolutionDir)server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(SolutionDir)net;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\spdlog-1.x\build\include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(SolutionDir)net;$(ExternalIncludePath)</ExternalIncludePath>
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -94,7 +94,7 @@
     <LibraryPath>$(SolutionDir)..\bin\$(Configuration)\;$(SolutionDir)..\3rdparty\boost_1_78_0\stage\lib;$(SolutionDir)..\3rdparty\flatbuffers-master\Debug;$(LibraryPath)</LibraryPath>
     <SourcePath>$(SourcePath)</SourcePath>
     <PublicIncludeDirectories>$(SolutionDir)server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(SolutionDir)net;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\spdlog-1.x\build\include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(SolutionDir)net;$(ExternalIncludePath)</ExternalIncludePath>
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -103,7 +103,7 @@
     <LibraryPath>$(SolutionDir)..\bin\$(Configuration)\;$(SolutionDir)..\3rdparty\boost_1_78_0\stage\lib;$(SolutionDir)..\3rdparty\flatbuffers-master\Debug;$(LibraryPath)</LibraryPath>
     <SourcePath>$(SourcePath)</SourcePath>
     <PublicIncludeDirectories>$(SolutionDir)server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(SolutionDir)net;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\spdlog-1.x\build\include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(SolutionDir)net;$(ExternalIncludePath)</ExternalIncludePath>
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -283,6 +283,7 @@
     <ClInclude Include="enums.h" />
     <ClInclude Include="header_only\csv.hpp" />
     <ClInclude Include="header_only\json.hpp" />
+    <ClInclude Include="macro.h" />
     <ClInclude Include="nanodbc\nanodbc.h" />
     <ClInclude Include="network\protocol.h" />
     <ClInclude Include="network\samplepacket\samplepacket_handler.h" />

@@ -369,6 +369,7 @@
       <Filter>user</Filter>
     </ClInclude>
     <ClInclude Include="enums.h" />
+    <ClInclude Include="macro.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="database\create_table_sample.sql">
