@@ -1,44 +1,17 @@
 #ifndef _PCH_H_
 #define _PCH_H_
 
-#ifdef _WIN32
-#define _WIN32_WINNT 0x0A00
-#endif
-#define ASIO_STANDALONE
 
-#pragma warning(disable:4996)
-#pragma comment(lib, "flatbuffers.lib")
+#define WIN32_LEAN_AND_MEAN             // 거의 사용되지 않는 내용을 Windows 헤더에서 제외합니다.
+
 #pragma comment(lib, "net.lib")
-#ifdef _DEBUG
-#pragma comment(lib, "spdlogd.lib")
-#else
-#pragma comment(lib, "spdlog.lib")
-#endif
 
-#include <iostream>
-#include <vector>
-#include <chrono>
-#include <thread>
-
-#include <boost/asio.hpp>
-#include <SamplePacket_generated.h>
-
-#include "macro.h"
-#include "enums.h"
-
-#include "header_only/csv.hpp"
-#include "header_only/json.hpp"
-
-#include "network/samplepacket/samplepacket_helper.h"
-#include "database/DB.h"
-#include "behaiviour_tree/btree.h"
-#include "net_server.h"
+#include <net_pch.h>
+#include "server/server_enum.h"
 
 #include <DbgHelp.h>
 #pragma comment(lib, "dbghelp.lib")
 
+using flatbuffer = flatbuffers::FlatBufferBuilder;
 
-using json = nlohmann::json;
-using boost::asio::ip::tcp;
-
-#endif
+#endif // !_PCH_H_

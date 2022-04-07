@@ -163,12 +163,15 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\packet\SamplePacket_generated.h" />
-    <ClInclude Include="NetworkManager.h" />
+    <ClCompile Include="NetworkManager.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NetworkManager.cpp" />
-    <ClCompile Include="net_client.h" />
+    <ProjectReference Include="..\net\net.vcxproj">
+      <Project>{818c8659-12b8-4110-895c-5d71390ba9eb}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="NetworkManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

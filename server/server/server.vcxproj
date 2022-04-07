@@ -72,38 +72,38 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Users\admin\Desktop\library\boost_1_73_0;$(IncludePath);E:\Project2\asio-1.20.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\bin\$(Configuration)\;$(SolutionDir)..\3rdparty\boost_1_78_0\stage\lib;$(SolutionDir)..\3rdparty\flatbuffers-master\Debug;$(LibraryPath)</LibraryPath>
     <SourcePath>$(SourcePath)</SourcePath>
     <PublicIncludeDirectories>$(SolutionDir)server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\spdlog-1.x\build\include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(SolutionDir)net;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(ExternalIncludePath)</ExternalIncludePath>
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Program Files (x86)\Microsoft DirectX SDK (June 2010)\Include;C:\Users\admin\Desktop\library\boost_1_73_0;$(IncludePath);E:\Project2\asio-1.20.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\bin\$(Configuration)\;$(SolutionDir)..\3rdparty\boost_1_78_0\stage\lib;$(SolutionDir)..\3rdparty\flatbuffers-master\Debug;$(LibraryPath)</LibraryPath>
     <SourcePath>$(SourcePath)</SourcePath>
     <PublicIncludeDirectories>$(SolutionDir)server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\spdlog-1.x\build\include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(SolutionDir)net;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(ExternalIncludePath)</ExternalIncludePath>
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);;E:\Project2\asio-1.20.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\bin\$(Configuration)\;$(SolutionDir)..\3rdparty\boost_1_78_0\stage\lib;$(SolutionDir)..\3rdparty\flatbuffers-master\Debug;$(LibraryPath)</LibraryPath>
     <SourcePath>$(SourcePath)</SourcePath>
     <PublicIncludeDirectories>$(SolutionDir)server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\spdlog-1.x\build\include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(SolutionDir)net;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(ExternalIncludePath)</ExternalIncludePath>
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);;E:\Project2\asio-1.20.0\include;$(IncludePath)</IncludePath>
+    <IncludePath>$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\bin\$(Configuration)\;$(SolutionDir)..\3rdparty\boost_1_78_0\stage\lib;$(SolutionDir)..\3rdparty\flatbuffers-master\Debug;$(LibraryPath)</LibraryPath>
     <SourcePath>$(SourcePath)</SourcePath>
     <PublicIncludeDirectories>$(SolutionDir)server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\spdlog-1.x\build\include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(SolutionDir)net;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(ExternalIncludePath)</ExternalIncludePath>
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -113,8 +113,10 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)server;$(SolutionDir)net;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -131,8 +133,10 @@
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)server;$(SolutionDir)net;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -149,8 +153,10 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)server;$(SolutionDir)net;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -167,8 +173,10 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)server;$(SolutionDir)net;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -221,10 +229,14 @@
     <ClCompile Include="..\..\..\3rdParty\recastnavigation-master\Detour\Source\DetourNode.cpp" />
     <ClCompile Include="behaiviour_tree\btree.cpp" />
     <ClCompile Include="database\DB.cpp" />
+    <ClCompile Include="database\nanodbc\nanodbc.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="nanodbc\nanodbc.cpp" />
     <ClCompile Include="network\samplepacket\samplepacket_handler.cpp" />
-    <ClCompile Include="user\character.cpp" />
+    <ClCompile Include="object\character.cpp" />
+    <ClCompile Include="object\field_object.cpp" />
+    <ClCompile Include="world\field.cpp" />
+    <ClCompile Include="world\world_manager.cpp" />
+    <ClCompile Include="world\zone.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\action_node.h" />
@@ -278,24 +290,30 @@
     <ClInclude Include="..\..\..\3rdParty\recastnavigation-master\Detour\Include\DetourStatus.h" />
     <ClInclude Include="..\packet\SamplePacket_generated.h" />
     <ClInclude Include="behaiviour_tree\btree.h" />
-    <ClInclude Include="client_session.h" />
     <ClInclude Include="database\DB.h" />
-    <ClInclude Include="enums.h" />
-    <ClInclude Include="header_only\csv.hpp" />
-    <ClInclude Include="header_only\json.hpp" />
-    <ClInclude Include="macro.h" />
-    <ClInclude Include="nanodbc\nanodbc.h" />
-    <ClInclude Include="network\protocol.h" />
+    <ClInclude Include="database\nanodbc\nanodbc.h" />
+    <ClInclude Include="network\client_session.h" />
     <ClInclude Include="network\samplepacket\samplepacket_handler.h" />
     <ClInclude Include="network\samplepacket\samplepacket_helper.h" />
-    <ClInclude Include="net_server.h" />
+    <ClInclude Include="object\character.h" />
+    <ClInclude Include="object\field_object.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="user\character.h" />
+    <ClInclude Include="server\net_server.h" />
+    <ClInclude Include="server\server_enum.h" />
+    <ClInclude Include="snowflake.hpp" />
+    <ClInclude Include="world\field.h" />
+    <ClInclude Include="world\world_manager.h" />
+    <ClInclude Include="world\zone.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\procedure\add_chat.sql" />
     <None Include="database\add_data.sql" />
     <None Include="database\create_table_sample.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\net\net.vcxproj">
+      <Project>{818c8659-12b8-4110-895c-5d71390ba9eb}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

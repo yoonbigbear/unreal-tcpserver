@@ -1,0 +1,45 @@
+namespace SamplePacket;
+
+attribute "priority";
+
+enum Color : byte { Red = 1, Green, Blue }
+
+union Any { textREQ, textACK }
+
+struct Vec3 {
+    v:[float:3];
+}
+
+/////////////////단순 문자 주고받기
+table textREQ{
+	text:string;
+}
+
+table textACK{
+	text:string;
+}
+/////////////////
+
+//로그인 최대사이즈 16
+// 사이즈가 16아래로 먼저 자르도록
+table LoginReq{
+	id:string;
+	pw:string;
+}
+
+//캐릭터 생성 nickname 사이즈는 64까지 
+//(클라이언트에서 미리 64개 이하로 끊어야함)
+table CreateCharacterReq{
+	class:byte;
+	nickname:string;
+}
+
+// id만 먼저 있는지 중복체크하는것. 사이즈는 64까지만
+table SelectCharacterNickNameReq{
+	nickname:string;
+}
+
+// result_code는 미리 enum으로 정해져 있음
+table Result{
+	rescode:ushort;
+}

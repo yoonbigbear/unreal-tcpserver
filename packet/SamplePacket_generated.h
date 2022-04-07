@@ -25,8 +25,8 @@ struct CreateCharacterReqBuilder;
 struct SelectCharacterNickNameReq;
 struct SelectCharacterNickNameReqBuilder;
 
-struct ResultCode;
-struct ResultCodeBuilder;
+struct Result;
+struct ResultBuilder;
 
 enum Color : int8_t {
   Color_Red = 1,
@@ -126,6 +126,7 @@ FLATBUFFERS_MANUALLY_ALIGNED_STRUCT(4) Vec3 FLATBUFFERS_FINAL_CLASS {
 };
 FLATBUFFERS_STRUCT_END(Vec3, 12);
 
+/////////////////단순 문자 주고받기
 struct textREQ FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef textREQBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -228,6 +229,7 @@ inline flatbuffers::Offset<textACK> CreatetextACKDirect(
       text__);
 }
 
+/////////////////
 struct LoginReq FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef LoginReqBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -407,8 +409,8 @@ inline flatbuffers::Offset<SelectCharacterNickNameReq> CreateSelectCharacterNick
       nickname__);
 }
 
-struct ResultCode FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef ResultCodeBuilder Builder;
+struct Result FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef ResultBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_RESCODE = 4
   };
@@ -422,28 +424,28 @@ struct ResultCode FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
 };
 
-struct ResultCodeBuilder {
-  typedef ResultCode Table;
+struct ResultBuilder {
+  typedef Result Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
   void add_rescode(uint16_t rescode) {
-    fbb_.AddElement<uint16_t>(ResultCode::VT_RESCODE, rescode, 0);
+    fbb_.AddElement<uint16_t>(Result::VT_RESCODE, rescode, 0);
   }
-  explicit ResultCodeBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+  explicit ResultBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
   }
-  flatbuffers::Offset<ResultCode> Finish() {
+  flatbuffers::Offset<Result> Finish() {
     const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<ResultCode>(end);
+    auto o = flatbuffers::Offset<Result>(end);
     return o;
   }
 };
 
-inline flatbuffers::Offset<ResultCode> CreateResultCode(
+inline flatbuffers::Offset<Result> CreateResult(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t rescode = 0) {
-  ResultCodeBuilder builder_(_fbb);
+  ResultBuilder builder_(_fbb);
   builder_.add_rescode(rescode);
   return builder_.Finish();
 }

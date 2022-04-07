@@ -2,12 +2,7 @@
 #define _MESSAGE_H_
 
 #include <iostream>
-#include <vector>
-
-#include <flatbuffers/flatbuffers.h>
-
-#pragma warning(disable:4996)
-#pragma comment(lib, "flatbuffers.lib")
+#include <boost/asio.hpp>
 
 namespace net
 {
@@ -18,9 +13,11 @@ namespace net
         uint32_t size = 0;
     };
 
-    template<typename T>
+    template<typename T, typename U>
     struct Message
     {
+        using message = Message<T, U>;
+
         MessageHeader<T> header;
         std::vector<uint8_t> body;
 
@@ -29,14 +26,14 @@ namespace net
             return body.size();
         }
 
-        friend std::ostream& operator << (std::ostream& os, const Message<T>& msg)
+        friend std::ostream& operator << (std::ostream& os, const message& msg)
         {
             os << "ID:" << static_cast<int>(msg.header.id) << " Size:" << msg.header.size;
             return os;
         }
 
         template<typename DataType>
-        friend Message<T>& operator << (Message<T>& msg, const DataType& data)
+        friend message& operator << (message& msg, const DataType& data)
         {
             static_assert(std::is_standard_layout<DataType>::value, "Data is too complex to be pushed into vector");
 
@@ -51,9 +48,9 @@ namespace net
             return msg;
         }
 
-        friend Message<T>& operator << (Message<T>& msg, const flatbuffers::FlatBufferBuilder& data)
+        friend message& operator << (message& msg, const U& data)
         {
-            static_assert(std::is_standard_layout<flatbuffers::FlatBufferBuilder>::value, "Data is too complex to be pushed into vector");
+            static_assert(std::is_standard_layout<U>::value, "Data is too complex to be pushed into vector");
 
             size_t i = msg.body.size();
 
@@ -67,7 +64,7 @@ namespace net
         }
 
         template<typename DataType>
-        friend Message<T>& operator >> (Message<T>& msg, DataType& data)
+        friend message& operator >> (message& msg, DataType& data)
         {
             static_assert(std::is_standard_layout<DataType>::value, "Data is too complex to be pushed into vector");
 
@@ -83,16 +80,16 @@ namespace net
         }
     };
 
-    template <typename T>
+    template <typename T, typename U>
     class Session;
 
-    template <typename T>
+    template <typename T, typename U>
     struct OwnedMessage
     {
-        std::shared_ptr<Session<T>> remote = nullptr;
-        Message<T> msg;
+        std::shared_ptr<Session<T, U>> remote = nullptr;
+        Message<T, U> msg;
 
-        friend std::ostream& operator<<(std::ostream& os, const OwnedMessage<T>& msg)
+        friend std::ostream& operator<<(std::ostream& os, const OwnedMessage<T, U>& msg)
         {
             os << msg.msg;
             return os;

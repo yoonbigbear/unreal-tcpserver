@@ -1,6 +1,6 @@
 #include "DB.h"
 
-#include <boost/asio.hpp>
+#include "nanodbc/nanodbc.h"
 
 auto const conn_account = NANODBC_TEXT("Driver={SQL Server};Server=TAEWOONGYOON\\SQLEXPRESS;database=account;trusted_connection=Yes;");
 auto const conn_game = NANODBC_TEXT("Driver={SQL Server};Server=TAEWOONGYOON\\SQLEXPRESS;database=Game;trusted_connection=Yes;");
@@ -10,7 +10,7 @@ void DB::add_data(int64_t id)
 {
 
     int32_t ret_code = -1;
-
+    
     nanodbc::connection conn(conn_game);
     nanodbc::statement stmt(conn);
     stmt.prepare(NANODBC_TEXT("Exec ?= add_data ?"));

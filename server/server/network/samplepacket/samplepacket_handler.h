@@ -3,27 +3,29 @@
 #include <unordered_map>
 #include <functional>
 
-#include <message.h>
+#include "network/client_session.h"
 
-#include "../../network/protocol.h"
-#include "../../network/client_session.h"
+#include <protocol_generated.h>
 
 class SamplePacketHandler
 {
 public:
+   
+    using message = net::Message<Protocol, flatbuffer>;
+    using session = ClientSession<Protocol, flatbuffer>;
+    using func = std::function<void(session::Shared, message&)> ;
     SamplePacketHandler();
 
-    static void CreateCharacter(ClientSession::Shared session, net::Message<protocol>& msg);
-    static void SelectCharacterNickname(ClientSession::Shared session, net::Message<protocol>& msg);
+    static void CreateCharacter(session::Shared session, message& msg);
+    static void SelectCharacterNickname(session::Shared session, message& msg);
 
-    static void CreateAccount(ClientSession::Shared session, net::Message<protocol>& msg);
-    static void LoginAccount(ClientSession::Shared session, net::Message<protocol>& msg);
+    static void CreateAccount(session::Shared session, message& msg);
+    static void LoginAccount(session::Shared session, message& msg);
 
-    static void SendText(ClientSession::Shared session, net::Message<protocol>& msg);
+    static void SendText(session::Shared session, message& msg);
 
 private:
-    std::unordered_map<protocol,
-        std::function<void(ClientSession::Shared, net::Message<protocol>&)>> packet_handler_;
+    std::unordered_map<Protocol, func> packet_handler_;
 }; // class SamplerPacketHandler
 
 #endif // !_SAMPLE_PACKET_HANDLER_H_

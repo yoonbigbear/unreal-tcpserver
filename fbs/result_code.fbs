@@ -1,0 +1,14 @@
+
+enum ResultCode : ushort {
+
+	None = 0,
+    CreateSuccess,
+    CreateFailed,
+
+    AleadyExist,
+    NotExist,
+
+    LoginSuccess,
+    LoginFailed,
+	
+}

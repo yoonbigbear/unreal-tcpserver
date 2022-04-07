@@ -8,10 +8,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NetworkManager.cpp" />
-    <ClCompile Include="net_client.h" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NetworkManager.h" />
-    <ClInclude Include="..\packet\SamplePacket_generated.h" />
   </ItemGroup>
 </Project>

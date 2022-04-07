@@ -1,28 +1,25 @@
 #ifndef _CONNECTION_H_
 #define _CONNECTION_H_
 
-#include <memory>
-
-#include <boost/asio.hpp>
-
-#include "message.h"
 #include "packet_queue.h"
+#include "message.h"
 
 using namespace boost;
 
 namespace net
 {
-    template<typename T>
-    class Session : public std::enable_shared_from_this<Session<T>>
+    template<typename T, typename U>
+    class Session : public std::enable_shared_from_this<Session<T, U>>
     {
     public:
+
         enum class owner
         {
             server,
             client
         };
 
-        Session(owner parent, asio::io_context& io_context, asio::ip::tcp::socket&& socket, PacketQueue<OwnedMessage<T>>& in)
+        Session(owner parent, asio::io_context& io_context, asio::ip::tcp::socket&& socket, PacketQueue<OwnedMessage<T,U>>& in)
             : io_context_(io_context), socket_(std::move(socket)), message_in_(in)
         {
             owner_type_ = parent;
@@ -76,7 +73,7 @@ namespace net
 
         //}
 
-        void Send(const Message<T>& msg)
+        void Send(const Message<T, U>& msg)
         {
             asio::post(io_context_, [this, msg]()
                 {
@@ -193,9 +190,9 @@ namespace net
     protected:
         asio::ip::tcp::socket socket_;
         asio::io_context& io_context_;
-        PacketQueue<Message<T>> message_out_;
-        PacketQueue<OwnedMessage<T>>& message_in_;
-        Message<T> temporary_in_;
+        PacketQueue<Message<T,U>> message_out_;
+        PacketQueue<OwnedMessage<T,U>>& message_in_;
+        Message<T, U> temporary_in_;
         owner owner_type_ = owner::server;
 
         uint64_t id_ = 0;

@@ -1,24 +1,26 @@
 #include "samplepacket_handler.h"
 
-#include <boost/asio.hpp>
-#include <SamplePacket_generated.h>
+#include "pch.h"
 
 #include "snowflake.hpp"
 
-#include "../../database/DB.h"
+#include "database/DB.h"
 #include "samplepacket_helper.h"
+#include <SamplePacket_generated.h>
+#include <result_code_generated.h>
+#include <protocol_generated.h>
 
-using snowflake_t = net::snowflake<1534832906275L>;
+using snowflake_t = snowflake<1534832906275L>;
 
 SamplePacketHandler::SamplePacketHandler()
 {
-    packet_handler_.try_emplace(protocol::kCreateAccount, CreateAccount);
-    packet_handler_.try_emplace(protocol::kLogin, LoginAccount);
-    packet_handler_.try_emplace(protocol::kTextSend, SendText);
+    packet_handler_.try_emplace(Protocol_CreateAccount, CreateAccount);
+    packet_handler_.try_emplace(Protocol_Login, LoginAccount);
+    packet_handler_.try_emplace(Protocol_TextSend, SendText);
 
 }
 
-void SamplePacketHandler::CreateCharacter(ClientSession::Shared session, net::Message<protocol>& msg)
+void SamplePacketHandler::CreateCharacter(session::Shared session, message& msg)
 {
     //id를 새로 만들어줘야 하는데 일단은 그냥 하자
     snowflake_t uuid;
@@ -29,7 +31,7 @@ void SamplePacketHandler::CreateCharacter(ClientSession::Shared session, net::Me
     auto nickname = pkt->nickname()->str();
     auto class_id = pkt->class_();
 
-   boost::asio::post([session, nickname, class_id, id]() {
+   asio::post([session, nickname, class_id, id]() {
 
        int ret = -1;
        try 
@@ -47,25 +49,25 @@ void SamplePacketHandler::CreateCharacter(ClientSession::Shared session, net::Me
         }
         if (ret == 0)
         {
-            net::Message<protocol> msg;
-            SamplePacketHelper::ResultCodeAck(msg, result_code::kCreateSuccess);
+            message msg;
+            SamplePacketHelper::ResultCodeAck(msg, ResultCode_CreateSuccess);
             session->Send(msg);
         }
         else
         {
-            net::Message<protocol> msg;
-            SamplePacketHelper::ResultCodeAck(msg, result_code::kCreateFailed);
+            message msg;
+            SamplePacketHelper::ResultCodeAck(msg, ResultCode_CreateFailed);
             session->Send(msg);
         }
    });
 }
 
-void SamplePacketHandler::SelectCharacterNickname(ClientSession::Shared session, net::Message<protocol>& msg)
+void SamplePacketHandler::SelectCharacterNickname(session::Shared session, message& msg)
 {
     auto pkt = flatbuffers::GetRoot<SamplePacket::SelectCharacterNickNameReq>(msg.body.data());
     auto nickname = pkt->nickname()->str();
 
-    boost::asio::post([session, nickname]() {
+    asio::post([session, nickname]() {
         auto ret = DB::select_character_nickname(nickname);
         if (!session)
         {
@@ -73,27 +75,27 @@ void SamplePacketHandler::SelectCharacterNickname(ClientSession::Shared session,
         }
         if (ret == 0)
         {
-            net::Message<protocol> msg;
-            SamplePacketHelper::ResultCodeAck(msg, result_code::kNotExist);
+            message msg;
+            SamplePacketHelper::ResultCodeAck(msg, ResultCode_NotExist);
             session->Send(msg);
 
         }
         else
         {
-            net::Message<protocol> msg;
-            SamplePacketHelper::ResultCodeAck(msg, result_code::kAleadyExist);
+            message msg;
+            SamplePacketHelper::ResultCodeAck(msg, ResultCode_AleadyExist);
             session->Send(msg);
         }
     });
 }
 
-void SamplePacketHandler::CreateAccount(ClientSession::Shared session, net::Message<protocol>& msg)
+void SamplePacketHandler::CreateAccount(session::Shared session, message& msg)
 {
     auto pkt = flatbuffers::GetRoot<SamplePacket::LoginReq>(msg.body.data());
     auto account_id = pkt->id()->str();
     auto account_password = pkt->pw()->str();
 
-    boost::asio::post([session, account_id, account_password]() {
+    asio::post([session, account_id, account_password]() {
 
         auto ret = DB::create_account(account_id, account_password);
 
@@ -103,45 +105,45 @@ void SamplePacketHandler::CreateAccount(ClientSession::Shared session, net::Mess
         }
         if (ret == 0)
         {
-            net::Message<protocol> msg;
-            SamplePacketHelper::ResultCodeAck(msg, result_code::kLoginSuccess);
+            message msg;
+            SamplePacketHelper::ResultCodeAck(msg, ResultCode_LoginSuccess);
             session->Send(msg);
 
         }
         else
         {
-            net::Message<protocol> msg;
-            SamplePacketHelper::ResultCodeAck(msg, result_code::kAleadyExist);
+            message msg;
+            SamplePacketHelper::ResultCodeAck(msg, ResultCode_AleadyExist);
             session->Send(msg);
         }
     });
 
 }
 
-void SamplePacketHandler::LoginAccount(ClientSession::Shared session, net::Message<protocol>& msg)
+void SamplePacketHandler::LoginAccount(session::Shared session, message& msg)
 {
     auto pkt = flatbuffers::GetRoot<SamplePacket::LoginReq>(msg.body.data());
     auto account_id = pkt->id()->str();
     auto account_password = pkt->pw()->str();
 
-    boost::asio::post([session, account_id, account_password]() {
+    asio::post([session, account_id, account_password]() {
         auto exist = DB::select_account(account_id, account_password);
         if (exist == 0)
         {
-            net::Message<protocol> msg;
-            SamplePacketHelper::ResultCodeAck(msg, result_code::kLoginSuccess);
+            message msg;
+            SamplePacketHelper::ResultCodeAck(msg, ResultCode_LoginSuccess);
             session->Send(msg);
         }
         else
         {
-            net::Message<protocol> msg;
-            SamplePacketHelper::ResultCodeAck(msg, result_code::kLoginFailed);
+            message msg;
+            SamplePacketHelper::ResultCodeAck(msg, ResultCode_LoginFailed);
             session->Send(msg);
         }
     });
 }
 
-void SamplePacketHandler::SendText(ClientSession::Shared session, net::Message<protocol>& msg)
+void SamplePacketHandler::SendText(session::Shared session, message& msg)
 {
     auto text = flatbuffers::GetRoot<SamplePacket::textREQ>(msg.body.data());
     DB::add_chat(text->text()->c_str());

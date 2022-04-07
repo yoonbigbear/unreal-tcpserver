@@ -1,10 +1,11 @@
 #ifndef _DB_H_
 #define _DB_H_
 
-#include "../nanodbc/nanodbc.h"
+#include "pch.h"
 
 class DB
 {
+
 public:
     static void add_data(int64_t id);
     static void add_chat(std::string_view chat);

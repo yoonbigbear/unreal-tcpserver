@@ -1,49 +1,106 @@
 #pragma once
+#include <pch.h>
 
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
 #include <string>
-#include <concurrent_queue.h>
 
-#include <boost/asio.hpp>
-
-#include <flatbuffers/flatbuffers.h>
-#include <SamplePacket_generated.h>
-
-#include "net_client.h"
-
-#pragma comment(lib, "flatbuffers.lib")
 #pragma comment(lib, "net.lib")
 
-using boost::asio::ip::tcp;
+#include <SamplePacket_generated.h>
+#include <protocol_generated.h>
+#include <result_code_generated.h>
+
+using namespace boost;
+using namespace net;
+
+class ClientInterface
+{
+public:
+    ClientInterface() {}
+
+    virtual ~ClientInterface()
+    {
+        Disconnect();
+    }
+
+    bool Connect(const std::string& host, const uint16_t port)
+    {
+        try
+        {
+            asio::ip::tcp::resolver resolver(io_context_);
+            asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(host, std::to_string(port));
+
+            connection_ = std::make_unique<Session<Protocol, flatbuffers::FlatBufferBuilder>>
+                (Session<Protocol, flatbuffers::FlatBufferBuilder>::owner::client, io_context_,
+                    asio::ip::tcp::socket(io_context_), message_in_);
+
+            connection_->ConnectToServer(endpoints);
+
+            thread_context_ = std::thread([this]()
+                {
+                    io_context_.run();
+                });
+        }
+        catch (std::exception& e)
+        {
+            std::cerr << "client exception: " << e.what() << std::endl;
+            return false;
+        }
+
+        return true;
+    }
+
+    void Disconnect()
+    {
+        if (IsConnected())
+        {
+            connection_->Disconnect();
+        }
+
+        io_context_.stop();
+
+        if (thread_context_.joinable())
+            thread_context_.join();
+
+        connection_.release();
+    }
+
+    bool IsConnected()
+    {
+        if (connection_)
+            return connection_->IsConnected();
+        else
+            return false;
+    }
+
+public:
+    void Send(const Message<Protocol, flatbuffers::FlatBufferBuilder>& msg)
+    {
+        if (IsConnected())
+            connection_->Send(msg);
+    }
+
+    PacketQueue<OwnedMessage<Protocol, flatbuffers::FlatBufferBuilder>>& Incoming()
+    {
+        return message_in_;
+    }
+
+protected:
+    asio::io_context io_context_;
+    std::thread thread_context_;
+    std::unique_ptr<Session<Protocol, flatbuffers::FlatBufferBuilder>> connection_;
+
+private:
+    PacketQueue<OwnedMessage<Protocol, flatbuffers::FlatBufferBuilder>> message_in_;
+};
 
 enum {
     max_length = 1024
 };
 
-enum class protocol : unsigned short {
-    kTextSend,
-    kLogin,
-    kCreateAccount,
-    kCreateCharacter,
-    kCheckCharacterNickname,
-
-    kResultCode
-};
-
-enum class result_code : unsigned short {
-    kCreateSuccess,
-    kCreateFailed,
-
-    kAleadyExist,
-    kNotExist,
-
-    kLoginSuccess,
-    kLoginFailed,
-};
-
-class CustomClient : public net::ClientInterface<protocol>
+class CustomClient : public ClientInterface
 {
 public:
 
@@ -75,24 +132,24 @@ int main(int argc, char* argv[])
                     //msg 수신
                     switch (msg.header.id)
                     {
-                    case protocol::kTextSend:
+                    case Protocol_TextSend:
                     {
                         auto text = flatbuffers::GetRoot<SamplePacket::textREQ>(msg.body.data());
                         std::cout << text->text()->c_str() << std::endl;
                     }
-                    case protocol::kResultCode:
+                    case Protocol_ResultCode:
                     {
-                        auto res = flatbuffers::GetRoot<SamplePacket::ResultCode>(msg.body.data());
-                        auto code = static_cast<result_code>(res->rescode());
+                        auto res = flatbuffers::GetRoot<SamplePacket::Result>(msg.body.data());
+                        auto code = static_cast<ResultCode>(res->rescode());
                         switch (code)
                         {
-                        case result_code::kLoginSuccess:
+                        case ResultCode_LoginSuccess:
                             std::cout << "login success" << std::endl;
                             break;
-                        case result_code::kAleadyExist:
+                        case ResultCode_AleadyExist:
                             std::cout << "already exist" << std::endl;
                             break;
-                        case result_code::kLoginFailed:
+                        case ResultCode_LoginFailed:
                             std::cout << "login failed" << std::endl;
                             break;
                         }
@@ -119,8 +176,8 @@ int main(int argc, char* argv[])
                 std::cout << "Sending... ";
                 // 서버로 메세지 전송
                 {
-                    net::Message<protocol> msg;
-                    msg.header.id = protocol::kCreateCharacter;
+                    net::Message<Protocol, flatbuffers::FlatBufferBuilder> msg;
+                    msg.header.id = Protocol_CreateCharacter;
                     flatbuffers::FlatBufferBuilder builder(1024);
                     auto login_id = builder.CreateString(id);
                     SamplePacket::CreateCharacterReqBuilder create_character_builder(builder);
@@ -131,49 +188,6 @@ int main(int argc, char* argv[])
                     msg << builder;
                     c.Send(msg);
                 }
-
-                //if (loggedin)
-                //{
-                //    std::getline(std::cin >> std::ws, chat);
-                //    // 서버로 메세지 전송
-                //    {
-                //        net::Message<protocol> msg;
-                //        msg.header.id = protocol::kTextSend;
-                //        flatbuffers::FlatBufferBuilder builder(1024);
-                //        auto text = builder.CreateString(chat);
-                //        SamplePacket::textREQBuilder text_req_builder(builder);
-                //        text_req_builder.add_text(text);
-                //        auto ack = text_req_builder.Finish();
-                //        builder.Finish(ack);
-                //        msg << builder;
-                //        c.Send(msg);
-                //    }
-                //}
-                //else
-                //{
-                //   std::string id;
-                //   std::string password;
-                //   std::cout << "ID: ";
-                //   std::cin >> id;
-                //   std::cout << "PASSWORD: ";
-                //   std::cin >> password;
-                //   std::cout << "Sending... ";
-                //   // 서버로 메세지 전송
-                //   {
-                //       net::Message<protocol> msg;
-                //       msg.header.id = protocol::kCreateAccount;
-                //       flatbuffers::FlatBufferBuilder builder(1024);
-                //       auto login_id = builder.CreateString(id);
-                //       auto login_password = builder.CreateString(password);
-                //       SamplePacket::LoginReqBuilder login_req_builder(builder);
-                //       login_req_builder.add_id(login_id);
-                //       login_req_builder.add_pw(login_password);
-                //       auto ack = login_req_builder.Finish();
-                //       builder.Finish(ack);
-                //       msg << builder;
-                //       c.Send(msg);
-                //   }
-                //}
             }
             else
             {

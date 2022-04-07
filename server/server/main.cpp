@@ -1,6 +1,7 @@
 #include "pch.h"
 
-#include "net_server.h"
+#include "server/net_server.h"
+#include "world/world_manager.h"
 
 //덤프파일을 남겨준다.
 LONG __stdcall ExceptionCallBack(EXCEPTION_POINTERS* e)
@@ -29,6 +30,9 @@ int main(int argc, char* argv[])
 
     try
     {
+        auto world = WorldManager::instance();
+
+        LOG_INFO(world);
 
         net::CustomServer server(60000);
         server.Start();
