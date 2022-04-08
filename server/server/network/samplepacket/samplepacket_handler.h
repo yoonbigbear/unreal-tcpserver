@@ -22,7 +22,8 @@ public:
     static void CreateAccount(session::Shared session, message& msg);
     static void LoginAccount(session::Shared session, message& msg);
 
-    static void SendText(session::Shared session, message& msg);
+    static void CheckNickname(session::Shared session, message& msg);
+
 
 private:
     std::unordered_map<Protocol, func> packet_handler_;

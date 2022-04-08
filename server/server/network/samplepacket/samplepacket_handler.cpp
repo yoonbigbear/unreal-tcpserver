@@ -6,17 +6,19 @@
 
 #include "database/DB.h"
 #include "samplepacket_helper.h"
-#include <SamplePacket_generated.h>
-#include <result_code_generated.h>
+
+#include <account_generated.h>
 #include <protocol_generated.h>
+#include <result_code_generated.h>
 
 using snowflake_t = snowflake<1534832906275L>;
 
 SamplePacketHandler::SamplePacketHandler()
 {
-    packet_handler_.try_emplace(Protocol_CreateAccount, CreateAccount);
-    packet_handler_.try_emplace(Protocol_Login, LoginAccount);
-    packet_handler_.try_emplace(Protocol_TextSend, SendText);
+    packet_handler_.try_emplace(Protocol_Login_Req, LoginAccount);
+    packet_handler_.try_emplace(Protocol_CreateAccount_Req, CreateAccount);
+    packet_handler_.try_emplace(Protocol_CheckCharacterNickname_Req, CheckNickname);
+    packet_handler_.try_emplace(Protocol_CreateCharacter_Req, CreateCharacter);
 
 }
 
@@ -27,7 +29,7 @@ void SamplePacketHandler::CreateCharacter(session::Shared session, message& msg)
     uuid.init(1, 1);
     auto id = uuid.nextid();
     
-    auto pkt = flatbuffers::GetRoot<SamplePacket::CreateCharacterReq>(msg.body.data());
+    auto pkt = flatbuffers::GetRoot<account::CreateCharacterReq>(msg.body.data());
     auto nickname = pkt->nickname()->str();
     auto class_id = pkt->class_();
 
@@ -64,7 +66,7 @@ void SamplePacketHandler::CreateCharacter(session::Shared session, message& msg)
 
 void SamplePacketHandler::SelectCharacterNickname(session::Shared session, message& msg)
 {
-    auto pkt = flatbuffers::GetRoot<SamplePacket::SelectCharacterNickNameReq>(msg.body.data());
+    auto pkt = flatbuffers::GetRoot<account::CheckCharacterNicknameReq>(msg.body.data());
     auto nickname = pkt->nickname()->str();
 
     asio::post([session, nickname]() {
@@ -91,7 +93,7 @@ void SamplePacketHandler::SelectCharacterNickname(session::Shared session, messa
 
 void SamplePacketHandler::CreateAccount(session::Shared session, message& msg)
 {
-    auto pkt = flatbuffers::GetRoot<SamplePacket::LoginReq>(msg.body.data());
+    auto pkt = flatbuffers::GetRoot<account::CreateAccountReq>(msg.body.data());
     auto account_id = pkt->id()->str();
     auto account_password = pkt->pw()->str();
 
@@ -122,7 +124,7 @@ void SamplePacketHandler::CreateAccount(session::Shared session, message& msg)
 
 void SamplePacketHandler::LoginAccount(session::Shared session, message& msg)
 {
-    auto pkt = flatbuffers::GetRoot<SamplePacket::LoginReq>(msg.body.data());
+    auto pkt = flatbuffers::GetRoot<account::LoginReq>(msg.body.data());
     auto account_id = pkt->id()->str();
     auto account_password = pkt->pw()->str();
 
@@ -143,8 +145,6 @@ void SamplePacketHandler::LoginAccount(session::Shared session, message& msg)
     });
 }
 
-void SamplePacketHandler::SendText(session::Shared session, message& msg)
+void SamplePacketHandler::CheckNickname(session::Shared session, message& msg)
 {
-    auto text = flatbuffers::GetRoot<SamplePacket::textREQ>(msg.body.data());
-    DB::add_chat(text->text()->c_str());
 }

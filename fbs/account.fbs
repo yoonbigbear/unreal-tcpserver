@@ -1,0 +1,54 @@
+include "common.fbs";
+
+namespace account;
+
+//로그인 시도. ID  Password 는 16글자 제한두도록
+//나중에는 영문,숫자 (Ascii)만 가능하도록 설정
+table LoginReq{
+	id:string;
+	pw:string;
+}
+table LoginAck{
+	result 		: ushort; //결과
+	char_count 	: ubyte;  //가진 캐릭터 갯수
+	characters	: [CharacterInfo];
+}
+
+//계정 생성 요청
+table CreateAccountReq{
+	id:string;
+	pw:string;
+}
+
+table CreateAccountAck{
+	result  : ushort;
+	char_count 	: ubyte;  //가진 캐릭터 갯수
+	characters	: [CharacterInfo];
+}
+
+// 이게 이사람의 캐릭터인지 보장할 방법이 아직 없음
+table SelectCharacterReq{
+	char_id:ulong;
+}
+// 캐릭터 선택 후 결과에 따라 입장한다.
+table SelectCharacterAck{
+	result : ushort;
+}
+
+// nickname은 8글자 제한으로 multibyte 가능
+table CreateCharacterReq{
+	nickname : string;
+	class 	 : ubyte;
+}
+table CreateCharacterAck{
+	result  : ushort;
+	char_id : ulong;
+}
+
+// nickname은 8글자 제한으로 multibyte 가능
+table CheckCharacterNicknameReq{
+	nickname : string;
+}
+table CheckCharacterNicknameAck{
+	result : ushort;
+}

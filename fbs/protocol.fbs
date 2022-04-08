@@ -2,10 +2,14 @@
 enum Protocol : ushort{
 	None = 0,
     TextSend,
-    Login,
-    CreateAccount,
-    CreateCharacter,
-    CheckCharacterNickname,
+    Login_Req,
+	Login_Ack,
+    CreateAccount_Req,
+	CreateAccount_Ack,
+    CreateCharacter_Req,
+	CreateCharacter_Ack,
+    CheckCharacterNickname_Req,
+	CheckCharacterNickname_Ack,
 
     ResultCode
 }

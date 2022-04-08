@@ -30,10 +30,6 @@ int main(int argc, char* argv[])
 
     try
     {
-        auto world = WorldManager::instance();
-
-        LOG_INFO(world);
-
         net::CustomServer server(60000);
         server.Start();
 

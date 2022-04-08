@@ -9,36 +9,48 @@
 enum Protocol : uint16_t {
   Protocol_None = 0,
   Protocol_TextSend = 1,
-  Protocol_Login = 2,
-  Protocol_CreateAccount = 3,
-  Protocol_CreateCharacter = 4,
-  Protocol_CheckCharacterNickname = 5,
-  Protocol_ResultCode = 6,
+  Protocol_Login_Req = 2,
+  Protocol_Login_Ack = 3,
+  Protocol_CreateAccount_Req = 4,
+  Protocol_CreateAccount_Ack = 5,
+  Protocol_CreateCharacter_Req = 6,
+  Protocol_CreateCharacter_Ack = 7,
+  Protocol_CheckCharacterNickname_Req = 8,
+  Protocol_CheckCharacterNickname_Ack = 9,
+  Protocol_ResultCode = 10,
   Protocol_MIN = Protocol_None,
   Protocol_MAX = Protocol_ResultCode
 };
 
-inline const Protocol (&EnumValuesProtocol())[7] {
+inline const Protocol (&EnumValuesProtocol())[11] {
   static const Protocol values[] = {
     Protocol_None,
     Protocol_TextSend,
-    Protocol_Login,
-    Protocol_CreateAccount,
-    Protocol_CreateCharacter,
-    Protocol_CheckCharacterNickname,
+    Protocol_Login_Req,
+    Protocol_Login_Ack,
+    Protocol_CreateAccount_Req,
+    Protocol_CreateAccount_Ack,
+    Protocol_CreateCharacter_Req,
+    Protocol_CreateCharacter_Ack,
+    Protocol_CheckCharacterNickname_Req,
+    Protocol_CheckCharacterNickname_Ack,
     Protocol_ResultCode
   };
   return values;
 }
 
 inline const char * const *EnumNamesProtocol() {
-  static const char * const names[8] = {
+  static const char * const names[12] = {
     "None",
     "TextSend",
-    "Login",
-    "CreateAccount",
-    "CreateCharacter",
-    "CheckCharacterNickname",
+    "Login_Req",
+    "Login_Ack",
+    "CreateAccount_Req",
+    "CreateAccount_Ack",
+    "CreateCharacter_Req",
+    "CreateCharacter_Ack",
+    "CheckCharacterNickname_Req",
+    "CheckCharacterNickname_Ack",
     "ResultCode",
     nullptr
   };

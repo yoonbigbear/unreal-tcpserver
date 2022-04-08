@@ -57,8 +57,8 @@ namespace net
                     {
                         std::cout << "[SERVER] New Connection: " << socket.remote_endpoint() << std::endl;
                         auto newconn =
-                            std::make_shared < ClientSession <Protocol , flatbuffer >> (ClientSession<Protocol, flatbuffer>::owner::server,
-                            io_context_, std::move(socket), message_in_);
+                            std::make_shared<ClientSession<Protocol,flatbuffer>>(ClientSession<Protocol, flatbuffer>::owner::server,
+                                io_context_, std::move(socket), message_in_);
 
                         if (OnClientConnect(newconn))
                         {
@@ -185,33 +185,26 @@ namespace net
         {
             switch (msg.header.id)
             {
-            case Protocol_CreateAccount:
+            case Protocol_CreateAccount_Req:
             {
                 std::cout << "[" << session << "]: " << "login_pkt Received" << std::endl;
                 SamplePacketHandler::CreateAccount(session, msg);
             }
             break;
-            case Protocol_Login:
+            case Protocol_Login_Req:
             {
                 std::cout << "[" << session << "]: " << "login_pkt Received" << std::endl;
                 SamplePacketHandler::LoginAccount(session, msg);
 
             }
             break;
-            case Protocol_TextSend:
-            {
-                std::cout << "[" << session << "]: " << "Text Received" << std::endl;
-                SamplePacketHandler::SendText(session, msg);
-                MessageAllClients(msg, session);
-            }
-            break;
-            case Protocol_CheckCharacterNickname:
+            case Protocol_CheckCharacterNickname_Req:
             {
                 std::cout << "[" << session << "]: " << "Select Character" << std::endl;
                 SamplePacketHandler::SelectCharacterNickname(session, msg);
             }
             break;
-            case Protocol_CreateCharacter:
+            case Protocol_CreateCharacter_Req:
             {
                 std::cout << "[" << session << "]: " << "Create Character" << std::endl;
                 SamplePacketHandler::CreateCharacter(session, msg);
