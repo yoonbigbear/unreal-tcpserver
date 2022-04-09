@@ -5,7 +5,7 @@
 
 #include "network/client_session.h"
 
-#include <protocol_generated.h>
+enum protocol;
 
 class SamplePacketHandler
 {

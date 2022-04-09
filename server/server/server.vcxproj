@@ -231,6 +231,7 @@
     <ClCompile Include="database\DB.cpp" />
     <ClCompile Include="database\nanodbc\nanodbc.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="network\packet\packet_handler.cpp" />
     <ClCompile Include="network\samplepacket\samplepacket_handler.cpp" />
     <ClCompile Include="object\character.cpp" />
     <ClCompile Include="object\field_object.cpp" />
@@ -293,6 +294,7 @@
     <ClInclude Include="database\DB.h" />
     <ClInclude Include="database\nanodbc\nanodbc.h" />
     <ClInclude Include="network\client_session.h" />
+    <ClInclude Include="network\packet\packet_handler.h" />
     <ClInclude Include="network\samplepacket\samplepacket_handler.h" />
     <ClInclude Include="network\samplepacket\samplepacket_helper.h" />
     <ClInclude Include="object\character.h" />

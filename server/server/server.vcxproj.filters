@@ -46,6 +46,9 @@
     <Filter Include="database\nanodbc">
       <UniqueIdentifier>{a20900b5-5cba-4105-97e0-3d0a4038269e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="network\packet">
+      <UniqueIdentifier>{154b0ab8-6b50-4b5f-a4dc-2d6a451005b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="database\DB.cpp">
@@ -195,6 +198,9 @@
     </ClCompile>
     <ClCompile Include="database\nanodbc\nanodbc.cpp">
       <Filter>database\nanodbc</Filter>
+    </ClCompile>
+    <ClCompile Include="network\packet\packet_handler.cpp">
+      <Filter>network\packet</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -390,6 +396,9 @@
     </ClInclude>
     <ClInclude Include="database\nanodbc\nanodbc.h">
       <Filter>database\nanodbc</Filter>
+    </ClInclude>
+    <ClInclude Include="network\packet\packet_handler.h">
+      <Filter>network\packet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

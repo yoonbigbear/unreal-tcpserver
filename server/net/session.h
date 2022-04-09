@@ -13,6 +13,9 @@ namespace net
     {
     public:
 
+        using Shared = std::shared_ptr<Session>;
+        using Weak = std::weak_ptr<Session>;
+
         enum class owner
         {
             server,

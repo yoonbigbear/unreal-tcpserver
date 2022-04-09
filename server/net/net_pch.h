@@ -6,6 +6,7 @@
 
 // 여기에 미리 컴파일하려는 헤더 추가
 #include <iostream>
+#include <memory>
 #include <vector>
 #include <chrono>
 #include <thread>

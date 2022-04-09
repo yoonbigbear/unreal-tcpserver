@@ -53,3 +53,22 @@
 #define LOG_WARNING(log) SPDLOG_WARN(#log);
 #define LOG_ERROR(log) SPDLOG_ERROR(#log);
 #define LOG_CRITICAL(log) SPDLOG_CRITICAL(#log);
+
+
+
+
+#define SEND_REQ(protocol, ...)   \
+net::Message<Protocol, flatbuffers::FlatBufferBuilder> msg; \
+msg.header.id = Protocol_##protocol##_Req;  \
+flatbuffers::FlatBufferBuilder fbb(1024);   \
+auto builder = account::Create##protocol##ReqDirect(fbb, ##__VA_ARGS__);    \
+fbb.Finish(builder);    \
+msg << fbb;
+
+#define SEND_ACK(protocol, ...)   \
+net::Message<Protocol, flatbuffers::FlatBufferBuilder> msg; \
+msg.header.id = Protocol_##protocol##_Ack;  \
+flatbuffers::FlatBufferBuilder fbb(1024);   \
+auto builder = account::Create##protocol##AckDirect(fbb, ##__VA_ARGS__);    \
+fbb.Finish(builder);    \
+msg << fbb;

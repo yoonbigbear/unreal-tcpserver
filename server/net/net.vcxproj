@@ -175,7 +175,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="client_interface.h" />
     <ClInclude Include="net_pch.h" />
+    <ClInclude Include="server_interface.h" />
     <ClInclude Include="session.h" />
     <ClInclude Include="macro.h" />
     <ClInclude Include="message.h" />
