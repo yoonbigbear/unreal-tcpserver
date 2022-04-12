@@ -21,7 +21,7 @@ bool loggedin = false;
 
 static HANDLE Screen[2];
 
-void TestLogic(CustomClient& c);
+void PacketTest(CustomClient& c);
 
 int main(int argc, char* argv[])
 {
@@ -29,14 +29,10 @@ int main(int argc, char* argv[])
     {
         CustomClient c;
         c.Connect("127.0.0.1", 60000);
-
-        while (1)
-        {
+        while (1) {
             if (c.IsConnected())
             {
-                //TestLogic(c);
-                SEND_REQ(CreateAccount, "sampleId", "samplePassword");
-                c.Send(msg);
+                PacketTest(c);
             }
             else
             {

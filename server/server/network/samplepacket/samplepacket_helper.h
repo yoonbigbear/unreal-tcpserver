@@ -3,6 +3,7 @@
 
 #include <result_code_generated.h>
 #include <protocol_generated.h>
+#include <account_generated.h>
 
 namespace SamplePacketHelper {
 
@@ -24,13 +25,7 @@ namespace SamplePacketHelper {
     template<typename T>
     static void ResultCodeAck(T& msg, ResultCode result_code)
     {
-        //msg.header.id = Protocol_ResultCode;
-        //FlatBufferBuilder builder(1024);
-        //ResultBuilder res_code_builder(builder);
-        //res_code_builder.add_rescode(result_code);
-        //auto fbb = res_code_builder.Finish();
-        //builder.Finish(fbb);
-        //msg << builder;
+        
     }
 
 };

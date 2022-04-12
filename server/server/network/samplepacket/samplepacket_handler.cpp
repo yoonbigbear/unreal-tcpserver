@@ -107,15 +107,13 @@ void SamplePacketHandler::CreateAccount(session::Shared session, message& msg)
         }
         if (ret == 0)
         {
-            message msg;
-            SamplePacketHelper::ResultCodeAck(msg, ResultCode_LoginSuccess);
+            SEND_ACK(CreateAccount, ResultCode_LoginSuccess);
             session->Send(msg);
 
         }
         else
         {
-            message msg;
-            SamplePacketHelper::ResultCodeAck(msg, ResultCode_AleadyExist);
+            SEND_ACK(CreateAccount, ResultCode_AleadyExist);
             session->Send(msg);
         }
     });

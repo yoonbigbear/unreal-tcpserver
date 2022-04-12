@@ -72,3 +72,17 @@ flatbuffers::FlatBufferBuilder fbb(1024);   \
 auto builder = account::Create##protocol##AckDirect(fbb, ##__VA_ARGS__);    \
 fbb.Finish(builder);    \
 msg << fbb;
+
+#define WAIT_UNTIL_BEGIN(protocol) \
+while (true) \
+ { \
+  if (!c.Incoming().empty()) \
+   { \
+    auto msg = c.Incoming().pop_front(); \
+    if (msg.msg.header.id == protocol) \
+    {;
+
+#define WAIT_UNTIL_END \
+    }\
+   }\
+ };
