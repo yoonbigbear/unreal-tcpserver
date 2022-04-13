@@ -5,6 +5,7 @@
 #include <protocol_generated.h>
 #include <account_generated.h>
 
+
 namespace SamplePacketHelper {
 
     using namespace flatbuffers;

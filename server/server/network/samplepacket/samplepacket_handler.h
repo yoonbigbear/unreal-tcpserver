@@ -14,7 +14,6 @@ public:
     using message = net::Message<Protocol, flatbuffer>;
     using session = ClientSession<Protocol, flatbuffer>;
     using func = std::function<void(session::Shared, message&)> ;
-    SamplePacketHandler();
 
     static void CreateCharacter(session::Shared session, message& msg);
     static void SelectCharacterNickname(session::Shared session, message& msg);

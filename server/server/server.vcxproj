@@ -227,6 +227,7 @@
     <ClCompile Include="..\..\..\3rdParty\recastnavigation-master\Detour\Source\DetourNavMeshBuilder.cpp" />
     <ClCompile Include="..\..\..\3rdParty\recastnavigation-master\Detour\Source\DetourNavMeshQuery.cpp" />
     <ClCompile Include="..\..\..\3rdParty\recastnavigation-master\Detour\Source\DetourNode.cpp" />
+    <ClCompile Include="account\account_manager.cpp" />
     <ClCompile Include="behaiviour_tree\btree.cpp" />
     <ClCompile Include="database\DB.cpp" />
     <ClCompile Include="database\nanodbc\nanodbc.cpp" />
@@ -290,6 +291,7 @@
     <ClInclude Include="..\..\..\3rdParty\recastnavigation-master\Detour\Include\DetourNode.h" />
     <ClInclude Include="..\..\..\3rdParty\recastnavigation-master\Detour\Include\DetourStatus.h" />
     <ClInclude Include="..\packet\SamplePacket_generated.h" />
+    <ClInclude Include="account\account_manager.h" />
     <ClInclude Include="behaiviour_tree\btree.h" />
     <ClInclude Include="database\DB.h" />
     <ClInclude Include="database\nanodbc\nanodbc.h" />

@@ -67,8 +67,6 @@ namespace net
             break;
             }
         }
-
-    private:
     };
 
 } // namespace net

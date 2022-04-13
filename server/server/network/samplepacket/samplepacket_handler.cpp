@@ -13,15 +13,6 @@
 
 using snowflake_t = snowflake<1534832906275L>;
 
-SamplePacketHandler::SamplePacketHandler()
-{
-    packet_handler_.try_emplace(Protocol_Login_Req, LoginAccount);
-    packet_handler_.try_emplace(Protocol_CreateAccount_Req, CreateAccount);
-    packet_handler_.try_emplace(Protocol_CheckCharacterNickname_Req, CheckNickname);
-    packet_handler_.try_emplace(Protocol_CreateCharacter_Req, CreateCharacter);
-
-}
-
 void SamplePacketHandler::CreateCharacter(session::Shared session, message& msg)
 {
     //id를 새로 만들어줘야 하는데 일단은 그냥 하자

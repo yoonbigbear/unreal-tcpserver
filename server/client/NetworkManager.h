@@ -33,6 +33,7 @@ int main(int argc, char* argv[])
             if (c.IsConnected())
             {
                 PacketTest(c);
+                break;
             }
             else
             {

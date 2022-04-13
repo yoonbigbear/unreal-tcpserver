@@ -49,6 +49,9 @@
     <Filter Include="network\packet">
       <UniqueIdentifier>{154b0ab8-6b50-4b5f-a4dc-2d6a451005b8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="account">
+      <UniqueIdentifier>{669b113d-f7dc-48a2-ae82-aa5dbb8380c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="database\DB.cpp">
@@ -201,6 +204,9 @@
     </ClCompile>
     <ClCompile Include="network\packet\packet_handler.cpp">
       <Filter>network\packet</Filter>
+    </ClCompile>
+    <ClCompile Include="account\account_manager.cpp">
+      <Filter>account</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -399,6 +405,9 @@
     </ClInclude>
     <ClInclude Include="network\packet\packet_handler.h">
       <Filter>network\packet</Filter>
+    </ClInclude>
+    <ClInclude Include="account\account_manager.h">
+      <Filter>account</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

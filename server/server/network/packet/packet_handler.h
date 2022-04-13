@@ -11,14 +11,15 @@
 class PacketHandler : public net::Singleton<PacketHandler>
 {
 public:
+
     using message = net::Message<Protocol, flatbuffer>;
     using session = ClientSession<Protocol, flatbuffer>;
     using func = std::function<void(session::Shared, message&)>;
 
-    bool bind(Protocol protocol, func callback);
+    bool bind(Protocol protocol, std::function<void(session::Shared, message&)> callback);
 
 private:
-    std::unordered_map<Protocol, func> packet_handler_;
+    std::unordered_map<Protocol, std::function<void(session::Shared, message&)>> packet_handler_;
 };
 
 #endif
