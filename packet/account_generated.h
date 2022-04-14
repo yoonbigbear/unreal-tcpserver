@@ -108,26 +108,14 @@ inline flatbuffers::Offset<LoginReq> CreateLoginReqDirect(
 struct LoginAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef LoginAckBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_RESULT = 4,
-    VT_CHAR_COUNT = 6,
-    VT_CHARACTERS = 8
+    VT_RESULT = 4
   };
   uint16_t result() const {
     return GetField<uint16_t>(VT_RESULT, 0);
   }
-  uint8_t char_count() const {
-    return GetField<uint8_t>(VT_CHAR_COUNT, 0);
-  }
-  const flatbuffers::Vector<flatbuffers::Offset<CharacterInfo>> *characters() const {
-    return GetPointer<const flatbuffers::Vector<flatbuffers::Offset<CharacterInfo>> *>(VT_CHARACTERS);
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_RESULT, 2) &&
-           VerifyField<uint8_t>(verifier, VT_CHAR_COUNT, 1) &&
-           VerifyOffset(verifier, VT_CHARACTERS) &&
-           verifier.VerifyVector(characters()) &&
-           verifier.VerifyVectorOfTables(characters()) &&
            verifier.EndTable();
   }
 };
@@ -138,12 +126,6 @@ struct LoginAckBuilder {
   flatbuffers::uoffset_t start_;
   void add_result(uint16_t result) {
     fbb_.AddElement<uint16_t>(LoginAck::VT_RESULT, result, 0);
-  }
-  void add_char_count(uint8_t char_count) {
-    fbb_.AddElement<uint8_t>(LoginAck::VT_CHAR_COUNT, char_count, 0);
-  }
-  void add_characters(flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<CharacterInfo>>> characters) {
-    fbb_.AddOffset(LoginAck::VT_CHARACTERS, characters);
   }
   explicit LoginAckBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -158,27 +140,10 @@ struct LoginAckBuilder {
 
 inline flatbuffers::Offset<LoginAck> CreateLoginAck(
     flatbuffers::FlatBufferBuilder &_fbb,
-    uint16_t result = 0,
-    uint8_t char_count = 0,
-    flatbuffers::Offset<flatbuffers::Vector<flatbuffers::Offset<CharacterInfo>>> characters = 0) {
+    uint16_t result = 0) {
   LoginAckBuilder builder_(_fbb);
-  builder_.add_characters(characters);
   builder_.add_result(result);
-  builder_.add_char_count(char_count);
   return builder_.Finish();
-}
-
-inline flatbuffers::Offset<LoginAck> CreateLoginAckDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    uint16_t result = 0,
-    uint8_t char_count = 0,
-    const std::vector<flatbuffers::Offset<CharacterInfo>> *characters = nullptr) {
-  auto characters__ = characters ? _fbb.CreateVector<flatbuffers::Offset<CharacterInfo>>(*characters) : 0;
-  return account::CreateLoginAck(
-      _fbb,
-      result,
-      char_count,
-      characters__);
 }
 
 struct CreateAccountReq FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

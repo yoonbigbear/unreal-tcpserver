@@ -8,7 +8,8 @@
 #include <protocol_generated.h>
 
 #include "network/client_session.h"
-#include "network/samplepacket/samplepacket_handler.h"
+#include "network/packet/packet_manager.h"
+#include "network/packet/account/account_packets.h"
 
 using namespace boost;
 
@@ -20,7 +21,8 @@ namespace net
     public:
         CustomServer(uint16_t port) : ServerInterface<Protocol, ClientSession<Protocol, flatbuffers::FlatBufferBuilder>>(port)
         {
-
+            AccountPackets temp;
+            temp.Start();
         }
 
     protected:
@@ -38,34 +40,11 @@ namespace net
 
         virtual void OnMessage(std::shared_ptr<T> session, Message<Protocol, flatbuffer>& msg) override
         {
-            switch (msg.header.id)
-            {
-            case Protocol_CreateAccount_Req:
-            {
-                std::cout << "[" << session << "]: " << "login_pkt Received" << std::endl;
-                SamplePacketHandler::CreateAccount(session, msg);
-            }
-            break;
-            case Protocol_Login_Req:
-            {
-                std::cout << "[" << session << "]: " << "login_pkt Received" << std::endl;
-                SamplePacketHandler::LoginAccount(session, msg);
-
-            }
-            break;
-            case Protocol_CheckCharacterNickname_Req:
-            {
-                std::cout << "[" << session << "]: " << "Select Character" << std::endl;
-                SamplePacketHandler::SelectCharacterNickname(session, msg);
-            }
-            break;
-            case Protocol_CreateCharacter_Req:
-            {
-                std::cout << "[" << session << "]: " << "Create Character" << std::endl;
-                SamplePacketHandler::CreateCharacter(session, msg);
-            }
-            break;
-            }
+            auto func = PacketManager::instance().packet_handler(msg.header.id);
+            if (func)
+                func(session, msg);
+            else
+                DEBUG_FMT_ERROR("No Callback Func {}", msg.header.id);
         }
     };
 

@@ -6,14 +6,27 @@
 void PacketTest(CustomClient& c)
 {
     //CreateAccount Pkt test
+    //{
+    //    BUILD_PACKET(CreateAccountReq, "sampleId", "samplePassword");
+    //    c.Send(pkt);
+
+    //    WAIT_UNTIL_BEGIN(Protocol::Protocol_CreateAccountReq);
+
+    //    auto body = flatbuffers::GetRoot<account::CreateAccountAck>(msg.msg.body.data());
+    //    std::cout << "pkt received:" << body->result() << std::endl;
+
+    //    WAIT_UNTIL_END;
+    //}
+
+    //login account
     {
-        SEND_REQ(CreateAccount, "sampleId", "samplePassword");
-        c.Send(msg);
+        BUILD_PACKET(LoginReq, "sampleId", "samplePassword");
+        c.Send(pkt);
 
-        WAIT_UNTIL_BEGIN(Protocol::Protocol_CreateAccount_Ack);
+        WAIT_UNTIL_BEGIN(Protocol::Protocol_LoginAck);
 
-        auto body = flatbuffers::GetRoot<account::CreateAccountAck>(msg.msg.body.data());
-        std::cout << "pky received:" << body->result() << std::endl;
+        auto body = flatbuffers::GetRoot<account::LoginAck>(msg.msg.body.data());
+        std::cout << "pkt received:" << body->result() << std::endl;
 
         WAIT_UNTIL_END;
     }

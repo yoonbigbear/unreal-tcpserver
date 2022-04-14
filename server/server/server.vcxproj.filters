@@ -22,9 +22,6 @@
     <Filter Include="network">
       <UniqueIdentifier>{c2fb6b09-e3ba-4507-a299-af34eb3f53d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="network\SamplePacket">
-      <UniqueIdentifier>{edd3ae24-24c2-4512-9eec-8951aef53ac0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="database\dba_log">
       <UniqueIdentifier>{01b625d2-854c-49e6-a59d-d48211a9ce58}</UniqueIdentifier>
     </Filter>
@@ -49,7 +46,7 @@
     <Filter Include="network\packet">
       <UniqueIdentifier>{154b0ab8-6b50-4b5f-a4dc-2d6a451005b8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="account">
+    <Filter Include="network\packet\account">
       <UniqueIdentifier>{669b113d-f7dc-48a2-ae82-aa5dbb8380c7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -181,9 +178,6 @@
     <ClCompile Include="behaiviour_tree\btree.cpp">
       <Filter>behaviour_tree</Filter>
     </ClCompile>
-    <ClCompile Include="network\samplepacket\samplepacket_handler.cpp">
-      <Filter>network\SamplePacket</Filter>
-    </ClCompile>
     <ClCompile Include="world\field.cpp">
       <Filter>world</Filter>
     </ClCompile>
@@ -202,11 +196,11 @@
     <ClCompile Include="database\nanodbc\nanodbc.cpp">
       <Filter>database\nanodbc</Filter>
     </ClCompile>
-    <ClCompile Include="network\packet\packet_handler.cpp">
+    <ClCompile Include="network\packet\packet_manager.cpp">
       <Filter>network\packet</Filter>
     </ClCompile>
-    <ClCompile Include="account\account_manager.cpp">
-      <Filter>account</Filter>
+    <ClCompile Include="network\packet\account\account_packets.cpp">
+      <Filter>network\packet\account</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -360,18 +354,9 @@
     <ClInclude Include="..\..\..\3rdParty\recastnavigation-master\DetourCrowd\Include\DetourProximityGrid.h">
       <Filter>3rd\navigation\detourcrowd</Filter>
     </ClInclude>
-    <ClInclude Include="..\packet\SamplePacket_generated.h">
-      <Filter>network\SamplePacket</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h" />
     <ClInclude Include="behaiviour_tree\btree.h">
       <Filter>behaviour_tree</Filter>
-    </ClInclude>
-    <ClInclude Include="network\samplepacket\samplepacket_helper.h">
-      <Filter>network\SamplePacket</Filter>
-    </ClInclude>
-    <ClInclude Include="network\samplepacket\samplepacket_handler.h">
-      <Filter>network\SamplePacket</Filter>
     </ClInclude>
     <ClInclude Include="world\field.h">
       <Filter>world</Filter>
@@ -403,11 +388,11 @@
     <ClInclude Include="database\nanodbc\nanodbc.h">
       <Filter>database\nanodbc</Filter>
     </ClInclude>
-    <ClInclude Include="network\packet\packet_handler.h">
+    <ClInclude Include="network\packet\packet_manager.h">
       <Filter>network\packet</Filter>
     </ClInclude>
-    <ClInclude Include="account\account_manager.h">
-      <Filter>account</Filter>
+    <ClInclude Include="network\packet\account\account_packets.h">
+      <Filter>network\packet\account</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

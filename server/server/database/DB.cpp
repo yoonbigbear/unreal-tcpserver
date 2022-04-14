@@ -1,7 +1,5 @@
 #include "DB.h"
 
-#include "nanodbc/nanodbc.h"
-
 auto const conn_account = NANODBC_TEXT("Driver={SQL Server};Server=TAEWOONGYOON\\SQLEXPRESS;database=account;trusted_connection=Yes;");
 auto const conn_game = NANODBC_TEXT("Driver={SQL Server};Server=TAEWOONGYOON\\SQLEXPRESS;database=Game;trusted_connection=Yes;");
 auto const conn_log = NANODBC_TEXT("Driver={SQL Server};Server=TAEWOONGYOON\\SQLEXPRESS;database=log;trusted_connection=Yes;");
@@ -37,7 +35,7 @@ void DB::add_chat(std::string_view chat)
     stmt.execute();
 }
 
-int DB::select_account(std::string_view id, std::string_view password)
+int DB::select_account(std::string_view id, std::string_view password, nanodbc::result& res)
 {
     if (id.size() > 15 || password.size() > 15)
         return -1;
@@ -45,16 +43,17 @@ int DB::select_account(std::string_view id, std::string_view password)
     nanodbc::connection conn(conn_account);
     nanodbc::statement stmt(conn);
 
-    int32_t ret_code = -1;
+    stmt.prepare(NANODBC_TEXT("Exec select_account ?,?"));
+    stmt.bind(0, id.data());
+    stmt.bind(1, password.data());
 
-    stmt.prepare(NANODBC_TEXT("Exec ?= select_account ?,?"));
-    stmt.bind(0, &ret_code, NULL, nanodbc::statement::PARAM_RETURN);
-    stmt.bind(1, id.data());
-    stmt.bind(2, password.data());
-
-    stmt.execute();
-
-    return ret_code;
+    res = stmt.execute();
+    while (res.next())
+    {
+        auto account_id = res.get<std::string>("id");
+        auto account_password = res.get<std::string>("password");
+    }
+    return res.rowset_size();
 }
 
 int DB::create_account(std::string_view id, std::string_view password)

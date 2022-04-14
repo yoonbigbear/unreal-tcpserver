@@ -10,8 +10,6 @@ table LoginReq{
 }
 table LoginAck{
 	result 		: ushort; //결과
-	char_count 	: ubyte;  //가진 캐릭터 갯수
-	characters	: [CharacterInfo];
 }
 
 //계정 생성 요청
