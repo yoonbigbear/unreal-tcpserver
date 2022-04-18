@@ -1,6 +1,5 @@
 
 table CharacterInfo{
 	class:ubyte;
-	char_id:ulong;
 	nickname:string;
 }

@@ -48,12 +48,7 @@ int DB::select_account(std::string_view id, std::string_view password, nanodbc::
     stmt.bind(1, password.data());
 
     res = stmt.execute();
-    while (res.next())
-    {
-        auto account_id = res.get<std::string>("id");
-        auto account_password = res.get<std::string>("password");
-    }
-    return res.rowset_size();
+    return res.rowset_size();;
 }
 
 int DB::create_account(std::string_view id, std::string_view password)
@@ -76,6 +71,19 @@ int DB::create_account(std::string_view id, std::string_view password)
     return ret_code;
 }
 
+int DB::select_characters(int acct_id, nanodbc::result& res)
+{
+    nanodbc::connection conn(conn_game);
+    nanodbc::statement stmt(conn);
+
+    stmt.prepare(NANODBC_TEXT("Exec select_characters ?"));
+    stmt.bind(0, &acct_id);
+
+    res = stmt.execute();
+
+    return res.rowset_size();
+}
+
 int DB::select_character_nickname(std::string_view nickname)
 {
     nanodbc::connection conn(conn_game);
@@ -92,24 +100,24 @@ int DB::select_character_nickname(std::string_view nickname)
     return ret_code;
 }
 
-int DB::create_character(uint64_t char_id, std::string_view nickname, int class_id)
+int DB::create_character(uint64_t char_id, int acct_id, std::string_view nickname, int16_t class_id)
 {
     nanodbc::connection conn(conn_game);
     nanodbc::statement stmt(conn);
 
     int32_t ret_code = -1;
 
-    stmt.prepare(NANODBC_TEXT("Exec ?= create_character ?,?,?"));
+    stmt.prepare(NANODBC_TEXT("Exec ?= create_character ?,?,?,?"));
     stmt.bind(0, &ret_code, NULL, nanodbc::statement::PARAM_RETURN);
     stmt.bind(1, &char_id);
-    stmt.bind(2, nickname.data());
-    stmt.bind(3, &class_id);
+    stmt.bind(2, &acct_id);
+    stmt.bind(3, nickname.data());
+    stmt.bind(4, &class_id);
 
     stmt.execute();
 
     return ret_code;
 }
-
 
 //nanodbc::execute(conn, NANODBC_TEXT("create table t (i int)"));
 //nanodbc::execute(conn, NANODBC_TEXT("insert into t (1)"));

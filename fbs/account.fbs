@@ -10,6 +10,7 @@ table LoginReq{
 }
 table LoginAck{
 	result 		: ushort; //결과
+	characters  : [CharacterInfo];
 }
 
 //계정 생성 요청
@@ -20,13 +21,13 @@ table CreateAccountReq{
 
 table CreateAccountAck{
 	result  : ushort;
-	char_count 	: ubyte;  //가진 캐릭터 갯수
 	characters	: [CharacterInfo];
 }
 
 // 이게 이사람의 캐릭터인지 보장할 방법이 아직 없음
 table SelectCharacterReq{
-	char_id:ulong;
+	nickname : string;
+	class 	 : ubyte;
 }
 // 캐릭터 선택 후 결과에 따라 입장한다.
 table SelectCharacterAck{
@@ -40,7 +41,6 @@ table CreateCharacterReq{
 }
 table CreateCharacterAck{
 	result  : ushort;
-	char_id : ulong;
 }
 
 // nickname은 8글자 제한으로 multibyte 가능

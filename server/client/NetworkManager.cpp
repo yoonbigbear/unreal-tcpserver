@@ -6,17 +6,17 @@
 void PacketTest(CustomClient& c)
 {
     //CreateAccount Pkt test
-    //{
-    //    BUILD_PACKET(CreateAccountReq, "sampleId", "samplePassword");
-    //    c.Send(pkt);
+    /*{
+        BUILD_PACKET(CreateAccountReq, "sampleId", "samplePassword");
+        c.Send(pkt);
 
-    //    WAIT_UNTIL_BEGIN(Protocol::Protocol_CreateAccountReq);
+        WAIT_UNTIL_BEGIN(Protocol::Protocol_CreateAccountReq);
 
-    //    auto body = flatbuffers::GetRoot<account::CreateAccountAck>(msg.msg.body.data());
-    //    std::cout << "pkt received:" << body->result() << std::endl;
+        auto body = flatbuffers::GetRoot<account::CreateAccountAck>(msg.msg.body.data());
+        std::cout << "pkt received:" << body->result() << std::endl;
 
-    //    WAIT_UNTIL_END;
-    //}
+        WAIT_UNTIL_END;
+    }*/
 
     //login account
     {
@@ -26,8 +26,27 @@ void PacketTest(CustomClient& c)
         WAIT_UNTIL_BEGIN(Protocol::Protocol_LoginAck);
 
         auto body = flatbuffers::GetRoot<account::LoginAck>(msg.msg.body.data());
-        std::cout << "pkt received:" << body->result() << std::endl;
+        LOG_INFO("result {}", body->result());
+        for (int i = 0; i < body->characters()->size(); ++i)
+        {
+            auto info = body->characters()->Get(i);
+            //LOG_INFO("character nickname {} class {}", info->nickname(), info->class_());
+        }
+
 
         WAIT_UNTIL_END;
     }
+
+    //create character
+    /*{
+        BUILD_PACKET(CreateCharacterReq, "sampleCharacter", 1);
+        c.Send(pkt);
+
+        WAIT_UNTIL_BEGIN(Protocol::Protocol_CreateCharacterAck);
+
+        auto body = flatbuffers::GetRoot<account::CreateCharacterAck>(msg.msg.body.data());
+        DEBUG_LOG_INFO("result %d", body->result());
+
+        WAIT_UNTIL_END;
+    }*/
 }

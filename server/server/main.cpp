@@ -24,7 +24,7 @@ LONG __stdcall ExceptionCallBack(EXCEPTION_POINTERS* e)
 
 int main(int argc, char* argv[])
 {
-    LOG_INFO("DEBUG_INFO");
+    LOG_INFO("DEBUG_INFO {}", 1);
     //덤프파일을 남겨준다. 미리 호출
     SetUnhandledExceptionFilter(ExceptionCallBack);
 

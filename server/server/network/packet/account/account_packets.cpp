@@ -5,6 +5,7 @@
 #include "macro.h"
 #include "database/DB.h"
 #include <protocol_generated.h>
+#include <common_generated.h>
 #include <account_generated.h>
 #include <result_code_generated.h>
 
@@ -66,15 +67,72 @@ void LoginAccount(session::Shared session, message& msg)
         auto exist = DB::select_account(account_id, account_password, res);
         if (exist == 1)
         {
-            //캐릭터 숫자 몇인지 확인 후 캐릭터 숫자까지 보내줘야함
-            
-            //BUILD_PACKET(LoginAck, ResultCode_LoginSuccess);
-            //session->Send(pkt);
+            if (res.next())
+            {
+                auto account_id = res.get<uint64_t>("acct_id");
+
+                exist = DB::select_characters(account_id, res);
+
+                if (exist > 0)
+                {
+                    //캐릭터 숫자 몇인지 확인 후 캐릭터 정보까지 보내줘야함
+                    net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+                    pkt.header.id = Protocol_LoginAck;
+
+                    flatbuffers::FlatBufferBuilder fbb(1024);
+                    std::vector<flatbuffers::Offset<CharacterInfo>> character_infos;
+                    while (res.next())
+                    {
+                        auto nickname = fbb.CreateString(res.get<std::string>("nickname"));
+                        character_infos.emplace_back(CreateCharacterInfo(fbb,
+                            res.get<uint16_t>("class"),
+                            nickname));
+                    }
+                    auto characters = fbb.CreateVector(character_infos);
+
+                    auto builder = account::LoginAckBuilder(fbb);
+                    builder.add_result(ResultCode_LoginSuccess);
+                    builder.add_characters(characters);
+                    auto fin = builder.Finish();
+                    fbb.Finish(fin);
+                    pkt << fbb;
+                    session->Send(pkt);
+
+                    return;
+                }
+                else
+                {
+                    //캐릭터 없음
+                    net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+                    pkt.header.id = Protocol_LoginAck;
+                    flatbuffers::FlatBufferBuilder fbb(1024);
+                    auto builder = account::LoginAckBuilder(fbb);
+                    builder.add_result(ResultCode_LoginSuccess);
+                    auto fin = builder.Finish();
+                    fbb.Finish(fin);
+                    pkt << fbb;
+                    session->Send(pkt);
+
+                    return;
+                }
+                
+            }
+
+            LOG_CRITICAL("select_account failed");
+
         }
         else
         {
-           // BUILD_PACKET(LoginAck, ResultCode_LoginFailed);
-            //session->Send(pkt);
+           //없는 아이디 이거나 틀린 비밀번호
+            net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+            pkt.header.id = Protocol_LoginAck;
+            flatbuffers::FlatBufferBuilder fbb(1024);
+            auto builder = account::LoginAckBuilder(fbb);
+            builder.add_result(ResultCode_LoginFailed);
+            auto fin = builder.Finish();
+            fbb.Finish(fin);
+            pkt << fbb;
+            session->Send(pkt);
         }
         });
 }
@@ -96,7 +154,7 @@ void CreateCharacter(session::Shared session, message msg)
         int ret = -1;
         try
         {
-            ret = DB::create_character(id, nickname, class_id);
+            ret = DB::create_character(id, 1, nickname, class_id);
         }
         catch (std::exception e)
         {
@@ -109,15 +167,27 @@ void CreateCharacter(session::Shared session, message msg)
         }
         if (ret == 0)
         {
-            message msg;
-            //SamplePacketHelper::ResultCodeAck(msg, ResultCode_CreateSuccess);
-            session->Send(msg);
+            net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+            pkt.header.id = Protocol_CreateCharacterAck;
+            flatbuffers::FlatBufferBuilder fbb(1024);
+            auto builder = account::LoginAckBuilder(fbb);
+            builder.add_result(ResultCode_CreateSuccess);
+            auto fin = builder.Finish();
+            fbb.Finish(fin);
+            pkt << fbb;
+            session->Send(pkt);
         }
         else
         {
-            message msg;
-            //SamplePacketHelper::ResultCodeAck(msg, ResultCode_CreateFailed);
-            session->Send(msg);
+            net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+            pkt.header.id = Protocol_CreateCharacterAck;
+            flatbuffers::FlatBufferBuilder fbb(1024);
+            auto builder = account::LoginAckBuilder(fbb);
+            builder.add_result(ResultCode_CreateFailed);
+            auto fin = builder.Finish();
+            fbb.Finish(fin);
+            pkt << fbb;
+            session->Send(pkt);
         }
         });
 }

@@ -49,10 +49,10 @@
 #define BEGIN_STOPWATCH(sw) spdlog::debug("Elapsed {}", sw);
 #define END_STOPWATCH(sw) spdlog::debug("Elapsed {:.3}", sw);
 
-#define LOG_INFO(log) SPDLOG_INFO(#log);
-#define LOG_WARNING(log) SPDLOG_WARN(#log);
-#define LOG_ERROR(log) SPDLOG_ERROR(#log);
-#define LOG_CRITICAL(log) SPDLOG_CRITICAL(#log);
+#define LOG_INFO(...)  spdlog::info(##__VA_ARGS__);
+#define LOG_WARNING(fmt, ...) spdlog::warn(##__VA_ARGS__);
+#define LOG_ERROR(fmt, ...) spdlog::error(##__VA_ARGS__);
+#define LOG_CRITICAL(fmt, ...) spdlog::critical(##__VA_ARGS__);
 
 
 // "Protocol_"À» »« ÆÐÅ¶id
