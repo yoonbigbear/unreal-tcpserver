@@ -50,9 +50,9 @@
 #define END_STOPWATCH(sw) spdlog::debug("Elapsed {:.3}", sw);
 
 #define LOG_INFO(...)  spdlog::info(##__VA_ARGS__);
-#define LOG_WARNING(fmt, ...) spdlog::warn(##__VA_ARGS__);
-#define LOG_ERROR(fmt, ...) spdlog::error(##__VA_ARGS__);
-#define LOG_CRITICAL(fmt, ...) spdlog::critical(##__VA_ARGS__);
+#define LOG_WARNING(...) spdlog::warn(##__VA_ARGS__);
+#define LOG_ERROR(...) spdlog::error(##__VA_ARGS__);
+#define LOG_CRITICAL(...) spdlog::critical(##__VA_ARGS__);
 
 
 // "Protocol_"À» »« ÆÐÅ¶id

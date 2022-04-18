@@ -30,7 +30,9 @@ void PacketTest(CustomClient& c)
         for (int i = 0; i < body->characters()->size(); ++i)
         {
             auto info = body->characters()->Get(i);
-            //LOG_INFO("character nickname {} class {}", info->nickname(), info->class_());
+            auto nickname = info->nickname()->str();
+            auto job = info->class_();
+            LOG_INFO("character nickname {} job {}", nickname, job);
         }
 
 
