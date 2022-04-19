@@ -22,12 +22,6 @@
     <Filter Include="network">
       <UniqueIdentifier>{c2fb6b09-e3ba-4507-a299-af34eb3f53d3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="database\dba_log">
-      <UniqueIdentifier>{01b625d2-854c-49e6-a59d-d48211a9ce58}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="database\dba_game">
-      <UniqueIdentifier>{777f5e52-1a7f-41ce-92c4-851618863305}</UniqueIdentifier>
-    </Filter>
     <Filter Include="behaviour_tree">
       <UniqueIdentifier>{4048e819-6955-4968-a929-9ff919886000}</UniqueIdentifier>
     </Filter>
@@ -48,6 +42,9 @@
     </Filter>
     <Filter Include="network\packet\account">
       <UniqueIdentifier>{669b113d-f7dc-48a2-ae82-aa5dbb8380c7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="database\procedure">
+      <UniqueIdentifier>{1e59100c-d99b-4e80-ae2c-bfb77eb70a9c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -396,14 +393,23 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="database\create_table_sample.sql">
-      <Filter>database</Filter>
-    </None>
-    <None Include="database\add_data.sql">
-      <Filter>database</Filter>
-    </None>
     <None Include="..\procedure\add_chat.sql">
-      <Filter>database\dba_log</Filter>
+      <Filter>database\procedure</Filter>
+    </None>
+    <None Include="..\procedure\create_account_table.sql">
+      <Filter>database\procedure</Filter>
+    </None>
+    <None Include="..\procedure\create_character.sql">
+      <Filter>database\procedure</Filter>
+    </None>
+    <None Include="..\procedure\create_character_table.sql">
+      <Filter>database\procedure</Filter>
+    </None>
+    <None Include="..\procedure\select_character_nickname.sql">
+      <Filter>database\procedure</Filter>
+    </None>
+    <None Include="..\procedure\select_characters.sql">
+      <Filter>database\procedure</Filter>
     </None>
   </ItemGroup>
 </Project>

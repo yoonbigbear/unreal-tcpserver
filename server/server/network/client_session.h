@@ -15,7 +15,11 @@ public:
     ClientSession(net::Session<T, U>::owner parent, asio::io_context& io_context, asio::ip::tcp::socket&& socket, net::PacketQueue<net::OwnedMessage<T, U>>& in)
         : net::Session<T, U>(parent, io_context, std::move(socket), in) {}
 
+    int account_id() { return account_id_; }
+    void account_id(int id) { account_id_ = id; }
+
 private:
+    int account_id_ = 0;
     Character::Shared character_;
 
 }; // class ClientSession

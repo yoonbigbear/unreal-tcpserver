@@ -306,14 +306,17 @@
     <ClInclude Include="world\zone.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\procedure\add_chat.sql" />
-    <None Include="database\add_data.sql" />
-    <None Include="database\create_table_sample.sql" />
-  </ItemGroup>
-  <ItemGroup>
     <ProjectReference Include="..\net\net.vcxproj">
       <Project>{818c8659-12b8-4110-895c-5d71390ba9eb}</Project>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\procedure\add_chat.sql" />
+    <None Include="..\procedure\create_account_table.sql" />
+    <None Include="..\procedure\create_character.sql" />
+    <None Include="..\procedure\create_character_table.sql" />
+    <None Include="..\procedure\select_characters.sql" />
+    <None Include="..\procedure\select_character_nickname.sql" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

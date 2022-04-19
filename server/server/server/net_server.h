@@ -44,7 +44,7 @@ namespace net
             if (func)
                 func(session, msg);
             else
-                DEBUG_FMT_ERROR("No Callback Func {}", msg.header.id);
+                DEBUG_FMT_ERROR("No Callback Func %d", msg.header.id);
         }
     };
 
