@@ -71,8 +71,22 @@ int DB::create_account(std::string_view id, std::string_view password)
     return ret_code;
 }
 
+void DB::select_character(int acct_id, uint64_t char_id, nanodbc::result& res)
+{
+    // 플레이할 캐릭터를 선택.
+    nanodbc::connection conn(conn_game);
+    nanodbc::statement stmt(conn);
+
+    stmt.prepare(NANODBC_TEXT("Exec select_character ?,?"));
+    stmt.bind(0, &acct_id);
+    stmt.bind(1, &char_id);
+
+    res = stmt.execute();
+}
+
 int DB::select_characters(int acct_id, nanodbc::result& res)
 {
+    // 가진 캐릭터들 정보를 반환
     nanodbc::connection conn(conn_game);
     nanodbc::statement stmt(conn);
 

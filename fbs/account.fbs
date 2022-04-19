@@ -24,16 +24,6 @@ table CreateAccountAck{
 	characters	: [CharacterInfo];
 }
 
-// 이게 이사람의 캐릭터인지 보장할 방법이 아직 없음
-table SelectCharacterReq{
-	nickname : string;
-	class 	 : ubyte;
-}
-// 캐릭터 선택 후 결과에 따라 입장한다.
-table SelectCharacterAck{
-	result : ushort;
-}
-
 // nickname은 8글자 제한으로 multibyte 가능
 table CreateCharacterReq{
 	nickname : string;
@@ -48,5 +38,14 @@ table CheckCharacterNicknameReq{
 	nickname : string;
 }
 table CheckCharacterNicknameAck{
+	result : ushort;
+}
+
+// 플레이 할 캐릭터 선택
+table SelectCharacterReq{
+	char_id : ulong;
+}
+
+table SelectCharacterAck{
 	result : ushort;
 }

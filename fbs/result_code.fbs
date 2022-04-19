@@ -3,12 +3,15 @@ enum ResultCode : ushort {
 
 	None = 0,
     CreateSuccess,
-    CreateFailed,
+    CreateFailure,
 
     AleadyExist,
     NotExist,
 
     LoginSuccess,
-    LoginFailed,
+    LoginFailure,
+	
+	EnterGameSuccess,
+	EnterGameFailure,
 	
 }

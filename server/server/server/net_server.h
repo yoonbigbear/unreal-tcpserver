@@ -10,6 +10,7 @@
 #include "network/client_session.h"
 #include "network/packet/packet_manager.h"
 #include "network/packet/account/account_packets.h"
+#include <protocol_generated.h>
 
 using namespace boost;
 
@@ -44,7 +45,8 @@ namespace net
             if (func)
                 func(session, msg);
             else
-                DEBUG_FMT_ERROR("No Callback Func %d", msg.header.id);
+                LOG_ERROR("No Callback Func protocol:{}", EnumNameProtocol(msg.header.id));
+            
         }
     };
 

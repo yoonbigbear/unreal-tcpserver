@@ -11,12 +11,13 @@ public:
     using Weak = std::weak_ptr<Character>;
 
     Character() = delete;
+    Character(uint64_t char_id, int char_class);
 
 private:
     std::shared_ptr<FieldObject> field_object_;
 
-    character_class class_type_;
-    unsigned long long id_;
+    character_class char_class_;
+    unsigned long long char_id_;
 };
 
 #endif // !_CHARACTER_H_

@@ -18,15 +18,16 @@ void CreateAccount(session::Shared session, message& msg);
 void LoginAccount(session::Shared session, message& msg);
 
 void CreateCharacter(session::Shared session, message msg);
-void SelectCharacterNickname(session::Shared session, message msg);
 void CheckNickname(session::Shared session, message msg);
+void SelectCharacter(session::Shared session, message msg);
 
 void AccountPackets::Start()
 {
     PacketManager::instance().Bind(Protocol_CreateAccountReq, CreateAccount);
     PacketManager::instance().Bind(Protocol_LoginReq, LoginAccount);
     PacketManager::instance().Bind(Protocol_CreateCharacterReq, CreateCharacter);
-    PacketManager::instance().Bind(Protocol_CheckCharacterNicknameReq, SelectCharacterNickname);
+    PacketManager::instance().Bind(Protocol_CheckCharacterNicknameReq, CheckNickname);
+    PacketManager::instance().Bind(Protocol_SelectCharacterReq, SelectCharacter);
 }
 
 void CreateAccount(session::Shared session, message& msg)
@@ -90,10 +91,10 @@ void LoginAccount(session::Shared session, message& msg)
                     }
 
                     // accout_id는 서버에서만 알도록 하며 세션에 저장해둔다.
-                    session->account_id(res.get<int>("acct_id"));
+                    session->acct_id(res.get<int>("acct_id"));
 
                     // 로그인 성공했으니 캐릭터 현황을 받아온다.
-                    exist = DB::select_characters(session->account_id(), res);
+                    exist = DB::select_characters(session->acct_id(), res);
 
                     if (exist > 0)
                     {
@@ -108,6 +109,7 @@ void LoginAccount(session::Shared session, message& msg)
                             auto nickname = fbb.CreateString(res.get<std::string>("nickname"));
                             character_infos.emplace_back(CreateCharacterInfo(fbb,
                                 static_cast<char>(res.get<uint16_t>("class")),
+                                res.get<uint64_t>("char_id"),
                                 nickname));
                         }
                         auto characters = fbb.CreateVector(character_infos);
@@ -150,7 +152,7 @@ void LoginAccount(session::Shared session, message& msg)
                 pkt.header.id = Protocol_LoginAck;
                 flatbuffers::FlatBufferBuilder fbb(1024);
                 auto builder = account::LoginAckBuilder(fbb);
-                builder.add_result(ResultCode_LoginFailed);
+                builder.add_result(ResultCode_LoginFailure);
                 auto fin = builder.Finish();
                 fbb.Finish(fin);
                 pkt << fbb;
@@ -215,7 +217,7 @@ void CreateCharacter(session::Shared session, message msg)
             pkt.header.id = Protocol_CreateCharacterAck;
             flatbuffers::FlatBufferBuilder fbb(1024);
             auto builder = account::LoginAckBuilder(fbb);
-            builder.add_result(ResultCode_CreateFailed);
+            builder.add_result(ResultCode_CreateFailure);
             auto fin = builder.Finish();
             fbb.Finish(fin);
             pkt << fbb;
@@ -224,7 +226,7 @@ void CreateCharacter(session::Shared session, message msg)
         });
 }
 
-void SelectCharacterNickname(session::Shared session, message msg)
+void CheckNickname(session::Shared session, message msg)
 {
     auto pkt = flatbuffers::GetRoot<account::CheckCharacterNicknameReq>(msg.body.data());
     auto nickname = pkt->nickname()->str();
@@ -233,11 +235,13 @@ void SelectCharacterNickname(session::Shared session, message msg)
 
         try
         {
-            auto ret = DB::select_character_nickname(nickname);
             if (!session)
             {
                 std::cout << "lose session" << std::endl;
+                return;
             }
+
+            auto ret = DB::select_character_nickname(nickname);
             if (ret == 0)
             {
                 net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
@@ -271,6 +275,46 @@ void SelectCharacterNickname(session::Shared session, message msg)
         });
 }
 
-void CheckNickname(session::Shared session, message msg)
+void SelectCharacter(session::Shared session, message msg)
 {
+    //Req 패킷 수신
+    auto pkt = flatbuffers::GetRoot<account::SelectCharacterReq>(msg.body.data());
+    auto char_id = pkt->char_id();
+
+    asio::post([session, char_id] {
+
+        if (!session)
+        {
+            LOG_ERROR("lose session");
+            return;
+        }
+
+        try
+        {
+            nanodbc::result res;
+            LOG_WARNING("임시로 acct_id 를 1로 바꿔서 사용중");
+            DB::select_character(/*session->acct_id()*/ 1, char_id, res);
+
+            if (res.next())
+            {
+                //캐릭터 선택 성공. 해당 정보로 ClientSession에 새 캐릭터를 만든다.
+                //가능하면 FieldObject로 팩토리 패턴도 가능할 것 같다.
+
+                BUILD_SIMPLE_PACKET(SelectCharacterAck, ResultCode_EnterGameSuccess);
+                session->Send(pkt);
+            }
+            else
+            {
+                LOG_CRITICAL("없는 캐릭터 정보를 전송. acct_id:{} char_id:{}", session->acct_id(), char_id);
+                BUILD_SIMPLE_PACKET(SelectCharacterAck, ResultCode_EnterGameFailure);
+                session->Send(pkt);
+                return;
+            }
+        }
+        catch (std::exception e)
+        {
+            LOG_CRITICAL("Failed create character: {}", e.what());
+        }
+
+        });
 }

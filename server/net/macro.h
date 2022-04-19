@@ -64,6 +64,14 @@ auto builder = account::Create##protocol##Direct(fbb, ##__VA_ARGS__);    \
 fbb.Finish(builder);    \
 pkt << fbb;
 
+#define BUILD_SIMPLE_PACKET(protocol, ...)   \
+net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt; \
+pkt.header.id = Protocol_##protocol##;  \
+flatbuffers::FlatBufferBuilder fbb(1024);   \
+auto builder = account::Create##protocol##(fbb, ##__VA_ARGS__);    \
+fbb.Finish(builder);    \
+pkt << fbb;
+
 #define WAIT_UNTIL_BEGIN(protocol) \
 while (true) \
  { \

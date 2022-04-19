@@ -36,7 +36,8 @@ void PacketTest(CustomClient& c)
                     auto info = body->characters()->Get(i);
                     auto nickname = info->nickname()->str();
                     auto job = info->class_();
-                    LOG_INFO("character nickname {} job {}", nickname, job);
+                    auto id = info->char_id();
+                    LOG_INFO("character id:{} nickname:{} job:{}", id, nickname, job);
                 }
             }
             else
@@ -68,7 +69,7 @@ void PacketTest(CustomClient& c)
     }*/
 
     //Check character nickname exists
-    {
+    /*{
         BUILD_PACKET(CheckCharacterNicknameReq, "sampleCharacter");
         c.Send(pkt);
 
@@ -82,6 +83,26 @@ void PacketTest(CustomClient& c)
         else
         {
             LOG_INFO("사용 가능");
+        }
+
+        WAIT_UNTIL_END;
+    }*/
+
+    // select character
+    {
+        BUILD_SIMPLE_PACKET(SelectCharacterReq, 484280193545015296);
+        c.Send(pkt);
+
+        WAIT_UNTIL_BEGIN(Protocol::Protocol_SelectCharacterAck);
+
+        auto body = flatbuffers::GetRoot<account::SelectCharacterAck>(msg.msg.body.data());
+        if (body->result() == ResultCode::ResultCode_EnterGameSuccess)
+        {
+            LOG_INFO("게임 입장 패킷 수신");
+        }
+        else
+        {
+            LOG_INFO("게임 입장 실패");
         }
 
         WAIT_UNTIL_END;

@@ -22,12 +22,6 @@ struct CreateAccountReqBuilder;
 struct CreateAccountAck;
 struct CreateAccountAckBuilder;
 
-struct SelectCharacterReq;
-struct SelectCharacterReqBuilder;
-
-struct SelectCharacterAck;
-struct SelectCharacterAckBuilder;
-
 struct CreateCharacterReq;
 struct CreateCharacterReqBuilder;
 
@@ -39,6 +33,12 @@ struct CheckCharacterNicknameReqBuilder;
 
 struct CheckCharacterNicknameAck;
 struct CheckCharacterNicknameAckBuilder;
+
+struct SelectCharacterReq;
+struct SelectCharacterReqBuilder;
+
+struct SelectCharacterAck;
+struct SelectCharacterAckBuilder;
 
 struct LoginReq FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef LoginReqBuilder Builder;
@@ -298,110 +298,6 @@ inline flatbuffers::Offset<CreateAccountAck> CreateCreateAccountAckDirect(
       characters__);
 }
 
-struct SelectCharacterReq FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef SelectCharacterReqBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_NICKNAME = 4,
-    VT_CLASS_ = 6
-  };
-  const flatbuffers::String *nickname() const {
-    return GetPointer<const flatbuffers::String *>(VT_NICKNAME);
-  }
-  uint8_t class_() const {
-    return GetField<uint8_t>(VT_CLASS_, 0);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyOffset(verifier, VT_NICKNAME) &&
-           verifier.VerifyString(nickname()) &&
-           VerifyField<uint8_t>(verifier, VT_CLASS_, 1) &&
-           verifier.EndTable();
-  }
-};
-
-struct SelectCharacterReqBuilder {
-  typedef SelectCharacterReq Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_nickname(flatbuffers::Offset<flatbuffers::String> nickname) {
-    fbb_.AddOffset(SelectCharacterReq::VT_NICKNAME, nickname);
-  }
-  void add_class_(uint8_t class_) {
-    fbb_.AddElement<uint8_t>(SelectCharacterReq::VT_CLASS_, class_, 0);
-  }
-  explicit SelectCharacterReqBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<SelectCharacterReq> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<SelectCharacterReq>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<SelectCharacterReq> CreateSelectCharacterReq(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    flatbuffers::Offset<flatbuffers::String> nickname = 0,
-    uint8_t class_ = 0) {
-  SelectCharacterReqBuilder builder_(_fbb);
-  builder_.add_nickname(nickname);
-  builder_.add_class_(class_);
-  return builder_.Finish();
-}
-
-inline flatbuffers::Offset<SelectCharacterReq> CreateSelectCharacterReqDirect(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    const char *nickname = nullptr,
-    uint8_t class_ = 0) {
-  auto nickname__ = nickname ? _fbb.CreateString(nickname) : 0;
-  return account::CreateSelectCharacterReq(
-      _fbb,
-      nickname__,
-      class_);
-}
-
-struct SelectCharacterAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
-  typedef SelectCharacterAckBuilder Builder;
-  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_RESULT = 4
-  };
-  uint16_t result() const {
-    return GetField<uint16_t>(VT_RESULT, 0);
-  }
-  bool Verify(flatbuffers::Verifier &verifier) const {
-    return VerifyTableStart(verifier) &&
-           VerifyField<uint16_t>(verifier, VT_RESULT, 2) &&
-           verifier.EndTable();
-  }
-};
-
-struct SelectCharacterAckBuilder {
-  typedef SelectCharacterAck Table;
-  flatbuffers::FlatBufferBuilder &fbb_;
-  flatbuffers::uoffset_t start_;
-  void add_result(uint16_t result) {
-    fbb_.AddElement<uint16_t>(SelectCharacterAck::VT_RESULT, result, 0);
-  }
-  explicit SelectCharacterAckBuilder(flatbuffers::FlatBufferBuilder &_fbb)
-        : fbb_(_fbb) {
-    start_ = fbb_.StartTable();
-  }
-  flatbuffers::Offset<SelectCharacterAck> Finish() {
-    const auto end = fbb_.EndTable(start_);
-    auto o = flatbuffers::Offset<SelectCharacterAck>(end);
-    return o;
-  }
-};
-
-inline flatbuffers::Offset<SelectCharacterAck> CreateSelectCharacterAck(
-    flatbuffers::FlatBufferBuilder &_fbb,
-    uint16_t result = 0) {
-  SelectCharacterAckBuilder builder_(_fbb);
-  builder_.add_result(result);
-  return builder_.Finish();
-}
-
 struct CreateCharacterReq FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef CreateCharacterReqBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
@@ -594,6 +490,88 @@ inline flatbuffers::Offset<CheckCharacterNicknameAck> CreateCheckCharacterNickna
     flatbuffers::FlatBufferBuilder &_fbb,
     uint16_t result = 0) {
   CheckCharacterNicknameAckBuilder builder_(_fbb);
+  builder_.add_result(result);
+  return builder_.Finish();
+}
+
+struct SelectCharacterReq FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SelectCharacterReqBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_CHAR_ID = 4
+  };
+  uint64_t char_id() const {
+    return GetField<uint64_t>(VT_CHAR_ID, 0);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint64_t>(verifier, VT_CHAR_ID, 8) &&
+           verifier.EndTable();
+  }
+};
+
+struct SelectCharacterReqBuilder {
+  typedef SelectCharacterReq Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_char_id(uint64_t char_id) {
+    fbb_.AddElement<uint64_t>(SelectCharacterReq::VT_CHAR_ID, char_id, 0);
+  }
+  explicit SelectCharacterReqBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SelectCharacterReq> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SelectCharacterReq>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SelectCharacterReq> CreateSelectCharacterReq(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint64_t char_id = 0) {
+  SelectCharacterReqBuilder builder_(_fbb);
+  builder_.add_char_id(char_id);
+  return builder_.Finish();
+}
+
+struct SelectCharacterAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
+  typedef SelectCharacterAckBuilder Builder;
+  enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
+    VT_RESULT = 4
+  };
+  uint16_t result() const {
+    return GetField<uint16_t>(VT_RESULT, 0);
+  }
+  bool Verify(flatbuffers::Verifier &verifier) const {
+    return VerifyTableStart(verifier) &&
+           VerifyField<uint16_t>(verifier, VT_RESULT, 2) &&
+           verifier.EndTable();
+  }
+};
+
+struct SelectCharacterAckBuilder {
+  typedef SelectCharacterAck Table;
+  flatbuffers::FlatBufferBuilder &fbb_;
+  flatbuffers::uoffset_t start_;
+  void add_result(uint16_t result) {
+    fbb_.AddElement<uint16_t>(SelectCharacterAck::VT_RESULT, result, 0);
+  }
+  explicit SelectCharacterAckBuilder(flatbuffers::FlatBufferBuilder &_fbb)
+        : fbb_(_fbb) {
+    start_ = fbb_.StartTable();
+  }
+  flatbuffers::Offset<SelectCharacterAck> Finish() {
+    const auto end = fbb_.EndTable(start_);
+    auto o = flatbuffers::Offset<SelectCharacterAck>(end);
+    return o;
+  }
+};
+
+inline flatbuffers::Offset<SelectCharacterAck> CreateSelectCharacterAck(
+    flatbuffers::FlatBufferBuilder &_fbb,
+    uint16_t result = 0) {
+  SelectCharacterAckBuilder builder_(_fbb);
   builder_.add_result(result);
   return builder_.Finish();
 }
