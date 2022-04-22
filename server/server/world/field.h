@@ -2,18 +2,24 @@
 #define _FIELD_H_
 
 #include "pch.h"
-#include "object/field_object.h"
+#include "object/game_object.h"
+
+
+class GameObject;
 
 class Field
 {
 public:
 
-    void EnterField();
-    void LeaveField();
+    using Shared = std::shared_ptr<Field>;
+    using Weak = std::weak_ptr<Field>;
+
+    void Enter(GameObject::Shared obj);
+    void Leave();
 
 private:
 
-    std::unordered_map<int64_t, std::shared_ptr<FieldObject>> objects_;
+    std::unordered_map<uint64_t, GameObject::Shared> objects_;
 }; // class Field
 
 #endif // _FIELD_H_

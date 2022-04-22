@@ -5,16 +5,20 @@
 #include <singleton.h>
 
 #include "field.h"
+#include "object/game_object.h"
+
 
 class WorldManager : public net::Singleton<WorldManager>
 {
 public:
+    WorldManager();
+    ~WorldManager();
 
-    void EnterWorld();
-    void LeaveWorld();
+    void EnterField(int field_id, GameObject::Shared obj);
+    void LeaveField();
 
 private:
-    std::unordered_map<unsigned int, Field> fields_;
+    std::unordered_map<unsigned int, Field::Shared> fields_;
 
 }; // class Field
 

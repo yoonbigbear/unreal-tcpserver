@@ -4,14 +4,18 @@
 
 #include "macro.h"
 #include "database/DB.h"
+
 #include <protocol_generated.h>
 #include <common_generated.h>
 #include <account_generated.h>
 #include <result_code_generated.h>
+#include "network/client_session.h"
+
+#include "world/world_manager.h"
 
 #include "snowflake.hpp"
 
-using snowflake_t = snowflake<1534832906275L>;
+using snowflake_t = net::snowflake<1534832906275L>;
 
 
 void CreateAccount(session::Shared session, message& msg);
@@ -297,11 +301,16 @@ void SelectCharacter(session::Shared session, message msg)
 
             if (res.next())
             {
-                //캐릭터 선택 성공. 해당 정보로 ClientSession에 새 캐릭터를 만든다.
-                //가능하면 FieldObject로 팩토리 패턴도 가능할 것 같다.
-
                 BUILD_SIMPLE_PACKET(SelectCharacterAck, ResultCode_EnterGameSuccess);
                 session->Send(pkt);
+
+                //캐릭터 선택 성공. 해당 정보로 ClientSession에 새 캐릭터를 만든다.
+                if (session->CreateCharacter(char_id, res.get<short>("class")))
+                {
+                    session->character()->map_id(res.get<int>("map_id"));
+
+                    WorldManager::instance().EnterField(session->character()->map_id(), session->character());
+                }
             }
             else
             {

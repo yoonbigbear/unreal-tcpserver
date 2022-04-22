@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
     try
     {
         CustomClient c;
-        c.Connect("127.0.0.1", 60000);
+        c.Connect("127.0.0.1", 60001);
         while (1) {
             if (c.IsConnected())
             {

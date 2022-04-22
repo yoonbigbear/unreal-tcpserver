@@ -1,10 +1,11 @@
-#include "zone.h"
 #include "field.h"
+#include "zone.h"
 
-void Field::EnterField()
+void Field::Enter(GameObject::Shared obj)
 {
+    objects_.emplace(obj->obj_id(), obj);
 }
 
-void Field::LeaveField()
+void Field::Leave()
 {
 }

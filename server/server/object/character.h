@@ -1,24 +1,28 @@
 #ifndef _CHARACTER_H_
 #define _CHARACTER_H_
 
-#include "pch.h"
+#include "game_object.h"
 
-class FieldObject;
-class Character
+#include "components/transform.h"
+
+class Character : public GameObject
 {
 public:
-    using Shared = std::shared_ptr<Character>;
-    using Weak = std::weak_ptr<Character>;
+    Character(unsigned long long char_id, int char_class);
 
-    Character() = delete;
-    Character(uint64_t char_id, int char_class);
+    int map_id() { return map_id_; }
+    void map_id(int map_id) { map_id_ = map_id; }
 
 private:
-    std::shared_ptr<FieldObject> field_object_;
 
+    int map_id_ = 0;
     character_class char_class_;
-    unsigned long long char_id_;
+
+    TransformPtr transform() { return transform_; }
+    TransformPtr transform_;
 };
+
+using CharacterPtr = std::shared_ptr<Character>;
 
 #endif // !_CHARACTER_H_
 

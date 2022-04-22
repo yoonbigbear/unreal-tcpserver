@@ -46,6 +46,9 @@
     <Filter Include="database\procedure">
       <UniqueIdentifier>{1e59100c-d99b-4e80-ae2c-bfb77eb70a9c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="components">
+      <UniqueIdentifier>{62f4590d-59ad-4a2c-aca2-1d27aa1982ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="database\DB.cpp">
@@ -187,9 +190,6 @@
     <ClCompile Include="object\character.cpp">
       <Filter>object</Filter>
     </ClCompile>
-    <ClCompile Include="object\field_object.cpp">
-      <Filter>object</Filter>
-    </ClCompile>
     <ClCompile Include="database\nanodbc\nanodbc.cpp">
       <Filter>database\nanodbc</Filter>
     </ClCompile>
@@ -198,6 +198,12 @@
     </ClCompile>
     <ClCompile Include="network\packet\account\account_packets.cpp">
       <Filter>network\packet\account</Filter>
+    </ClCompile>
+    <ClCompile Include="components\transform.cpp">
+      <Filter>components</Filter>
+    </ClCompile>
+    <ClCompile Include="object\game_object.cpp">
+      <Filter>object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -367,9 +373,6 @@
     <ClInclude Include="network\client_session.h">
       <Filter>network</Filter>
     </ClInclude>
-    <ClInclude Include="snowflake.hpp">
-      <Filter>server</Filter>
-    </ClInclude>
     <ClInclude Include="server\server_enum.h">
       <Filter>server</Filter>
     </ClInclude>
@@ -377,9 +380,6 @@
       <Filter>server</Filter>
     </ClInclude>
     <ClInclude Include="object\character.h">
-      <Filter>object</Filter>
-    </ClInclude>
-    <ClInclude Include="object\field_object.h">
       <Filter>object</Filter>
     </ClInclude>
     <ClInclude Include="database\nanodbc\nanodbc.h">
@@ -390,6 +390,12 @@
     </ClInclude>
     <ClInclude Include="network\packet\account\account_packets.h">
       <Filter>network\packet\account</Filter>
+    </ClInclude>
+    <ClInclude Include="components\transform.h">
+      <Filter>components</Filter>
+    </ClInclude>
+    <ClInclude Include="object\game_object.h">
+      <Filter>object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

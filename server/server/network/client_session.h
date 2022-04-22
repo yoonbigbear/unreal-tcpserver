@@ -2,9 +2,10 @@
 #define _CLIENT_SESSION_H_
 
 #include "object/character.h"
+#include "pch.h"
 #include <protocol_generated.h>
 
-template<typename T = Protocol, typename U = flatbuffer>
+template<typename T = Protocol, typename U = flatbuffers::FlatBufferBuilder>
 class ClientSession : public net::Session<T, U>
 {
 public:
@@ -15,25 +16,33 @@ public:
     ClientSession(net::Session<T, U>::owner parent, asio::io_context& io_context, asio::ip::tcp::socket&& socket, net::PacketQueue<net::OwnedMessage<T, U>>& in)
         : net::Session<T, U>(parent, io_context, std::move(socket), in) {}
 
-    bool EnterCharacter(uint64_t char_id, int char_class)
+    bool CreateCharacter(uint64_t char_id, int char_class)
     {
-        if (!character_)
+        if (character_)
         {
             LOG_ERROR("이미 캐릭터가 있으면 안된다.");
-            return;
+            return false;
+        }
+
+        if (acct_id_ == 0)
+        {
+            LOG_ERROR("Account id가 아직 세팅되지 않았다.");
+            return false;
         }
 
         character_ = std::make_shared<Character>(char_id, char_class);
+
+        return true;
     }
 
     int acct_id() { return acct_id_; }
     void acct_id(int id) { acct_id_ = id; }
 
+    CharacterPtr character() { return character_; }
 
 private:
     int acct_id_ = 0;
-    Character::Shared character_;
-
+    CharacterPtr character_ = nullptr;
 }; // class ClientSession
 
 #endif // !_CLIENT_SESSION_H_

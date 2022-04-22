@@ -19,7 +19,7 @@ void PacketTest(CustomClient& c)
     }*/
 
     //login account
-    /*{
+    {
         BUILD_PACKET(LoginReq, "sampleId", "samplePassword");
         c.Send(pkt);
 
@@ -51,9 +51,9 @@ void PacketTest(CustomClient& c)
         }
         
 
-
+        break;
         WAIT_UNTIL_END;
-    }*/
+    }
 
     //create character
     /*{
