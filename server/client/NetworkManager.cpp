@@ -15,6 +15,7 @@ void PacketTest(CustomClient& c)
         auto body = flatbuffers::GetRoot<account::CreateAccountAck>(msg.msg.body.data());
         std::cout << "pkt received:" << body->result() << std::endl;
 
+        break;
         WAIT_UNTIL_END;
     }*/
 
@@ -65,6 +66,7 @@ void PacketTest(CustomClient& c)
         auto body = flatbuffers::GetRoot<account::CreateCharacterAck>(msg.msg.body.data());
         DEBUG_LOG_INFO("result %d", body->result());
 
+        break;
         WAIT_UNTIL_END;
     }*/
 
@@ -85,6 +87,7 @@ void PacketTest(CustomClient& c)
             LOG_INFO("사용 가능");
         }
 
+        break;
         WAIT_UNTIL_END;
     }*/
 
@@ -99,12 +102,15 @@ void PacketTest(CustomClient& c)
         if (body->result() == ResultCode::ResultCode_EnterGameSuccess)
         {
             LOG_INFO("게임 입장 패킷 수신");
+            auto pos = body->position();
+            LOG_INFO("좌표 {}, {}, {}", pos->x(), pos->y(), pos->z());
         }
         else
         {
             LOG_INFO("게임 입장 실패");
         }
 
+        break;
         WAIT_UNTIL_END;
     }
 }

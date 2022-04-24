@@ -3,7 +3,12 @@
 
 #include "object/character.h"
 #include "pch.h"
+
+#include "../world/world_manager.h"
+
 #include <protocol_generated.h>
+
+using namespace net;
 
 template<typename T = Protocol, typename U = flatbuffers::FlatBufferBuilder>
 class ClientSession : public net::Session<T, U>
@@ -35,6 +40,18 @@ public:
         return true;
     }
 
+
+    virtual void Disconnect() override
+    {
+        net::Session<T, U>::Disconnect();
+        if (character_)
+        {
+            auto field = WorldManager::instance().field(character_->map_id());
+            field->Leave(character_->obj_id());
+        }
+    }
+
+
     int acct_id() { return acct_id_; }
     void acct_id(int id) { acct_id_ = id; }
 
@@ -44,5 +61,4 @@ private:
     int acct_id_ = 0;
     CharacterPtr character_ = nullptr;
 }; // class ClientSession
-
 #endif // !_CLIENT_SESSION_H_

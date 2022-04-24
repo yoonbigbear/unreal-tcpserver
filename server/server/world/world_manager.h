@@ -17,6 +17,9 @@ public:
     void EnterField(int field_id, GameObject::Shared obj);
     void LeaveField();
 
+    void Update();
+
+    Field::Shared field(int id) { return fields_[id]; }
 private:
     std::unordered_map<unsigned int, Field::Shared> fields_;
 

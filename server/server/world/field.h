@@ -4,7 +4,6 @@
 #include "pch.h"
 #include "object/game_object.h"
 
-
 class GameObject;
 
 class Field
@@ -15,9 +14,12 @@ public:
     using Weak = std::weak_ptr<Field>;
 
     void Enter(GameObject::Shared obj);
-    void Leave();
+    void Leave(uint64_t obj_id);
 
+    void Update();
 private:
+
+    std::mutex lock_;
 
     std::unordered_map<uint64_t, GameObject::Shared> objects_;
 }; // class Field

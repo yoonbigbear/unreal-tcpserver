@@ -48,4 +48,5 @@ table SelectCharacterReq{
 
 table SelectCharacterAck{
 	result : ushort;
+	position : Vec3;
 }

@@ -24,3 +24,11 @@ void WorldManager::EnterField(int field_id, GameObject::Shared obj)
 void WorldManager::LeaveField()
 {
 }
+
+void WorldManager::Update()
+{
+    for (auto e : fields_)
+    {
+        e.second->Update();
+    }
+}

@@ -538,14 +538,19 @@ inline flatbuffers::Offset<SelectCharacterReq> CreateSelectCharacterReq(
 struct SelectCharacterAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef SelectCharacterAckBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_RESULT = 4
+    VT_RESULT = 4,
+    VT_POSITION = 6
   };
   uint16_t result() const {
     return GetField<uint16_t>(VT_RESULT, 0);
   }
+  const Vec3 *position() const {
+    return GetStruct<const Vec3 *>(VT_POSITION);
+  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint16_t>(verifier, VT_RESULT, 2) &&
+           VerifyField<Vec3>(verifier, VT_POSITION, 4) &&
            verifier.EndTable();
   }
 };
@@ -556,6 +561,9 @@ struct SelectCharacterAckBuilder {
   flatbuffers::uoffset_t start_;
   void add_result(uint16_t result) {
     fbb_.AddElement<uint16_t>(SelectCharacterAck::VT_RESULT, result, 0);
+  }
+  void add_position(const Vec3 *position) {
+    fbb_.AddStruct(SelectCharacterAck::VT_POSITION, position);
   }
   explicit SelectCharacterAckBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -570,8 +578,10 @@ struct SelectCharacterAckBuilder {
 
 inline flatbuffers::Offset<SelectCharacterAck> CreateSelectCharacterAck(
     flatbuffers::FlatBufferBuilder &_fbb,
-    uint16_t result = 0) {
+    uint16_t result = 0,
+    const Vec3 *position = nullptr) {
   SelectCharacterAckBuilder builder_(_fbb);
+  builder_.add_position(position);
   builder_.add_result(result);
   return builder_.Finish();
 }

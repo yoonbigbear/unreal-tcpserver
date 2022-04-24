@@ -297,16 +297,27 @@ void SelectCharacter(session::Shared session, message msg)
         {
             nanodbc::result res;
             LOG_WARNING("임시로 acct_id 를 1로 바꿔서 사용중");
-            DB::select_character(/*session->acct_id()*/ 1, char_id, res);
+            DB::select_character(session->acct_id(), char_id, res);
 
             if (res.next())
             {
-                BUILD_SIMPLE_PACKET(SelectCharacterAck, ResultCode_EnterGameSuccess);
+                Vec3 pos(res.get<float>("pos_x"), res.get<float>("pos_y"), res.get<float>("pos_z"));
+
+                net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+                pkt.header.id = Protocol_SelectCharacterAck;
+                flatbuffers::FlatBufferBuilder fbb(1024);
+                auto builder = account::SelectCharacterAckBuilder(fbb);
+                builder.add_result(ResultCode_EnterGameSuccess);
+                builder.add_position(&pos);
+                auto fin = builder.Finish();
+                fbb.Finish(fin);
+                pkt << fbb;
                 session->Send(pkt);
 
                 //캐릭터 선택 성공. 해당 정보로 ClientSession에 새 캐릭터를 만든다.
                 if (session->CreateCharacter(char_id, res.get<short>("class")))
                 {
+                    session->character()->transform()->position(pos.x(), pos.y(), pos.z());
                     session->character()->map_id(res.get<int>("map_id"));
 
                     WorldManager::instance().EnterField(session->character()->map_id(), session->character());
@@ -315,7 +326,17 @@ void SelectCharacter(session::Shared session, message msg)
             else
             {
                 LOG_CRITICAL("없는 캐릭터 정보를 전송. acct_id:{} char_id:{}", session->acct_id(), char_id);
-                BUILD_SIMPLE_PACKET(SelectCharacterAck, ResultCode_EnterGameFailure);
+                Vec3 pos(0, 0, 0);
+
+                net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+                pkt.header.id = Protocol_SelectCharacterAck;
+                flatbuffers::FlatBufferBuilder fbb(1024);
+                auto builder = account::SelectCharacterAckBuilder(fbb);
+                builder.add_result(ResultCode_EnterGameSuccess);
+                builder.add_position(&pos);
+                auto fin = builder.Finish();
+                fbb.Finish(fin);
+                pkt << fbb;
                 session->Send(pkt);
                 return;
             }

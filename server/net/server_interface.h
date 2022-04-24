@@ -5,8 +5,6 @@
 
 namespace net {
 
-
-
     template<typename T, typename U>
     class ServerInterface
     {

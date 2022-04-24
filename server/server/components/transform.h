@@ -26,13 +26,8 @@ public:
     Position& position() { return position_; }
     void position(Position position) { position_ = position; }
     void position(Position&& position) { position_ = position; }
-    void position(float x, float y, float z) 
-    {
-        position_.x = x;
-        position_.y = y;
-        position_.z = z;
-    }
-    void position(float x, float y) { position(x, y, position_.z); }
+    void position(float x, float y, float z) { position_.x = x, position_.y = y, position_.z = z; }
+    void position(float x, float y) { position_.x = x, position_.y = y; }
 
 private:
     Position position_;

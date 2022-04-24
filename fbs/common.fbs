@@ -1,4 +1,10 @@
 
+struct Vec3 {
+	x:float;
+	y:float;
+	z:float;
+}
+
 table CharacterInfo{
 	class:ubyte;
 	char_id:ulong;

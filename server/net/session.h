@@ -60,10 +60,13 @@ namespace net
             }
         }
 
-        void Disconnect()
+        virtual void Disconnect()
         {
             if (IsConnected())
+            {
                 asio::post(io_context_, [this]() {socket_.close(); });
+                LOG_INFO("Disconnected {}", id_);
+            }
         }
 
         bool IsConnected() const
@@ -111,8 +114,8 @@ namespace net
                     }
                     else
                     {
-                        //std::cout << "[" << id_ << "] Write Header Fail." << std::endl;
-                        socket_.close();
+                        LOG_ERROR("[{}] Write Header Fail", id_);
+                        Disconnect();
                     }
                 });
         }
@@ -132,8 +135,8 @@ namespace net
                     }
                     else
                     {
-                        //std::cout << "[" << id_ << "] Write Body Fail" << std::endl;
-                        socket_.close();
+                        LOG_ERROR("[{}] Write Body Fail", id_);
+                        Disconnect();
                     }
                 });
         }
@@ -157,8 +160,8 @@ namespace net
                     }
                     else
                     {
-                       // std::cout << "[" << id_ << "] Read Header Fail" << std::endl;
-                        socket_.close();
+                        LOG_ERROR("[{}] Read Header Failure", id_);
+                        Disconnect();
                     }
                 });
         }
@@ -174,8 +177,8 @@ namespace net
                     }
                     else
                     {
-                        //std::cout << "[" << id_ << "] Read Body Fail" << std::endl;
-                        socket_.close();
+                        LOG_ERROR("[{}] Read Body Failure", id_);
+                        Disconnect();
                     }
                 });
         }

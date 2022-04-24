@@ -13,12 +13,13 @@ public:
     int map_id() { return map_id_; }
     void map_id(int map_id) { map_id_ = map_id; }
 
+    TransformPtr transform() { return transform_; }
+
 private:
 
     int map_id_ = 0;
     character_class char_class_;
 
-    TransformPtr transform() { return transform_; }
     TransformPtr transform_;
 };
 

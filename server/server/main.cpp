@@ -33,10 +33,23 @@ int main(int argc, char* argv[])
         net::CustomServer server(60001);
         server.Start();
 
+        /// 종료처리 제대로 되어있지 않음.
+
+        std::thread t1([&]() 
+            {
+                while (true)
+                {
+                    server.Update(-1, true);
+                }
+            });
+        
+
         while (true)
         {
-            server.Update(-1, true);
+            WorldManager::instance().Update();
         }
+
+        t1.join();
 
     }
     catch (std::exception e)
