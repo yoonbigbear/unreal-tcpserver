@@ -29,18 +29,24 @@ int main(int argc, char* argv[])
     {
         CustomClient c;
         c.Connect("127.0.0.1", 60001);
-        while (1) {
-            if (c.IsConnected())
-            {
-                PacketTest(c);
-                break;
-            }
-            else
-            {
-                std::cout << "Server Down" << std::endl;
-                break;
-            }
+        if (c.IsConnected())
+        {
+            std::thread t([&]() {
+                while (true)
+                {
+
+                }
+                });
+
+            PacketTest(c);
         }
+        else
+        {
+            std::cout << "Server Down" << std::endl;
+            return 0;
+        }
+
+
     }
     catch (std::exception& e)
     {

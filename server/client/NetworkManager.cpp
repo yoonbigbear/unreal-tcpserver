@@ -113,4 +113,16 @@ void PacketTest(CustomClient& c)
         break;
         WAIT_UNTIL_END;
     }
+
+    auto start_time = std::chrono::steady_clock::now();
+    std::chrono::steady_clock::time_point now;
+    while (true)
+    {
+        now = std::chrono::steady_clock::now();
+        net::delta_time = std::chrono::duration_cast<std::chrono::microseconds>
+            (now - start_time).count() * 0.000001f;
+        start_time = std::chrono::steady_clock::now();
+
+
+    }
 }
