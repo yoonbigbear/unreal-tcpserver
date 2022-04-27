@@ -314,18 +314,21 @@ void SelectCharacter(session::Shared session, message msg)
                 pkt << fbb;
                 session->Send(pkt);
 
-                //캐릭터 선택 성공. 해당 정보로 ClientSession에 새 캐릭터를 만든다.
-                if (session->CreateCharacter(char_id, res.get<short>("class")))
+                //캐릭터 선택 성공. 게임오브젝트 생성
                 {
-                    session->character()->transform()->position(pos.x(), pos.y(), pos.z());
-                    session->character()->map_id(res.get<int>("map_id"));
+                    GameObject::Shared game_object = std::make_shared<GameObject>(char_id);
+                    game_object->CreateCharacter(res.get<short>("class"));
+                    game_object->CreateTransform();
+                    game_object->transform()->position(pos.x(), pos.y(), pos.z());
+                    game_object->character()->map_id(res.get<int>("map_id"));
+                    game_object->session(session);
 
-                    WorldManager::instance().EnterField(session->character()->map_id(), session->character());
+                    WorldManager::instance().EnterField(game_object->character()->map_id(), nullptr);
                 }
             }
             else
             {
-                LOG_CRITICAL("없는 캐릭터 정보를 전송. acct_id:{} char_id:{}", session->acct_id(), char_id);
+               // LOG_CRITICAL("없는 캐릭터 정보를 전송. acct_id:{} char_id:{}", session->acct_id(), char_id);
                 Vec3 pos(0, 0, 0);
 
                 net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;

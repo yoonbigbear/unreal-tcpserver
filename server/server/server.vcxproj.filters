@@ -205,6 +205,9 @@
     <ClCompile Include="object\game_object.cpp">
       <Filter>object</Filter>
     </ClCompile>
+    <ClCompile Include="components\ai.cpp">
+      <Filter>components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="database\DB.h">
@@ -396,6 +399,9 @@
     </ClInclude>
     <ClInclude Include="object\game_object.h">
       <Filter>object</Filter>
+    </ClInclude>
+    <ClInclude Include="components\ai.h">
+      <Filter>components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

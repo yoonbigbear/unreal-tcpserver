@@ -14,14 +14,22 @@ public:
     WorldManager();
     ~WorldManager();
 
+    void Start();
+
     void EnterField(int field_id, GameObject::Shared obj);
     void LeaveField();
 
+    void CreateSampleAI(int field_id, int count);
+
     void Update();
 
+
     Field::Shared field(int id) { return fields_[id]; }
+
 private:
     std::unordered_map<unsigned int, Field::Shared> fields_;
+
+    int ai_id_count_ = 0;
 
 }; // class Field
 

@@ -4,8 +4,6 @@
 #include "pch.h"
 #include "object/game_object.h"
 
-class GameObject;
-
 class Field
 {
 public:
@@ -17,11 +15,16 @@ public:
     void Leave(uint64_t obj_id);
 
     void Update();
+
+    template<typename message>
+    void Broadcast(message msg);
 private:
 
     std::mutex lock_;
 
     std::unordered_map<uint64_t, GameObject::Shared> objects_;
+    std::unordered_map<uint64_t, GameObject::Shared> players_;
+
 }; // class Field
 
 #endif // _FIELD_H_
