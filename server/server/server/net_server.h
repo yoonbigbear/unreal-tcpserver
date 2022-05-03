@@ -12,6 +12,8 @@
 #include "network/packet/account/account_packets.h"
 #include <protocol_generated.h>
 
+#include "world/world_manager.h"
+
 using namespace boost;
 
 namespace net
@@ -24,6 +26,8 @@ namespace net
         {
             AccountPackets temp;
             temp.Start();
+
+            WorldManager::instance().Start();
         }
 
     protected:

@@ -208,6 +208,9 @@
     <ClCompile Include="components\ai.cpp">
       <Filter>components</Filter>
     </ClCompile>
+    <ClCompile Include="object\npc.cpp">
+      <Filter>object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="database\DB.h">
@@ -402,6 +405,9 @@
     </ClInclude>
     <ClInclude Include="components\ai.h">
       <Filter>components</Filter>
+    </ClInclude>
+    <ClInclude Include="object\npc.h">
+      <Filter>object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

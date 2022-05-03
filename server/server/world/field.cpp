@@ -3,7 +3,7 @@
 
 #include "message.h"
 
-void Field::Enter(GameObject::Shared obj)
+void Field::Enter(GameObjectPtr obj)
 {
     lock_.lock();
     objects_.emplace(obj->obj_id(), obj);
@@ -25,7 +25,11 @@ void Field::Update()
     lock_.lock();
     for (const auto& e : objects_)
     {
-        LOG_INFO("id {}",e.second->obj_id());
+        auto gameobject = e.second;
+        if (!gameobject)
+            continue;
+
+        gameobject->Update();
     }
     lock_.unlock();
 }

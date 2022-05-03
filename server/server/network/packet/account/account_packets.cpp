@@ -9,11 +9,13 @@
 #include <common_generated.h>
 #include <account_generated.h>
 #include <result_code_generated.h>
-#include "network/client_session.h"
 
+#include "network/client_session.h"
 #include "world/world_manager.h"
 
 #include "snowflake.hpp"
+
+#include "object/character.h"
 
 using snowflake_t = net::snowflake<1534832906275L>;
 
@@ -296,7 +298,6 @@ void SelectCharacter(session::Shared session, message msg)
         try
         {
             nanodbc::result res;
-            LOG_WARNING("임시로 acct_id 를 1로 바꿔서 사용중");
             DB::select_character(session->acct_id(), char_id, res);
 
             if (res.next())
@@ -316,14 +317,10 @@ void SelectCharacter(session::Shared session, message msg)
 
                 //캐릭터 선택 성공. 게임오브젝트 생성
                 {
-                    GameObject::Shared game_object = std::make_shared<GameObject>(char_id);
-                    game_object->CreateCharacter(res.get<short>("class"));
-                    game_object->CreateTransform();
-                    game_object->transform()->position(pos.x(), pos.y(), pos.z());
-                    game_object->character()->map_id(res.get<int>("map_id"));
+                    CharacterPtr game_object = std::make_shared<Character>(char_id, 1);
                     game_object->session(session);
 
-                    WorldManager::instance().EnterField(game_object->character()->map_id(), nullptr);
+                    //WorldManager::instance().EnterField(, nullptr);
                 }
             }
             else

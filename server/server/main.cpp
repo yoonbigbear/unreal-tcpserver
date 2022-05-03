@@ -48,8 +48,8 @@ int main(int argc, char* argv[])
         while (true)
         {
             now = std::chrono::steady_clock::now();
-            net::delta_time = std::chrono::duration_cast<std::chrono::microseconds>
-                (now - start_time).count() * 0.000001f;
+            net::delta_time = std::chrono::duration_cast<std::chrono::milliseconds>
+                (now - start_time).count();
             start_time = std::chrono::steady_clock::now();
 
             WorldManager::instance().Update();

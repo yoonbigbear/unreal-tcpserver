@@ -16,7 +16,7 @@ public:
 
     void Start();
 
-    void EnterField(int field_id, GameObject::Shared obj);
+    void EnterField(int field_id, GameObjectPtr obj);
     void LeaveField();
 
     void CreateSampleAI(int field_id, int count);

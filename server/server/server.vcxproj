@@ -72,38 +72,38 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\bin\$(Configuration)\;$(SolutionDir)..\3rdparty\boost_1_78_0\stage\lib;$(SolutionDir)..\3rdparty\flatbuffers-master\Debug;$(LibraryPath)</LibraryPath>
     <SourcePath>$(SourcePath)</SourcePath>
     <PublicIncludeDirectories>$(SolutionDir)server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(ExternalIncludePath)</ExternalIncludePath>
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\bin\$(Configuration)\;$(SolutionDir)..\3rdparty\boost_1_78_0\stage\lib;$(SolutionDir)..\3rdparty\flatbuffers-master\Debug;$(LibraryPath)</LibraryPath>
     <SourcePath>$(SourcePath)</SourcePath>
     <PublicIncludeDirectories>$(SolutionDir)server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(ExternalIncludePath)</ExternalIncludePath>
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\bin\$(Configuration)\;$(SolutionDir)..\3rdparty\boost_1_78_0\stage\lib;$(SolutionDir)..\3rdparty\flatbuffers-master\Debug;$(LibraryPath)</LibraryPath>
     <SourcePath>$(SourcePath)</SourcePath>
     <PublicIncludeDirectories>$(SolutionDir)server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(ExternalIncludePath)</ExternalIncludePath>
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)include;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)..\bin\$(Configuration)\;$(SolutionDir)..\3rdparty\boost_1_78_0\stage\lib;$(SolutionDir)..\3rdparty\flatbuffers-master\Debug;$(LibraryPath)</LibraryPath>
     <SourcePath>$(SourcePath)</SourcePath>
     <PublicIncludeDirectories>$(SolutionDir)server;$(PublicIncludeDirectories)</PublicIncludeDirectories>
-    <ExternalIncludePath>$(SolutionDir)..\3rdparty\boost_1_78_0;$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(SolutionDir)..\3rdparty\BehaviorTree.CPP-master\include;$(SolutionDir)..\3rdparty\recastnavigation-master\DetourCrowd\Include;$(SolutionDir)..\3rdparty\recastnavigation-master\Detour\Include;$(ExternalIncludePath)</ExternalIncludePath>
+    <ExternalIncludePath>$(SolutionDir)..\3rdparty\flatbuffers-master\include;$(SolutionDir)..\packet;$(ExternalIncludePath)</ExternalIncludePath>
     <OutDir>$(SolutionDir)..\bin\$(Configuration)\</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -121,7 +121,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)server\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -143,7 +143,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)server\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -161,7 +161,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)server\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -183,7 +183,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)server\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -237,6 +237,7 @@
     <ClCompile Include="network\packet\packet_manager.cpp" />
     <ClCompile Include="object\character.cpp" />
     <ClCompile Include="object\game_object.cpp" />
+    <ClCompile Include="object\npc.cpp" />
     <ClCompile Include="world\field.cpp" />
     <ClCompile Include="world\world_manager.cpp" />
     <ClCompile Include="world\zone.cpp" />
@@ -301,6 +302,7 @@
     <ClInclude Include="network\packet\packet_manager.h" />
     <ClInclude Include="object\character.h" />
     <ClInclude Include="object\game_object.h" />
+    <ClInclude Include="object\npc.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="server\net_server.h" />
     <ClInclude Include="server\server_enum.h" />

@@ -2,6 +2,9 @@
 
 #include "zone.h"
 
+#include "object/npc.h"
+#include "components/transform.h"
+
 WorldManager::WorldManager()
 {
     auto newfield = std::make_shared<Field>();
@@ -17,7 +20,7 @@ void WorldManager::Start()
     CreateSampleAI(0, 10);
 }
 
-void WorldManager::EnterField(int field_id, GameObject::Shared obj)
+void WorldManager::EnterField(int field_id, GameObjectPtr obj)
 {
     auto field = fields_.at(field_id);
     if (field)
@@ -34,13 +37,13 @@ void WorldManager::CreateSampleAI(int field_id, int count)
 {
     for (int i = 0; i < count; ++i)
     {
-        GameObject::Shared game_object = std::make_shared<GameObject>(ai_id_count_++);
-        game_object->CreateTransform();
+        NpcPtr npc = std::make_shared<Npc>(ai_id_count_++);
+        npc->start();
 
         auto field = fields_.at(field_id);
         if (field)
         {
-            field->Enter(game_object);
+            field->Enter(npc);
         }
     }
 

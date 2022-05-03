@@ -6,8 +6,8 @@
 
 class AI
 {
+public:
+    void Update();
 };
-
-using AIPtr = std::shared_ptr<AI>;
 
 #endif // !_AI_H_
