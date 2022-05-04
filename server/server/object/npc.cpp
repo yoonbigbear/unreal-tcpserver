@@ -10,17 +10,13 @@ Npc::Npc(uint32_t obj_id)
 void Npc::start()
 {
     transform_ = std::make_shared<Transform>();
+    transform_->dest() += b2Vec2(5000, 5000);
 }
 
 void Npc::Update()
 {
-    if (!is_moving)
+    if (!transform_->MoveTo())
     {
-        is_moving = transform_->MoveTo();
-    }
-    else
-    {
-        is_moving = false;
-        transform_->dest(transform_->position() + b2Vec3(5, 5, 5));
+        transform_->dest(transform_->position() + b2Vec2(5000, 5000));
     }
 }

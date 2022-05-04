@@ -7,58 +7,57 @@ struct Rotation
 {
 };
 
-struct Position
+struct Position : public b2Vec3
 {
-    Position()
-    :x(0), y(0), z(0) {}
-    Position(float x, float y, float z)
-        :x(x), y(y), z(z) {}
-
-    // SIMD 가속화 필요
-    Position operator +(Position pos) {
-        return Position(x + pos.x, y + pos.y, z + pos.z);
+    b2Vec2&& operator +(b2Vec2&& pos2d)
+    {
+        return b2Vec2(x + pos2d.x, y + pos2d.y);
     }
-    void operator +=(Position pos) {
-        x += pos.x;
-        y += pos.y;
-        z += pos.z;
+    void operator +=(b2Vec2&& pos2d)
+    {
+        x += pos2d.x;
+        y += pos2d.y;
     }
-
-    Position operator -(Position pos) {
-        return Position(x - pos.x, y - pos.y, z - pos.z);
+    b2Vec2&& operator -(b2Vec2&& pos2d)
+    {
+        return b2Vec2(x - pos2d.x, y - pos2d.y);
     }
-    void operator -=(Position pos) {
-        x -= pos.x;
-        y -= pos.y;
-        z -= pos.z;
+    void operator -=(b2Vec2&& pos2d)
+    {
+        x -= pos2d.x;
+        y -= pos2d.y;
     }
 
-    float x = 0.f;
-    float y = 0.f;
-    float z = 0.f;
+    void operator =(b2Vec2&& pos2d)
+    {
+        x = pos2d.x;
+        y = pos2d.y;
+    }
+    void operator =(b2Vec2& pos2d)
+    {
+        x = pos2d.x;
+        y = pos2d.y;
+    }
+
 };
 
 class Transform
 {
 public:
-    
-    //Position& position() { return position_; }
-    //void position(Position position) { position_ = position; }
-    //void position(Position&& position) { position_ = position; }
-    //void position(float x, float y, float z) { position_.x = x, position_.y = y, position_.z = z; }
-    //void position(float x, float y) { position_.x = x, position_.y = y; }
 
-    //auto dest() { return dest_; }
-    //void dest(Position dest) { dest_ = dest; }
-
-    b2Vec3& position() { return position_; }
-    void position(b2Vec3 position) { position_ = position; }
-    void position(b2Vec3&& position) { position_ = position; }
+    Position& position() { return position_; }
+    void position(Position&& position) { position_ = position; }
+    void position(Position& position) { position_ = position; }
+    void position(b2Vec2&& position) { position_.x = position.x; position_.y = position.y; }
+    void position(b2Vec2& position) { position_.x = position.x; position_.y = position.y; }
     void position(float x, float y, float z) { position_.x = x, position_.y = y, position_.z = z; }
     void position(float x, float y) { position_.x = x, position_.y = y; }
 
-    auto dest() { return dest_; }
-    void dest(b2Vec3 dest) { dest_ = dest; }
+    Position& dest() { return dest_; }
+    void dest(Position&& dest) { dest_ = dest; }
+    void dest(Position& dest) { dest_ = dest; }
+    void dest(b2Vec2&& dest) { dest_ = dest; }
+    void dest(b2Vec2& dest) { dest_ = dest; }
 
 public:
 
@@ -66,10 +65,8 @@ public:
 
 private:
 
-    //Position position_;
-    //Position dest_;
-    b2Vec3 position_;
-    b2Vec3 dest_;
+    Position position_;
+    Position dest_;
 
 };
 

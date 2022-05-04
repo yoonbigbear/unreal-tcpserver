@@ -17,7 +17,7 @@ WorldManager::~WorldManager()
 
 void WorldManager::Start()
 {
-    CreateSampleAI(0, 10);
+    CreateSampleAI(0, 1);
 }
 
 void WorldManager::EnterField(int field_id, GameObjectPtr obj)

@@ -24,8 +24,6 @@ public:
 private:
     TransformPtr transform_;
     AIPtr ai_;
-
-    bool is_moving = false;
 };
 
 

@@ -43,14 +43,12 @@ int main(int argc, char* argv[])
                 }
             });
 
-        auto start_time = std::chrono::steady_clock::now();
-        std::chrono::steady_clock::time_point now;
+        auto start_time = std::chrono::high_resolution_clock::now();
         while (true)
         {
-            now = std::chrono::steady_clock::now();
-            net::delta_time = std::chrono::duration_cast<std::chrono::milliseconds>
-                (now - start_time).count();
-            start_time = std::chrono::steady_clock::now();
+            auto now = std::chrono::high_resolution_clock::now();
+            net::delta_time = (now - start_time).count();
+            start_time = now;
 
             WorldManager::instance().Update();
         }

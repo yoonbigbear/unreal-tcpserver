@@ -3,17 +3,15 @@
 
 bool Transform::MoveTo()
 {
-    
-    if ((b2Vec2(dest_.x - position_.x, dest_.y - position_.y).LengthSquared() > 1000))
+    auto length = b2Vec2(dest_.x - position_.x, dest_.y - position_.y).LengthSquared();
+    if (length < 5 * 5)
     {
         return false;
     }
 
-    auto dir = dest_ - position_;
-
-    auto next_pos = b2Vec2(dir.x, dir.y).Normalize() * net::delta_time * 10;
-
-    LOG_INFO("position : {}", next_pos);
+    position_.x += 0.1;
+    position_.y += 0.1;
+    LOG_INFO("position : {}", position_.x);
 
     return true;
 }
