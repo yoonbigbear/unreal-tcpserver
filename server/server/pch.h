@@ -13,11 +13,13 @@
 #include <box2d/box2d.h>
 #pragma comment(lib, "box2d.lib")
 
-#include <protocol_generated.h>
 
 #pragma comment(lib, "Detour-d.lib")
 #pragma comment(lib, "DetourCrowd-d.lib")
 #pragma comment(lib, "DetourTileCache-d.lib")
+
+#include <protocol_generated.h>
+#include <random>
 
 using flatbuffer = flatbuffers::FlatBufferBuilder;
 

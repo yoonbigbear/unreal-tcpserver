@@ -3,6 +3,10 @@
 #include "server/net_server.h"
 #include "world/world_manager.h"
 
+#include "navigation/navigation.h"
+#include <filesystem>
+
+
 //덤프파일을 남겨준다.
 LONG __stdcall ExceptionCallBack(EXCEPTION_POINTERS* e)
 {

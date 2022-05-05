@@ -1,7 +1,11 @@
 #include "navigation.h"
 
-#include "detour/DetourNavMesh.h"
-#include "detour/DetourNavMeshQuery.h"
+// Returns a random number [0..1]
+static float frand()
+{
+	//	return ((float)(rand() & 0xffff)/(float)0xffff);
+	return (float)rand() / (float)RAND_MAX;
+}
 
 struct NavMeshSetHeader
 {
@@ -20,6 +24,20 @@ struct NavMeshTileHeader
 static const int NAVMESHSET_MAGIC = 'M' << 24 | 'S' << 16 | 'E' << 8 | 'T'; //'MSET';
 static const int NAVMESHSET_VERSION = 1;
 
+
+Navigation::Navigation()
+{
+	query_ = dtAllocNavMeshQuery();
+	crowd_ = dtAllocCrowd();
+}
+
+Navigation::~Navigation()
+{
+	dtFreeNavMeshQuery(query_);
+	query_ = nullptr;
+	dtFreeNavMesh(navigation_);
+	dtFreeCrowd(crowd_);
+}
 
 dtNavMesh* Navigation::LoadAll(const char* path)
 {
@@ -128,4 +146,19 @@ void Navigation::SaveAll(const char* path, const dtNavMesh* mesh)
 	}
 
 	fclose(fp);
+}
+
+void Navigation::RandomPoint(float* dest)
+{
+	m_randPointsInCircle = false;
+	m_nrandPoints = 0;
+
+	
+	float pt[3];
+	dtPolyRef ref;
+	dtStatus status = query_->findRandomPoint(&filter_, frand, &ref, pt);
+	if (dtStatusSucceed(status))
+	{
+		dtVcopy(dest, pt);
+	}
 }
