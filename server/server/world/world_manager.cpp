@@ -39,6 +39,7 @@ void WorldManager::CreateSampleAI(int field_id, int count)
     {
         NpcPtr npc = std::make_shared<Npc>(ai_id_count_++);
         npc->start();
+        npc->field_id(field_id);
 
         auto field = fields_.at(field_id);
         if (field)

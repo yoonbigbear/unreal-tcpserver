@@ -169,6 +169,9 @@
     <ClCompile Include="navigation\navigation.cpp">
       <Filter>navigation</Filter>
     </ClCompile>
+    <ClCompile Include="navigation\pathfinder_grid.cpp">
+      <Filter>navigation</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="database\DB.h">
@@ -323,6 +326,9 @@
       <Filter>object</Filter>
     </ClInclude>
     <ClInclude Include="navigation\navigation.h">
+      <Filter>navigation</Filter>
+    </ClInclude>
+    <ClInclude Include="navigation\pathfinder_grid.h">
       <Filter>navigation</Filter>
     </ClInclude>
   </ItemGroup>

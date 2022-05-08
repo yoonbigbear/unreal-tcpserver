@@ -3,7 +3,7 @@
 
 #include "message.h"
 #include <filesystem>
-#include <navigation/navigation.h>
+#include <navigation/pathfinder_grid.h>
 
 Field::Field()
 {
@@ -12,28 +12,31 @@ Field::Field()
 
 Field::~Field()
 {
-    if (navigation_)
+    //if (navigation_)
+    //{
+    //    delete navigation_;
+    //    navigation_ = nullptr;
+    //}
+
+    if (grids_)
     {
-        delete navigation_;
-        navigation_ = nullptr;
+        delete grids_;
+        grids_ = nullptr;
     }
 }
 
 void Field::Start(const char* path)
 {
-    std::string nav_path = std::filesystem::current_path().string() + "\\Plane.bin";
+    //std::string nav_path = std::filesystem::current_path().string() + "\\Plane.bin";
 
-    if (!navigation_)
-        navigation_ = new Navigation();
+    //if (!navigation_)
+    //    navigation_ = new Navigation();
 
-    navigation_->navigation(navigation_->LoadAll(nav_path.c_str()));
-    navigation_->query()->init(navigation_->navigation(), navigation_->navigation()->getMaxTiles());
-    float p[3] = {};
-    navigation_->RandomPoint(p);
-    if (p)
-    {
+    //navigation_->navigation(navigation_->LoadAll(nav_path.c_str()));
+    //navigation_->query()->init(navigation_->navigation(), navigation_->navigation()->getMaxTiles());
 
-    }
+    grids_ = new PathFinderGrid(50,50);
+
 }
 
 void Field::Enter(GameObjectPtr obj)

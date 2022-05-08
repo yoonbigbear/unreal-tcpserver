@@ -1,6 +1,8 @@
 #include "npc.h"
 
+#include "world/world_manager.h"
 #include "components/transform.h"
+#include "navigation/navigation.h"
 
 Npc::Npc(uint32_t obj_id)
     :GameObject(obj_id)
@@ -10,13 +12,10 @@ Npc::Npc(uint32_t obj_id)
 void Npc::start()
 {
     transform_ = std::make_shared<Transform>();
-    transform_->dest() += b2Vec2(5000, 5000);
 }
 
 void Npc::Update()
 {
-    if (!transform_->MoveTo())
-    {
-        transform_->dest(transform_->position() + b2Vec2(5000, 5000));
-    }
+    auto field = WorldManager::instance().field(field_id());
+
 }

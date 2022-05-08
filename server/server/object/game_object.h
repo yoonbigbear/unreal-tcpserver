@@ -17,11 +17,14 @@ public:
 
     const uint32_t obj_id() { return obj_id_; }
 
+    int32_t field_id() { return field_id_; }
+    void field_id(int32_t id) { field_id_ = id; }
+
     virtual void Update() abstract;
 
 private:
     uint32_t obj_id_;
-
+    int32_t field_id_;
     SessionPtr session_;
 };
 

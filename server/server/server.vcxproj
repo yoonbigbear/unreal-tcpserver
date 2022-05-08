@@ -221,6 +221,7 @@
     <ClCompile Include="database\nanodbc\nanodbc.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="navigation\navigation.cpp" />
+    <ClCompile Include="navigation\pathfinder_grid.cpp" />
     <ClCompile Include="network\packet\account\account_packets.cpp" />
     <ClCompile Include="network\packet\packet_manager.cpp" />
     <ClCompile Include="object\character.cpp" />
@@ -271,6 +272,7 @@
     <ClInclude Include="database\DB.h" />
     <ClInclude Include="database\nanodbc\nanodbc.h" />
     <ClInclude Include="navigation\navigation.h" />
+    <ClInclude Include="navigation\pathfinder_grid.h" />
     <ClInclude Include="network\client_session.h" />
     <ClInclude Include="network\packet\account\account_packets.h" />
     <ClInclude Include="network\packet\packet_manager.h" />

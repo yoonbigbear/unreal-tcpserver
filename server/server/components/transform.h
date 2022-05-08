@@ -3,10 +3,11 @@
 
 #include "pch.h"
 
+
+#ifdef RPG3D
 struct Rotation
 {
 };
-
 struct Position : public b2Vec3
 {
     b2Vec2&& operator +(b2Vec2&& pos2d)
@@ -41,6 +42,7 @@ struct Position : public b2Vec3
 
 };
 
+
 class Transform
 {
 public:
@@ -69,6 +71,21 @@ private:
     Position dest_;
 
 };
+#else
+struct Position
+{
+    int x_;
+    int y_;
+};
+class Transform
+{
+public:
+    Position& position() { return position_; }
+
+private:
+    Position position_;
+};
+#endif
 
 
 #endif
