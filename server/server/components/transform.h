@@ -3,6 +3,7 @@
 
 #include "pch.h"
 
+#define RPG3D
 
 #ifdef RPG3D
 struct Rotation
@@ -39,7 +40,12 @@ struct Position : public b2Vec3
         x = pos2d.x;
         y = pos2d.y;
     }
-
+    void operator()(float p[3])
+    {
+        x = p[0];
+        y = p[1];
+        z = p[2];
+    }
 };
 
 
@@ -54,16 +60,16 @@ public:
     void position(b2Vec2& position) { position_.x = position.x; position_.y = position.y; }
     void position(float x, float y, float z) { position_.x = x, position_.y = y, position_.z = z; }
     void position(float x, float y) { position_.x = x, position_.y = y; }
+    void position(float p[3]) { position_(p); }
 
     Position& dest() { return dest_; }
     void dest(Position&& dest) { dest_ = dest; }
     void dest(Position& dest) { dest_ = dest; }
     void dest(b2Vec2&& dest) { dest_ = dest; }
     void dest(b2Vec2& dest) { dest_ = dest; }
+    void dest(float p[3]) { position_(p); }
 
 public:
-
-    bool MoveTo();
 
 private:
 

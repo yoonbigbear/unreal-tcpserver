@@ -19,11 +19,14 @@ public:
 public:
     void start();
 
-    virtual void Update() override;
+    virtual void Update(float dt) override;
 
 private:
+    FieldPtr field_ = nullptr;
     TransformPtr transform_;
     AIPtr ai_;
+
+    bool move_ = false;
 };
 
 

@@ -162,3 +162,8 @@ void Navigation::RandomPoint(float* dest)
 		dtVcopy(dest, pt);
 	}
 }
+
+bool Navigation::CanMoveTo(float* pt)
+{
+	return false;
+}

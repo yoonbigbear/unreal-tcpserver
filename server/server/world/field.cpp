@@ -3,43 +3,44 @@
 
 #include "message.h"
 #include <filesystem>
-#include <navigation/pathfinder_grid.h>
+//#include <navigation/pathfinder_grid.h>
+#include <navigation/navigation.h>
 
-Field::Field()
+World::World()
 {
     Start("");
 }
 
-Field::~Field()
+World::~World()
 {
-    //if (navigation_)
-    //{
-    //    delete navigation_;
-    //    navigation_ = nullptr;
-    //}
+    if (navigation_)
+    {
+        delete navigation_;
+        navigation_ = nullptr;
+    }
 
-    if (grids_)
+    /*if (grids_)
     {
         delete grids_;
         grids_ = nullptr;
-    }
+    }*/
 }
 
-void Field::Start(const char* path)
+void World::Start(const char* path)
 {
-    //std::string nav_path = std::filesystem::current_path().string() + "\\Plane.bin";
+    std::string nav_path = std::filesystem::current_path().string() + "\\Plane.bin";
 
-    //if (!navigation_)
-    //    navigation_ = new Navigation();
+    if (!navigation_)
+        navigation_ = new Navigation();
 
-    //navigation_->navigation(navigation_->LoadAll(nav_path.c_str()));
-    //navigation_->query()->init(navigation_->navigation(), navigation_->navigation()->getMaxTiles());
+    navigation_->navigation(navigation_->LoadAll(nav_path.c_str()));
+    navigation_->query()->init(navigation_->navigation(), navigation_->navigation()->getMaxTiles());
 
-    grids_ = new PathFinderGrid(50,50);
+    //grids_ = new PathFinderGrid(50,50);
 
 }
 
-void Field::Enter(GameObjectPtr obj)
+void World::Enter(GameObjectPtr obj)
 {
     lock_.lock();
     objects_.emplace(obj->obj_id(), obj);
@@ -48,7 +49,7 @@ void Field::Enter(GameObjectPtr obj)
     lock_.unlock();
 }
 
-void Field::Leave(uint64_t obj_id)
+void World::Leave(uint64_t obj_id)
 {
     lock_.lock();
     objects_.erase(obj_id);
@@ -56,7 +57,7 @@ void Field::Leave(uint64_t obj_id)
     lock_.unlock();
 }
 
-void Field::Update()
+void World::Update(float dt)
 {
     lock_.lock();
     for (const auto& e : objects_)
@@ -65,13 +66,13 @@ void Field::Update()
         if (!gameobject)
             continue;
 
-        gameobject->Update();
+        gameobject->Update(dt);
     }
     lock_.unlock();
 }
 
 template<typename message>
-void Field::Broadcast(message msg)
+void World::Broadcast(message msg)
 {
     lock_.lock();
     for (const auto& e : players_)

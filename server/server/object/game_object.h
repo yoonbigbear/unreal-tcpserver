@@ -9,7 +9,8 @@ class GameObject
 public:
 
     GameObject(uint32_t id)
-        :obj_id_(id) {}
+        :obj_id_(id)
+    ,field_id_(0) {}
 
     auto session() { return session_; }
     void session(SessionPtr session) { session_ = session; }
@@ -20,7 +21,8 @@ public:
     int32_t field_id() { return field_id_; }
     void field_id(int32_t id) { field_id_ = id; }
 
-    virtual void Update() abstract;
+
+    virtual void Update(float dt) abstract;
 
 private:
     uint32_t obj_id_;

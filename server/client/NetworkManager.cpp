@@ -114,15 +114,22 @@ void PacketTest(CustomClient& c)
         WAIT_UNTIL_END;
     }
 
-    auto start_time = std::chrono::steady_clock::now();
-    std::chrono::steady_clock::time_point now;
+    auto start = std::chrono::high_resolution_clock::now();
+    auto now = std::chrono::high_resolution_clock::now();
     while (true)
     {
-        now = std::chrono::steady_clock::now();
-        net::delta_time = std::chrono::duration_cast<std::chrono::microseconds>
-            (now - start_time).count() * 0.000001f;
-        start_time = std::chrono::steady_clock::now();
+        now = std::chrono::high_resolution_clock::now();
+        auto interval = now - start;
+        start = now;
+        auto dt = interval.count() * 0.000'001;
 
-
+        if (!c.Incoming().empty())
+        {
+            auto msg = c.Incoming().pop_front();
+            if (msg.msg.header.id == Protocol::Protocol_SelectCharacterAck)
+            {
+                ;
+            }
+        }
     }
 }

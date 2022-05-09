@@ -21,13 +21,13 @@ public:
 
     void CreateSampleAI(int field_id, int count);
 
-    void Update();
+    void Update(float dt);
 
 
-    Field::Shared field(int id) { return fields_[id]; }
+    FieldPtr field(int id) { return fields_[id]; }
 
 private:
-    std::unordered_map<unsigned int, Field::Shared> fields_;
+    std::unordered_map<unsigned int, FieldPtr> fields_;
 
     int ai_id_count_ = 0;
 

@@ -16,7 +16,7 @@ public:
     auto transform() { return transform_; }
     void transform(TransformPtr transform) { transform_ = transform; }
 
-    virtual void Update() override;
+    virtual void Update(float dt) override;
 
 private:
 

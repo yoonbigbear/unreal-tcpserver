@@ -2,16 +2,32 @@
 
 PathFinderGrid::~PathFinderGrid()
 {
-    if (grids_)
-    {
-        delete grids_;
-        grids_ = nullptr;
-    }
+
+}
+
+bool PathFinderGrid::MoveUp(int index)
+{
+    return false;
+}
+
+bool PathFinderGrid::MoveDown(int index)
+{
+    return false;
+}
+
+bool PathFinderGrid::MoveLeft(int index)
+{
+    return false;
+}
+
+bool PathFinderGrid::MoveRight(int index)
+{
+    return false;
 }
 
 PathFinderGrid::PathFinderGrid(int x_size, int y_size)
 {
-    grids_ = new int[x_size * y_size];
+
     x_size_ = x_size;
     y_size_ = y_size;
 }

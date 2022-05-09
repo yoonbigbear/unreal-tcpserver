@@ -7,7 +7,7 @@
 
 WorldManager::WorldManager()
 {
-    auto newfield = std::make_shared<Field>();
+    auto newfield = std::make_shared<World>();
     fields_.emplace(0, newfield);
 }
 
@@ -17,7 +17,7 @@ WorldManager::~WorldManager()
 
 void WorldManager::Start()
 {
-    CreateSampleAI(0, 1);
+    CreateSampleAI(0, 2);
 }
 
 void WorldManager::EnterField(int field_id, GameObjectPtr obj)
@@ -40,7 +40,6 @@ void WorldManager::CreateSampleAI(int field_id, int count)
         NpcPtr npc = std::make_shared<Npc>(ai_id_count_++);
         npc->start();
         npc->field_id(field_id);
-
         auto field = fields_.at(field_id);
         if (field)
         {
@@ -50,10 +49,10 @@ void WorldManager::CreateSampleAI(int field_id, int count)
 
 }
 
-void WorldManager::Update()
+void WorldManager::Update(float dt)
 {
     for (auto e : fields_)
     {
-        e.second->Update();
+        e.second->Update(dt);
     }
 }

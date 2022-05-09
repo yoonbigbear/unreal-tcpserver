@@ -47,14 +47,16 @@ int main(int argc, char* argv[])
                 }
             });
 
-        auto start_time = std::chrono::high_resolution_clock::now();
+        auto start = std::chrono::high_resolution_clock::now();
+        auto now = std::chrono::high_resolution_clock::now();
         while (true)
         {
-            auto now = std::chrono::high_resolution_clock::now();
-            net::delta_time = (now - start_time).count();
-            start_time = now;
+            now = std::chrono::high_resolution_clock::now();
+            auto interval = now - start;
+            start = now;
+            auto dt = interval.count() * 0.000'001;
 
-            WorldManager::instance().Update();
+            WorldManager::instance().Update(static_cast<float>(dt));
         }
 
         t1.join();

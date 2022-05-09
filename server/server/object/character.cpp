@@ -6,6 +6,6 @@ Character::Character(uint32_t obj_id, int char_class)
 {
 }
 
-void Character::Update()
+void Character::Update(float dt)
 {
 }

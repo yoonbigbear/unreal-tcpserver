@@ -25,6 +25,8 @@ public:
 
     void RandomPoint(float* dest);
 
+    bool CanMoveTo(float* pt);
+
 private:
     dtNavMesh* navigation_;
     dtNavMeshQuery* query_;

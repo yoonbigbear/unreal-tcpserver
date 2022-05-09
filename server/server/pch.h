@@ -33,7 +33,8 @@ class GameObject;
 using GameObjectPtr = std::shared_ptr<GameObject>;
 class Npc;
 using NpcPtr = std::shared_ptr<Npc>;
-
+class World;
+using FieldPtr = std::shared_ptr<World>;
 
 
 #endif // !_PCH_H_

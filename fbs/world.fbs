@@ -1,0 +1,9 @@
+include "common.fbs";
+
+namespace world;
+
+table EnterFieldReq
+{
+	pos:Vec3;
+	obj_id:int;
+}

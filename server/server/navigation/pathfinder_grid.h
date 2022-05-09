@@ -3,6 +3,7 @@
 
 #include "pch.h"
 
+
 class PathFinderGrid
 {
 public:
@@ -11,8 +12,12 @@ public:
 
     ~PathFinderGrid();
 
+    bool MoveUp(int index);
+    bool MoveDown(int index);
+    bool MoveLeft(int index);
+    bool MoveRight(int index);
+
 private:
-    int* grids_;
     int x_size_ = 0;
     int y_size_ = 0;
 };
