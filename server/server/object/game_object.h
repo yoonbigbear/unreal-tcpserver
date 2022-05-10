@@ -21,12 +21,16 @@ public:
     int32_t field_id() { return field_id_; }
     void field_id(int32_t id) { field_id_ = id; }
 
+    TransformPtr transform() { return transform_; }
+    void transform(TransformPtr transform) { transform_ = transform; }
 
     virtual void Update(float dt) abstract;
 
 private:
     uint32_t obj_id_;
     int32_t field_id_;
+
+    TransformPtr transform_;
     SessionPtr session_;
 };
 

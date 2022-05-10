@@ -19,12 +19,15 @@ enum Protocol : uint16_t {
   Protocol_CheckCharacterNicknameAck = 9,
   Protocol_SelectCharacterReq = 10,
   Protocol_SelectCharacterAck = 11,
-  Protocol_ResultCode = 12,
+  Protocol_EnterFieldSync = 12,
+  Protocol_MoveStartSync = 13,
+  Protocol_MoveStopSync = 14,
+  Protocol_ResultCode = 15,
   Protocol_MIN = Protocol_None,
   Protocol_MAX = Protocol_ResultCode
 };
 
-inline const Protocol (&EnumValuesProtocol())[13] {
+inline const Protocol (&EnumValuesProtocol())[16] {
   static const Protocol values[] = {
     Protocol_None,
     Protocol_TextSend,
@@ -38,13 +41,16 @@ inline const Protocol (&EnumValuesProtocol())[13] {
     Protocol_CheckCharacterNicknameAck,
     Protocol_SelectCharacterReq,
     Protocol_SelectCharacterAck,
+    Protocol_EnterFieldSync,
+    Protocol_MoveStartSync,
+    Protocol_MoveStopSync,
     Protocol_ResultCode
   };
   return values;
 }
 
 inline const char * const *EnumNamesProtocol() {
-  static const char * const names[14] = {
+  static const char * const names[17] = {
     "None",
     "TextSend",
     "LoginReq",
@@ -57,6 +63,9 @@ inline const char * const *EnumNamesProtocol() {
     "CheckCharacterNicknameAck",
     "SelectCharacterReq",
     "SelectCharacterAck",
+    "EnterFieldSync",
+    "MoveStartSync",
+    "MoveStopSync",
     "ResultCode",
     nullptr
   };

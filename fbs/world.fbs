@@ -2,8 +2,22 @@ include "common.fbs";
 
 namespace world;
 
-table EnterFieldReq
+table EnterFieldSync
 {
+	obj_id:[uint];
+	pos:[Vec3];
+}
+
+table MoveStartSync
+{
+	obj_id:uint;
+	dir:Vec2;
+	speed:float;
+	start_time:ulong;
+}
+
+table MoveStopSync
+{
+	obj_id:uint;
 	pos:Vec3;
-	obj_id:int;
 }

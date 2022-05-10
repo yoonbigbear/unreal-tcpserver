@@ -67,7 +67,7 @@ public:
     void dest(Position& dest) { dest_ = dest; }
     void dest(b2Vec2&& dest) { dest_ = dest; }
     void dest(b2Vec2& dest) { dest_ = dest; }
-    void dest(float p[3]) { position_(p); }
+    void dest(float p[3]) { dest_(p); }
 
 public:
 

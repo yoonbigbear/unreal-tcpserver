@@ -317,10 +317,10 @@ void SelectCharacter(session::Shared session, message msg)
 
                 //캐릭터 선택 성공. 게임오브젝트 생성
                 {
-                    CharacterPtr game_object = std::make_shared<Character>(char_id, 1);
-                    game_object->session(session);
-
-                    //WorldManager::instance().EnterField(, nullptr);
+                    CharacterPtr character = std::make_shared<Character>(static_cast<uint32_t>(char_id), 1);
+                    character->session(session);
+                    character->start();
+                    WorldManager::instance().EnterField(0, character);
                 }
             }
             else

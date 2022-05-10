@@ -10,8 +10,7 @@ public:
     Npc() = delete;
     Npc(uint32_t obj_id);
 
-    auto transform() { return transform_; }
-    void transform(TransformPtr transform) { transform_ = transform; }
+
 
     auto ai() { return ai_; }
     void ai(AIPtr ai) { ai_ = ai; }
@@ -23,7 +22,6 @@ public:
 
 private:
     FieldPtr field_ = nullptr;
-    TransformPtr transform_;
     AIPtr ai_;
 
     bool move_ = false;

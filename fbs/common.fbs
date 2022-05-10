@@ -4,6 +4,10 @@ struct Vec3 {
 	y:float;
 	z:float;
 }
+struct Vec2 {
+	x:float;
+	y:float;
+}
 
 table CharacterInfo{
 	class:ubyte;

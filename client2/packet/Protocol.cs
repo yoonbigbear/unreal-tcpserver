@@ -16,6 +16,9 @@ public enum Protocol : ushort
   CheckCharacterNicknameAck = 9,
   SelectCharacterReq = 10,
   SelectCharacterAck = 11,
-  ResultCode = 12,
+  EnterFieldSync = 12,
+  MoveStartSync = 13,
+  MoveStopSync = 14,
+  ResultCode = 15,
 };
 

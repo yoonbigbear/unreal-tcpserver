@@ -18,5 +18,9 @@ enum Protocol : ushort{
 	SelectCharacterReq,
 	SelectCharacterAck,
 	
+	EnterFieldSync,
+	MoveStartSync,
+	MoveStopSync,
+	
     ResultCode
 }

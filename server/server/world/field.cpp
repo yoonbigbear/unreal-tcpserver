@@ -5,6 +5,11 @@
 #include <filesystem>
 //#include <navigation/pathfinder_grid.h>
 #include <navigation/navigation.h>
+#include <world_generated.h>
+#include <common_generated.h>
+
+#include "components/transform.h"
+#include <protocol_generated.h>
 
 World::World()
 {
@@ -47,6 +52,27 @@ void World::Enter(GameObjectPtr obj)
     if (obj->session())
         players_.emplace(obj->obj_id(), obj);
     lock_.unlock();
+
+    std::vector<Vec3> obj_pos_arr;
+    obj_pos_arr.reserve(objects_.size());
+    std::vector<uint32_t> obj_id_arr;
+    obj_id_arr.reserve(objects_.size());
+    for (auto& e : objects_)
+    {
+        obj_pos_arr.push_back(Vec3(e.second->transform()->position().x,
+            e.second->transform()->position().y,
+            e.second->transform()->position().z));
+        obj_id_arr.push_back(e.second->obj_id());
+    }
+
+    net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+    pkt.header.id = Protocol_EnterFieldSync;
+    flatbuffer fbb(1024);
+    auto builder = world::CreateEnterFieldSyncDirect(fbb, &obj_id_arr, &obj_pos_arr);
+    fbb.Finish(builder);
+    pkt << fbb;
+    Broadcast(pkt);
+
 }
 
 void World::Leave(uint64_t obj_id)
@@ -74,10 +100,9 @@ void World::Update(float dt)
 template<typename message>
 void World::Broadcast(message msg)
 {
-    lock_.lock();
-    for (const auto& e : players_)
+    auto list = players_;
+    for (const auto& e : list)
     {
         e.second->session()->Send(msg);
     }
-    lock_.unlock();
 }
