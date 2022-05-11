@@ -216,9 +216,11 @@ void PacketTest(CustomClient& c)
         {
             if (e.second.move)
             {
-                auto next = e.second.v + (static_cast<float>(dt) * 0.01 * e.second.d);
+                auto next = e.second.v + (static_cast<float>(dt) * e.second.spd * e.second.d);
                 e.second.v = next;
             }
         }
+
+        
     }
 }

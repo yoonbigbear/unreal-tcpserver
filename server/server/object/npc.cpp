@@ -42,7 +42,7 @@ void Npc::Update(float dt)
         pkt.header.id = Protocol_MoveStartSync;
         flatbuffer fbb(1024);
 
-        auto builder = world::CreateMoveStartSync(fbb, obj_id(), &vec2, 0.01f, 0);
+        auto builder = world::CreateMoveStartSync(fbb, obj_id(), &vec2, 0.01f);
         fbb.Finish(builder);
         pkt << fbb;
         field_->Broadcast(pkt);
@@ -74,7 +74,7 @@ void Npc::Update(float dt)
             return;
         }
 
-        auto next = transform()->position() + (dt * 0.01 * d);
+        auto next = transform()->position() + (dt * 0.01f * d);
         transform()->position().Set(next.x, next.y, transform()->position().z);
     }
 }

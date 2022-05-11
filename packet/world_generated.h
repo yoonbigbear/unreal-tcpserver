@@ -89,8 +89,7 @@ struct MoveStartSync FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_OBJ_ID = 4,
     VT_DIR = 6,
-    VT_SPEED = 8,
-    VT_START_TIME = 10
+    VT_SPEED = 8
   };
   uint32_t obj_id() const {
     return GetField<uint32_t>(VT_OBJ_ID, 0);
@@ -101,15 +100,11 @@ struct MoveStartSync FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   float speed() const {
     return GetField<float>(VT_SPEED, 0.0f);
   }
-  uint64_t start_time() const {
-    return GetField<uint64_t>(VT_START_TIME, 0);
-  }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyField<uint32_t>(verifier, VT_OBJ_ID, 4) &&
            VerifyField<Vec2>(verifier, VT_DIR, 4) &&
            VerifyField<float>(verifier, VT_SPEED, 4) &&
-           VerifyField<uint64_t>(verifier, VT_START_TIME, 8) &&
            verifier.EndTable();
   }
 };
@@ -127,9 +122,6 @@ struct MoveStartSyncBuilder {
   void add_speed(float speed) {
     fbb_.AddElement<float>(MoveStartSync::VT_SPEED, speed, 0.0f);
   }
-  void add_start_time(uint64_t start_time) {
-    fbb_.AddElement<uint64_t>(MoveStartSync::VT_START_TIME, start_time, 0);
-  }
   explicit MoveStartSyncBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
     start_ = fbb_.StartTable();
@@ -145,10 +137,8 @@ inline flatbuffers::Offset<MoveStartSync> CreateMoveStartSync(
     flatbuffers::FlatBufferBuilder &_fbb,
     uint32_t obj_id = 0,
     const Vec2 *dir = nullptr,
-    float speed = 0.0f,
-    uint64_t start_time = 0) {
+    float speed = 0.0f) {
   MoveStartSyncBuilder builder_(_fbb);
-  builder_.add_start_time(start_time);
   builder_.add_speed(speed);
   builder_.add_dir(dir);
   builder_.add_obj_id(obj_id);

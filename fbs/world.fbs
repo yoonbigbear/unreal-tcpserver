@@ -13,7 +13,6 @@ table MoveStartSync
 	obj_id:uint;
 	dir:Vec2;
 	speed:float;
-	start_time:ulong;
 }
 
 table MoveStopSync

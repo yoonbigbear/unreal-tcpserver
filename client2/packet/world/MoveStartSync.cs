@@ -22,13 +22,11 @@ public struct MoveStartSync : IFlatbufferObject
   public uint ObjId { get { int o = __p.__offset(4); return o != 0 ? __p.bb.GetUint(o + __p.bb_pos) : (uint)0; } }
   public Vec2? Dir { get { int o = __p.__offset(6); return o != 0 ? (Vec2?)(new Vec2()).__assign(o + __p.bb_pos, __p.bb) : null; } }
   public float Speed { get { int o = __p.__offset(8); return o != 0 ? __p.bb.GetFloat(o + __p.bb_pos) : (float)0.0f; } }
-  public ulong StartTime { get { int o = __p.__offset(10); return o != 0 ? __p.bb.GetUlong(o + __p.bb_pos) : (ulong)0; } }
 
-  public static void StartMoveStartSync(FlatBufferBuilder builder) { builder.StartTable(4); }
+  public static void StartMoveStartSync(FlatBufferBuilder builder) { builder.StartTable(3); }
   public static void AddObjId(FlatBufferBuilder builder, uint objId) { builder.AddUint(0, objId, 0); }
   public static void AddDir(FlatBufferBuilder builder, Offset<Vec2> dirOffset) { builder.AddStruct(1, dirOffset.Value, 0); }
   public static void AddSpeed(FlatBufferBuilder builder, float speed) { builder.AddFloat(2, speed, 0.0f); }
-  public static void AddStartTime(FlatBufferBuilder builder, ulong startTime) { builder.AddUlong(3, startTime, 0); }
   public static Offset<world.MoveStartSync> EndMoveStartSync(FlatBufferBuilder builder) {
     int o = builder.EndTable();
     return new Offset<world.MoveStartSync>(o);
