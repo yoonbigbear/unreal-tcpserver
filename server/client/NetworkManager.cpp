@@ -56,7 +56,7 @@ void PacketTest(CustomClient& c)
                 {
                     auto info = body->characters()->Get(i);
                     auto nickname = info->nickname()->str();
-                    auto job = info->class_();
+                    auto job = info->job_class();
                     auto id = info->char_id();
                     LOG_INFO("character id:{} nickname:{} job:{}", id, nickname, job);
                 }

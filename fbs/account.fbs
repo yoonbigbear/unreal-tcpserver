@@ -27,7 +27,7 @@ table CreateAccountAck{
 // nickname은 8글자 제한으로 multibyte 가능
 table CreateCharacterReq{
 	nickname : string;
-	class 	 : ubyte;
+	job_class 	 : ubyte;
 }
 table CreateCharacterAck{
 	result  : ushort;

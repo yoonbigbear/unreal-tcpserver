@@ -45,6 +45,10 @@ namespace net
 
         virtual void OnMessage(std::shared_ptr<T> session, Message<Protocol, flatbuffer>& msg) override
         {
+            if (msg.header.id == Protocol::Protocol_LoginReq)
+            {
+                DEBUG_LOG_WARNING("correction");
+            }
             auto func = PacketManager::instance().packet_handler(msg.header.id);
             if (func)
                 func(session, msg);

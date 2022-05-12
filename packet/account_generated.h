@@ -302,19 +302,19 @@ struct CreateCharacterReq FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef CreateCharacterReqBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
     VT_NICKNAME = 4,
-    VT_CLASS_ = 6
+    VT_JOB_CLASS = 6
   };
   const flatbuffers::String *nickname() const {
     return GetPointer<const flatbuffers::String *>(VT_NICKNAME);
   }
-  uint8_t class_() const {
-    return GetField<uint8_t>(VT_CLASS_, 0);
+  uint8_t job_class() const {
+    return GetField<uint8_t>(VT_JOB_CLASS, 0);
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
            VerifyOffset(verifier, VT_NICKNAME) &&
            verifier.VerifyString(nickname()) &&
-           VerifyField<uint8_t>(verifier, VT_CLASS_, 1) &&
+           VerifyField<uint8_t>(verifier, VT_JOB_CLASS, 1) &&
            verifier.EndTable();
   }
 };
@@ -326,8 +326,8 @@ struct CreateCharacterReqBuilder {
   void add_nickname(flatbuffers::Offset<flatbuffers::String> nickname) {
     fbb_.AddOffset(CreateCharacterReq::VT_NICKNAME, nickname);
   }
-  void add_class_(uint8_t class_) {
-    fbb_.AddElement<uint8_t>(CreateCharacterReq::VT_CLASS_, class_, 0);
+  void add_job_class(uint8_t job_class) {
+    fbb_.AddElement<uint8_t>(CreateCharacterReq::VT_JOB_CLASS, job_class, 0);
   }
   explicit CreateCharacterReqBuilder(flatbuffers::FlatBufferBuilder &_fbb)
         : fbb_(_fbb) {
@@ -343,22 +343,22 @@ struct CreateCharacterReqBuilder {
 inline flatbuffers::Offset<CreateCharacterReq> CreateCreateCharacterReq(
     flatbuffers::FlatBufferBuilder &_fbb,
     flatbuffers::Offset<flatbuffers::String> nickname = 0,
-    uint8_t class_ = 0) {
+    uint8_t job_class = 0) {
   CreateCharacterReqBuilder builder_(_fbb);
   builder_.add_nickname(nickname);
-  builder_.add_class_(class_);
+  builder_.add_job_class(job_class);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<CreateCharacterReq> CreateCreateCharacterReqDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
     const char *nickname = nullptr,
-    uint8_t class_ = 0) {
+    uint8_t job_class = 0) {
   auto nickname__ = nickname ? _fbb.CreateString(nickname) : 0;
   return account::CreateCreateCharacterReq(
       _fbb,
       nickname__,
-      class_);
+      job_class);
 }
 
 struct CreateCharacterAck FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {

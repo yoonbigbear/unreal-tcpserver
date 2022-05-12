@@ -29,26 +29,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -187,34 +187,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\action_node.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\basic_types.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\behavior_tree.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\blackboard.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\bt_factory.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\condition_node.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\fallback_node.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\if_then_else_node.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\parallel_node.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\reactive_fallback.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\reactive_sequence.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\sequence_node.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\sequence_star_node.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\switch_node.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\while_do_else_node.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\control_node.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\decorators\delay_node.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\decorators\inverter_node.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\decorators\repeat_node.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\decorators\retry_node.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\decorators\subtree_node.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\decorator_node.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\private\tinyxml2.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\shared_library.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\shared_library_WIN.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\tree_node.cpp" />
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\xml_parsing.cpp" />
-    <ClCompile Include="behaiviour_tree\btree.cpp" />
     <ClCompile Include="components\ai.cpp" />
     <ClCompile Include="components\transform.cpp" />
     <ClCompile Include="database\DB.cpp" />
@@ -232,41 +204,6 @@
     <ClCompile Include="world\zone.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\action_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\basic_types.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\behavior_tree.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\blackboard.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\bt_factory.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\bt_parser.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\condition_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\fallback_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\if_then_else_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\parallel_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\reactive_fallback.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\reactive_sequence.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\sequence_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\sequence_star_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\switch_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\while_do_else_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\control_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\blackboard_precondition.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\delay_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\force_failure_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\force_success_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\inverter_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\keep_running_until_failure_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\repeat_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\retry_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\subtree_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\timeout_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\timer_queue.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorator_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\exceptions.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\leaf_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\tree_node.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\xml_parsing.h" />
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\private\tinyxml2.h" />
-    <ClInclude Include="behaiviour_tree\btree.h" />
     <ClInclude Include="components\ai.h" />
     <ClInclude Include="components\transform.h" />
     <ClInclude Include="database\DB.h" />

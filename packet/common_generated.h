@@ -68,12 +68,12 @@ FLATBUFFERS_STRUCT_END(Vec2, 8);
 struct CharacterInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   typedef CharacterInfoBuilder Builder;
   enum FlatBuffersVTableOffset FLATBUFFERS_VTABLE_UNDERLYING_TYPE {
-    VT_CLASS_ = 4,
+    VT_JOB_CLASS = 4,
     VT_CHAR_ID = 6,
     VT_NICKNAME = 8
   };
-  uint8_t class_() const {
-    return GetField<uint8_t>(VT_CLASS_, 0);
+  uint8_t job_class() const {
+    return GetField<uint8_t>(VT_JOB_CLASS, 0);
   }
   uint64_t char_id() const {
     return GetField<uint64_t>(VT_CHAR_ID, 0);
@@ -83,7 +83,7 @@ struct CharacterInfo FLATBUFFERS_FINAL_CLASS : private flatbuffers::Table {
   }
   bool Verify(flatbuffers::Verifier &verifier) const {
     return VerifyTableStart(verifier) &&
-           VerifyField<uint8_t>(verifier, VT_CLASS_, 1) &&
+           VerifyField<uint8_t>(verifier, VT_JOB_CLASS, 1) &&
            VerifyField<uint64_t>(verifier, VT_CHAR_ID, 8) &&
            VerifyOffset(verifier, VT_NICKNAME) &&
            verifier.VerifyString(nickname()) &&
@@ -95,8 +95,8 @@ struct CharacterInfoBuilder {
   typedef CharacterInfo Table;
   flatbuffers::FlatBufferBuilder &fbb_;
   flatbuffers::uoffset_t start_;
-  void add_class_(uint8_t class_) {
-    fbb_.AddElement<uint8_t>(CharacterInfo::VT_CLASS_, class_, 0);
+  void add_job_class(uint8_t job_class) {
+    fbb_.AddElement<uint8_t>(CharacterInfo::VT_JOB_CLASS, job_class, 0);
   }
   void add_char_id(uint64_t char_id) {
     fbb_.AddElement<uint64_t>(CharacterInfo::VT_CHAR_ID, char_id, 0);
@@ -117,25 +117,25 @@ struct CharacterInfoBuilder {
 
 inline flatbuffers::Offset<CharacterInfo> CreateCharacterInfo(
     flatbuffers::FlatBufferBuilder &_fbb,
-    uint8_t class_ = 0,
+    uint8_t job_class = 0,
     uint64_t char_id = 0,
     flatbuffers::Offset<flatbuffers::String> nickname = 0) {
   CharacterInfoBuilder builder_(_fbb);
   builder_.add_char_id(char_id);
   builder_.add_nickname(nickname);
-  builder_.add_class_(class_);
+  builder_.add_job_class(job_class);
   return builder_.Finish();
 }
 
 inline flatbuffers::Offset<CharacterInfo> CreateCharacterInfoDirect(
     flatbuffers::FlatBufferBuilder &_fbb,
-    uint8_t class_ = 0,
+    uint8_t job_class = 0,
     uint64_t char_id = 0,
     const char *nickname = nullptr) {
   auto nickname__ = nickname ? _fbb.CreateString(nickname) : 0;
   return CreateCharacterInfo(
       _fbb,
-      class_,
+      job_class,
       char_id,
       nickname__);
 }

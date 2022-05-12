@@ -4,19 +4,20 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 public class Connector
 {
 	private Func<Session> _sessionFactory;
-
-	public void Connect(IPEndPoint endpoint, Func<Session> sessionFactory, int dummyClientCout = 1)
+	Session _session;
+	public void Connect(Session s, IPEndPoint endpoint, Func< Session> sessionFactory, int dummyClientCout = 1)
 	{
 		for(int i = 0; i < dummyClientCout; ++i)
 		{
 			var socket = new Socket(endpoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
 			_sessionFactory = sessionFactory;
-
+			_session = s;
 			SocketAsyncEventArgs args = new SocketAsyncEventArgs();
 			args.Completed += OnConnectCompleted;
 			args.RemoteEndPoint = endpoint;
@@ -34,6 +35,7 @@ public class Connector
 			return;
 
 		bool pending = socket.ConnectAsync(args);
+		Thread.Sleep(250);
 		if (!pending)
 			OnConnectCompleted(null, args);
 		
@@ -43,10 +45,10 @@ public class Connector
 	{
 		if (SocketError.Success == args.SocketError)
 		{
-			Session session = _sessionFactory.Invoke();
+			//_sessionFactory.Invoke();
 
-			session.Enter(args.ConnectSocket);
-			session.OnConnected(args.RemoteEndPoint);
+			_session.Enter(args.ConnectSocket);
+			_session.OnConnected(args.RemoteEndPoint);
 		}
 		else
 		{

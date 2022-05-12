@@ -3,6 +3,7 @@
 
 
 #pragma comment(lib, "net.lib")
+#pragma comment(lib, "flatbuffers.lib")
 
 #include <net_pch.h>
 #include "server/server_enum.h"

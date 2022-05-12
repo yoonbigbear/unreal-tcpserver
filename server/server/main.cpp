@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
 
     try
     {
-        net::CustomServer server(60001);
+        net::CustomServer server(60000);
         server.Start();
 
         /// 종료처리 제대로 되어있지 않음.

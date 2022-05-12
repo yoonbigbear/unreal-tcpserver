@@ -64,6 +64,8 @@ void CreateAccount(session::Shared session, message& msg)
                 BUILD_PACKET(CreateAccountAck, ResultCode_AleadyExist);
                 session->Send(pkt);
             }
+
+            DEBUG_LOG_INFO("Account Create Success");
         }
         catch (std::exception e)
         {
@@ -98,11 +100,11 @@ void LoginAccount(session::Shared session, message& msg)
 
                     // accout_id는 서버에서만 알도록 하며 세션에 저장해둔다.
                     session->acct_id(res.get<int>("acct_id"));
-
+                    exist = -1;
                     // 로그인 성공했으니 캐릭터 현황을 받아온다.
                     exist = DB::select_characters(session->acct_id(), res);
 
-                    if (exist > 0)
+                    if (exist == 1)
                     {
                         //캐릭터 숫자 몇인지 확인 후 캐릭터 정보까지 보내줘야함
                         net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
@@ -110,6 +112,24 @@ void LoginAccount(session::Shared session, message& msg)
 
                         flatbuffers::FlatBufferBuilder fbb(1024);
                         std::vector<flatbuffers::Offset<CharacterInfo>> character_infos;
+
+                        if (res.rowset_size() == 0)
+                        {
+                            //캐릭터 없음
+                            net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+                            pkt.header.id = Protocol_LoginAck;
+                            flatbuffers::FlatBufferBuilder fbb(1024);
+                            auto builder = account::LoginAckBuilder(fbb);
+                            builder.add_result(ResultCode_LoginSuccess);
+                            auto fin = builder.Finish();
+                            fbb.Finish(fin);
+                            pkt << fbb;
+                            session->Send(pkt);
+
+                            DEBUG_LOG_INFO("계정 접속 성공. 캐릭터 없음");
+                            return;
+                        }
+
                         while (res.next())
                         {
                             auto nickname = fbb.CreateString(res.get<std::string>("nickname"));
@@ -117,35 +137,20 @@ void LoginAccount(session::Shared session, message& msg)
                                 static_cast<char>(res.get<uint16_t>("class")),
                                 res.get<uint64_t>("char_id"),
                                 nickname));
+                            auto characters = fbb.CreateVector(character_infos);
+
+                            auto builder = account::LoginAckBuilder(fbb);
+                            builder.add_result(ResultCode_LoginSuccess);
+                            builder.add_characters(characters);
+                            auto fin = builder.Finish();
+                            fbb.Finish(fin);
+                            pkt << fbb;
+                            session->Send(pkt);
+
+                            DEBUG_LOG_INFO("계정 접속 성공. 캐릭터 보유.");
+                            return;
                         }
-                        auto characters = fbb.CreateVector(character_infos);
-
-                        auto builder = account::LoginAckBuilder(fbb);
-                        builder.add_result(ResultCode_LoginSuccess);
-                        builder.add_characters(characters);
-                        auto fin = builder.Finish();
-                        fbb.Finish(fin);
-                        pkt << fbb;
-                        session->Send(pkt);
-
-                        return;
                     }
-                    else
-                    {
-                        //캐릭터 없음
-                        net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
-                        pkt.header.id = Protocol_LoginAck;
-                        flatbuffers::FlatBufferBuilder fbb(1024);
-                        auto builder = account::LoginAckBuilder(fbb);
-                        builder.add_result(ResultCode_LoginSuccess);
-                        auto fin = builder.Finish();
-                        fbb.Finish(fin);
-                        pkt << fbb;
-                        session->Send(pkt);
-
-                        return;
-                    }
-
                 }
 
                 LOG_CRITICAL("select_account failed");
@@ -183,7 +188,7 @@ void CreateCharacter(session::Shared session, message msg)
 
     auto pkt = flatbuffers::GetRoot<account::CreateCharacterReq>(msg.body.data());
     auto nickname = pkt->nickname()->str();
-    auto class_id = pkt->class_();
+    auto class_id = pkt->job_class();
 
     asio::post([session, nickname, class_id, id]() {
 

@@ -4,17 +4,8 @@
     <Filter Include="database">
       <UniqueIdentifier>{5da1e30f-5c5b-4255-922f-22049fe08852}</UniqueIdentifier>
     </Filter>
-    <Filter Include="3rd">
-      <UniqueIdentifier>{be684c38-0473-4394-a43f-ad0d00ca8b2a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="3rd\behaviourTree">
-      <UniqueIdentifier>{58ab7cf8-aae6-470b-9907-10bd0b1a0b26}</UniqueIdentifier>
-    </Filter>
     <Filter Include="network">
       <UniqueIdentifier>{c2fb6b09-e3ba-4507-a299-af34eb3f53d3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="behaviour_tree">
-      <UniqueIdentifier>{4048e819-6955-4968-a929-9ff919886000}</UniqueIdentifier>
     </Filter>
     <Filter Include="server">
       <UniqueIdentifier>{00f936b6-a5cd-40c9-a0fd-1461994bf790}</UniqueIdentifier>
@@ -48,91 +39,7 @@
     <ClCompile Include="database\DB.cpp">
       <Filter>database</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\action_node.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\basic_types.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\behavior_tree.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\blackboard.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\bt_factory.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\condition_node.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\control_node.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\decorator_node.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\shared_library.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\shared_library_WIN.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\tree_node.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\xml_parsing.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\private\tinyxml2.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\parallel_node.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\reactive_fallback.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\reactive_sequence.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\sequence_node.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\sequence_star_node.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\switch_node.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\while_do_else_node.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\if_then_else_node.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\controls\fallback_node.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\decorators\delay_node.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\decorators\inverter_node.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\decorators\repeat_node.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\decorators\retry_node.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\decorators\subtree_node.cpp">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="behaiviour_tree\btree.cpp">
-      <Filter>behaviour_tree</Filter>
-    </ClCompile>
     <ClCompile Include="world\field.cpp">
       <Filter>world</Filter>
     </ClCompile>
@@ -177,112 +84,7 @@
     <ClInclude Include="database\DB.h">
       <Filter>database</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\action_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\basic_types.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\behavior_tree.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\blackboard.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\bt_factory.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\bt_parser.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\condition_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\control_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorator_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\exceptions.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\leaf_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\tree_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\xml_parsing.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\src\private\tinyxml2.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\fallback_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\if_then_else_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\parallel_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\reactive_fallback.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\reactive_sequence.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\sequence_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\sequence_star_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\switch_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\controls\while_do_else_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\blackboard_precondition.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\delay_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\force_failure_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\force_success_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\inverter_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\keep_running_until_failure_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\repeat_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\retry_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\subtree_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\timeout_node.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\3rdParty\BehaviorTree.CPP-master\include\behaviortree_cpp_v3\decorators\timer_queue.h">
-      <Filter>3rd\behaviourTree</Filter>
-    </ClInclude>
     <ClInclude Include="pch.h" />
-    <ClInclude Include="behaiviour_tree\btree.h">
-      <Filter>behaviour_tree</Filter>
-    </ClInclude>
     <ClInclude Include="world\field.h">
       <Filter>world</Filter>
     </ClInclude>

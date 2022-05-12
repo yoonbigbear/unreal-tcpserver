@@ -10,7 +10,7 @@ struct Vec2 {
 }
 
 table CharacterInfo{
-	class:ubyte;
+	job_class:ubyte;
 	char_id:ulong;
 	nickname:string;
 }
