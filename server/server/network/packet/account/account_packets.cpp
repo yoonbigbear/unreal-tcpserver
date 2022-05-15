@@ -326,11 +326,12 @@ void SelectCharacter(session::Shared session, message msg)
                     character->session(session);
                     character->start();
                     WorldManager::instance().EnterField(0, character);
+                    DEBUG_LOG_INFO("캐릭터 입장");
                 }
             }
             else
             {
-               // LOG_CRITICAL("없는 캐릭터 정보를 전송. acct_id:{} char_id:{}", session->acct_id(), char_id);
+                LOG_CRITICAL("없는 캐릭터 정보를 전송. acct_id:{} char_id:{}", session->acct_id(), char_id);
                 Vec3 pos(0, 0, 0);
 
                 net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
