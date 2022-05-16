@@ -13,9 +13,6 @@ namespace net
     {
     public:
 
-        using Shared = std::shared_ptr<Session>;
-        using Weak = std::weak_ptr<Session>;
-
         enum class owner
         {
             server,
@@ -30,7 +27,7 @@ namespace net
 
         virtual ~Session() {}
 
-        uint32_t GetId() const { return id_; }
+        const uint32_t id() const { return id_; }
 
         virtual void ConnectToClient(uint64_t id = 0)
         {
@@ -141,6 +138,11 @@ namespace net
                 });
         }
 
+        void WaitForRecv()
+        {
+            socket_.async_receive(asio::buffer(packet_queue_.front(), packet_queue_.front().header.bodysize),
+                )
+        }
         void ReadHeader()
         {
             asio::async_read(socket_, asio::buffer(&temporary_in_.header, sizeof(MessageHeader<T>)),
@@ -198,6 +200,9 @@ namespace net
         asio::io_context& io_context_;
         PacketQueue<Message<T,U>> message_out_;
         PacketQueue<OwnedMessage<T,U>>& message_in_;
+
+        PacketQueue<Packet> packet_queue_;
+
         Message<T, U> temporary_in_;
         owner owner_type_ = owner::server;
 
