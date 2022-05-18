@@ -18,11 +18,10 @@ using namespace boost;
 
 namespace net
 {
-    template<typename T = ClientSession<Protocol, flatbuffers::FlatBufferBuilder>>
-    class CustomServer : public ServerInterface<Protocol, T>
+    class CustomServer : public ServerInterface
     {
     public:
-        CustomServer(uint16_t port) : ServerInterface<Protocol, ClientSession<Protocol, flatbuffers::FlatBufferBuilder>>(port)
+        CustomServer(uint16_t port) : ServerInterface(port)
         {
             AccountPackets temp;
             temp.Start();
@@ -31,29 +30,25 @@ namespace net
         }
 
     protected:
-        virtual bool OnClientConnect(std::shared_ptr<T> client) override
+        virtual bool OnClientConnect(std::shared_ptr<Session> client) override
         {
             std::cout << "클라 세션 붙었음" << std::endl;
 
             return true;
         }
 
-        virtual void OnClientDisconnect(std::shared_ptr<T> client) override
+        virtual void OnClientDisconnect(std::shared_ptr<Session> client) override
         {
             std::cout << "Removing client [" << client << "]" << std::endl;
         }
 
-        virtual void OnMessage(std::shared_ptr<T> session, Message<Protocol, flatbuffer>& msg) override
+        virtual void OnMessage(std::shared_ptr<Session> session, Packet& msg) override
         {
-            if (msg.header.id == Protocol::Protocol_LoginReq)
-            {
-                DEBUG_LOG_WARNING("correction");
-            }
-            auto func = PacketManager::instance().packet_handler(msg.header.id);
+            auto func = PacketManager::instance().packet_handler(static_cast<Protocol>(msg.id));
             if (func)
                 func(session, msg);
             else
-                LOG_ERROR("No Callback Func protocol:{}", EnumNameProtocol(msg.header.id));
+                LOG_ERROR("No Callback Func protocol:{}", EnumNameProtocol(static_cast<Protocol>(msg.id)));
             
         }
     };

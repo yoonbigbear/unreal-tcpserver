@@ -80,13 +80,12 @@ namespace net
         }
     };
 
-    template <typename T, typename U>
     class Session;
 
     template <typename T, typename U>
     struct OwnedMessage
     {
-        std::shared_ptr<Session<T, U>> remote = nullptr;
+        std::shared_ptr<Session> remote = nullptr;
         Message<T, U> msg;
 
         friend std::ostream& operator<<(std::ostream& os, const OwnedMessage<T, U>& msg)

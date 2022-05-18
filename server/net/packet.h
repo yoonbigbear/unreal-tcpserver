@@ -6,18 +6,19 @@
 
 namespace net
 {
-    //헤더에 프로토콜 id와 body데이터의 사이즈가 담긴다.
-    struct PacketHeader
-    {
-        uint16_t id = 0;
-        uint32_t bodysize = 0;
-    };
-
     struct Packet
     {
-        PacketHeader header;
+        uint16_t id = 0;
+        uint16_t size = 0;
         std::vector<uint8_t> body;
     };
+
+    struct PacketSession
+    {
+        Packet packet_;
+        std::shared_ptr<Session> pacekt_owner_;
+    };
+
 } // namespace net
 
 #endif // _PACKET_H_

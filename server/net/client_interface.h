@@ -73,7 +73,7 @@ namespace net {
                 connection_->Send(msg);
         }
 
-        PacketQueue<OwnedMessage<T, flatbuffers::FlatBufferBuilder>>& Incoming()
+        PacketQueue<Packet>& Incoming()
         {
             return message_in_;
         }
@@ -84,7 +84,7 @@ namespace net {
         std::unique_ptr<Session<T, flatbuffers::FlatBufferBuilder>> connection_;
 
     private:
-        PacketQueue<OwnedMessage<T, flatbuffers::FlatBufferBuilder>> message_in_;
+        PacketQueue<Packet> message_in_;
     };
 
     enum {

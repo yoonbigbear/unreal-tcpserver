@@ -3,13 +3,15 @@
 
 #include "packet_queue.h"
 #include "message.h"
+#include "packet.h"
 
 using namespace boost;
 
 namespace net
 {
-    template<typename T, typename U>
-    class Session : public std::enable_shared_from_this<Session<T, U>>
+using SessionPtr = std::shared_ptr<Session>;
+
+    class Session : public std::enable_shared_from_this<Session>
     {
     public:
 
@@ -19,8 +21,9 @@ namespace net
             client
         };
 
-        Session(owner parent, asio::io_context& io_context, asio::ip::tcp::socket&& socket, PacketQueue<OwnedMessage<T,U>>& in)
-            : io_context_(io_context), socket_(std::move(socket)), message_in_(in)
+        Session(owner parent, asio::io_context& io_context,
+            asio::ip::tcp::socket&& socket, PacketQueue<PacketSession>& in)
+            : io_context_(io_context), socket_(std::move(socket)), queue_for_send_(in)
         {
             owner_type_ = parent;
         }
@@ -36,7 +39,7 @@ namespace net
                 if (socket_.is_open())
                 {
                     id_ = id;
-                    ReadHeader();
+                    WaitForRecv();
                 }
             }
         }
@@ -45,17 +48,15 @@ namespace net
         {
             if (owner_type_ == owner::client)
             {
-                asio::async_connect(socket_, endpoints, [this](std::error_code ec, asio::ip::tcp::endpoint endpoint)
+                asio::async_connect(socket_, endpoints,
+                    [this](std::error_code ec, asio::ip::tcp::endpoint endpoint)
                     {
-                        if (!ec)
-                        {
-                            ReadHeader();
-                            //세션을 만들어서 관리해준다.
-
-                        }
+                        //socket 연결 후 패킷 recv 시작
+                        WaitForRecv();
                     });
             }
         }
+
 
         virtual void Disconnect()
         {
@@ -71,94 +72,30 @@ namespace net
             return socket_.is_open();
         }
 
-        //void StartListening()
-        //{
-
-        //}
-
-        void Send(const Message<T, U>& msg)
+        void Send(const Packet& msg)
         {
             asio::post(io_context_, [this, msg]()
                 {
-                    bool writing_message = !message_out_.empty();
-                    message_out_.push_back(msg);
+                    bool writing_message = !send_packet_queue_.empty();
+                    send_packet_queue_.push_back(msg);
                     if (!writing_message)
-                        WriteHeader();
+                        WriteMessage();
                 });
         }
 
     private:
-        void WriteHeader()
-        {
-            asio::async_write(socket_, asio::buffer(&message_out_.front().header, sizeof(MessageHeader<T>)),
-                [this](std::error_code ec, std::size_t length)
-                {
-                    if (!ec)
-                    {
-                        if (message_out_.front().body.size() > 0)
-                        {
-                            WriteBody();
-                        }
-                        else
-                        {
-                            message_out_.pop_front();
-
-                            if (!message_out_.empty())
-                            {
-                                WriteHeader();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        LOG_ERROR("[{}] Write Header Fail", id_);
-                        Disconnect();
-                    }
-                });
-        }
-
-        void WriteBody()
-        {
-            asio::async_write(socket_, asio::buffer(message_out_.front().body.data(), message_out_.front().body.size()),
-                [this](std::error_code ec, std::size_t length)
-                {
-                    if (!ec)
-                    {
-                        message_out_.pop_front();
-                        if (!message_out_.empty())
-                        {
-                            WriteHeader();
-                        }
-                    }
-                    else
-                    {
-                        LOG_ERROR("[{}] Write Body Fail", id_);
-                        Disconnect();
-                    }
-                });
-        }
 
         void WaitForRecv()
         {
-            socket_.async_receive(asio::buffer(packet_queue_.front(), packet_queue_.front().header.bodysize),
-                )
-        }
-        void ReadHeader()
-        {
-            asio::async_read(socket_, asio::buffer(&temporary_in_.header, sizeof(MessageHeader<T>)),
-                [this](std::error_code ec, std::size_t length)
-                {
+            asio::async_read(socket_,
+                asio::buffer(&recv_packet_queue_.front(),
+                    recv_packet_queue_.front().size),
+                [this](std::error_code ec, std::size_t length) {
                     if (!ec)
                     {
-                        if (temporary_in_.header.size > 0)
-                        {
-                            temporary_in_.body.resize(temporary_in_.header.size);
-                            ReadBody();
-                        }
-                        else
-                        {
-                            AddToIncomingMessageQueue();
-                        }
+                        int i = 88;
+                        int j = i - 55;
+
                     }
                     else
                     {
@@ -167,46 +104,36 @@ namespace net
                     }
                 });
         }
-
-        void ReadBody()
+        void WriteMessage()
         {
-            asio::async_read(socket_, asio::buffer(temporary_in_.body.data(), temporary_in_.body.size()),
+            asio::async_write(socket_, 
+                asio::buffer(&send_packet_queue_.front(), send_packet_queue_.front().size),
                 [this](std::error_code ec, std::size_t length)
                 {
                     if (!ec)
                     {
-                        AddToIncomingMessageQueue();
+                        send_packet_queue_.pop_front();
                     }
                     else
                     {
-                        LOG_ERROR("[{}] Read Body Failure", id_);
+                        LOG_ERROR("[{}] Write Header Fail", id_);
                         Disconnect();
                     }
-                });
-        }
-
-        void AddToIncomingMessageQueue()
-        {
-            if (owner_type_ == owner::server)
-                message_in_.push_back({ this->shared_from_this(), temporary_in_ });
-            else
-                message_in_.push_back({ nullptr, temporary_in_ });
-
-            ReadHeader();
+                }
+            );
         }
 
     protected:
         asio::ip::tcp::socket socket_;
         asio::io_context& io_context_;
-        PacketQueue<Message<T,U>> message_out_;
-        PacketQueue<OwnedMessage<T,U>>& message_in_;
 
-        PacketQueue<Packet> packet_queue_;
+        std::deque<Packet> recv_packet_queue_;
+        std::deque<Packet> send_packet_queue_;
 
-        Message<T, U> temporary_in_;
+        PacketQueue<PacketSession>& queue_for_send_;
         owner owner_type_ = owner::server;
 
-        uint64_t id_ = 0;
+        uint32_t id_ = 0;
     };
 } // namespace net
 

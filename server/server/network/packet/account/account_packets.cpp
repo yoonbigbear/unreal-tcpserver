@@ -20,12 +20,12 @@
 using snowflake_t = net::snowflake<1534832906275L>;
 
 
-void CreateAccount(session::Shared session, message& msg);
-void LoginAccount(session::Shared session, message& msg);
+void CreateAccount(SessionPtr session, const Packet& msg);
+void LoginAccount(SessionPtr session, const Packet& msg);
 
-void CreateCharacter(session::Shared session, message msg);
-void CheckNickname(session::Shared session, message msg);
-void SelectCharacter(session::Shared session, message msg);
+void CreateCharacter(SessionPtr session, const Packet& msg);
+void CheckNickname(SessionPtr session, const Packet& msg);
+void SelectCharacter(SessionPtr session, const Packet& msg);
 
 void AccountPackets::Start()
 {
@@ -36,7 +36,7 @@ void AccountPackets::Start()
     PacketManager::instance().Bind(Protocol_SelectCharacterReq, SelectCharacter);
 }
 
-void CreateAccount(session::Shared session, message& msg)
+void CreateAccount(SessionPtr session, const Packet& msg)
 {
     auto pkt = flatbuffers::GetRoot<account::CreateAccountReq>(msg.body.data());
     auto login_id = pkt->id()->str();
@@ -75,7 +75,7 @@ void CreateAccount(session::Shared session, message& msg)
     });
 }
 
-void LoginAccount(session::Shared session, message& msg)
+void LoginAccount(SessionPtr session, const Packet& msg)
 {
     auto pkt = flatbuffers::GetRoot<account::LoginReq>(msg.body.data());
     auto login_id = pkt->id()->str();
@@ -179,7 +179,7 @@ void LoginAccount(session::Shared session, message& msg)
 }
 
 
-void CreateCharacter(session::Shared session, message msg)
+void CreateCharacter(SessionPtr session, const Packet& msg)
 {
     //id를 새로 만들어줘야 하는데 일단은 그냥 하자
     snowflake_t uuid;
@@ -237,7 +237,7 @@ void CreateCharacter(session::Shared session, message msg)
         });
 }
 
-void CheckNickname(session::Shared session, message msg)
+void CheckNickname(SessionPtr session, const Packet& msg)
 {
     auto pkt = flatbuffers::GetRoot<account::CheckCharacterNicknameReq>(msg.body.data());
     auto nickname = pkt->nickname()->str();
@@ -286,7 +286,7 @@ void CheckNickname(session::Shared session, message msg)
         });
 }
 
-void SelectCharacter(session::Shared session, message msg)
+void SelectCharacter(SessionPtr session, const Packet& msg)
 {
     //Req 패킷 수신
     auto pkt = flatbuffers::GetRoot<account::SelectCharacterReq>(msg.body.data());

@@ -7,20 +7,17 @@
 
 using namespace net;
 
-template<typename T = Protocol, typename U = flatbuffers::FlatBufferBuilder>
-class ClientSession : public net::Session<T, U>
+class ClientSession : public net::Session
 {
 public:
-    using Shared = std::shared_ptr<ClientSession<T, U>>;
-    using Weak = std::weak_ptr<ClientSession<T, U>>;
-
     ClientSession() = delete;
-    ClientSession(net::Session<T, U>::owner parent, asio::io_context& io_context, asio::ip::tcp::socket&& socket, net::PacketQueue<net::OwnedMessage<T, U>>& in)
-        : net::Session<T, U>(parent, io_context, std::move(socket), in) {}
+    ClientSession(net::Session::owner parent, asio::io_context& io_context,
+        asio::ip::tcp::socket&& socket, net::PacketQueue<PacketSession>& in)
+        : net::Session(parent, io_context, std::move(socket), in) {}
 
     virtual void Disconnect() override
     {
-        net::Session<T, U>::Disconnect();
+        net::Session::Disconnect();
     }
 
 
@@ -34,5 +31,5 @@ private:
 
 }; // class ClientSession
 
-using SessionPtr = ClientSession<Protocol, flatbuffer>::Shared;
+using ClientSessionPtr = std::shared_ptr<ClientSession>;
 #endif // !_CLIENT_SESSION_H_
