@@ -2,14 +2,19 @@
 #define _CONNECTION_H_
 
 #include "packet_queue.h"
-#include "message.h"
-#include "packet.h"
 
 using namespace boost;
 
 namespace net
 {
-using SessionPtr = std::shared_ptr<Session>;
+    struct Packet
+    {
+        uint16_t id = 0;
+        uint16_t size = 0;
+        std::vector<uint8_t> body;
+    };
+
+    class PacketSession;
 
     class Session : public std::enable_shared_from_this<Session>
     {
@@ -20,7 +25,7 @@ using SessionPtr = std::shared_ptr<Session>;
             server,
             client
         };
-
+        Session() = delete;
         Session(owner parent, asio::io_context& io_context,
             asio::ip::tcp::socket&& socket, PacketQueue<PacketSession>& in)
             : io_context_(io_context), socket_(std::move(socket)), queue_for_send_(in)
@@ -30,7 +35,10 @@ using SessionPtr = std::shared_ptr<Session>;
 
         virtual ~Session() {}
 
-        const uint32_t id() const { return id_; }
+        const uint64_t id() const { return id_; }
+
+        int acct_id() { return acct_id_; }
+        void acct_id(int id) { acct_id_ = id; }
 
         virtual void ConnectToClient(uint64_t id = 0)
         {
@@ -87,6 +95,7 @@ using SessionPtr = std::shared_ptr<Session>;
 
         void WaitForRecv()
         {
+            //async_read를 잘 받으려면 어떻게 해야 하는가
             asio::async_read(socket_,
                 asio::buffer(&recv_packet_queue_.front(),
                     recv_packet_queue_.front().size),
@@ -133,8 +142,19 @@ using SessionPtr = std::shared_ptr<Session>;
         PacketQueue<PacketSession>& queue_for_send_;
         owner owner_type_ = owner::server;
 
-        uint32_t id_ = 0;
+        uint64_t id_ = 0;
+        int acct_id_ = 0;
     };
+
+    class PacketSession
+    {
+    public:
+        Packet packet_;
+        std::shared_ptr<Session> packet_owner_;
+    };
+
+    using PacketSessionPtr = std::shared_ptr<PacketSession>;
+    using SessionPtr = std::shared_ptr<Session>;
 } // namespace net
 
 #endif // _CONNECTION_H_

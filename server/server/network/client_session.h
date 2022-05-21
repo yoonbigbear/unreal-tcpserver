@@ -20,16 +20,9 @@ public:
         net::Session::Disconnect();
     }
 
-
-    int acct_id() { return acct_id_; }
-    void acct_id(int id) { acct_id_ = id; }
-
-
 private:
-    int acct_id_ = 0;
 
 
 }; // class ClientSession
 
-using ClientSessionPtr = std::shared_ptr<ClientSession>;
 #endif // !_CLIENT_SESSION_H_

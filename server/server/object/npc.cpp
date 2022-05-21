@@ -38,13 +38,15 @@ void Npc::Update(float dt)
         auto length = d.Normalize();
         auto vec2 = Vec2(d.x, d.y);
 
-        net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
-        pkt.header.id = Protocol_MoveStartSync;
+        Packet pkt;
+        pkt.id = Protocol_MoveStartSync;
         flatbuffer fbb(1024);
 
         auto builder = world::CreateMoveStartSync(fbb, obj_id(), &vec2, 0.01f);
         fbb.Finish(builder);
-        pkt << fbb;
+        pkt.size = fbb.GetSize();
+        pkt.body.resize(pkt.size);
+        std::memcpy(pkt.body.data(), fbb.GetBufferPointer(), pkt.size);
         field_->Broadcast(pkt);
     }
     else
@@ -64,12 +66,14 @@ void Npc::Update(float dt)
 
             auto vec3 = Vec3(transform()->position().x, transform()->position().y, transform()->position().z);
 
-            net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
-            pkt.header.id = Protocol_MoveStopSync;
+            Packet pkt;
+            pkt.id = Protocol_MoveStopSync;
             flatbuffer fbb(1024);
             auto builder = world::CreateMoveStopSync(fbb, obj_id(), &vec3);
             fbb.Finish(builder);
-            pkt << fbb;
+            pkt.size = fbb.GetSize();
+            pkt.body.resize(pkt.size);
+            std::memcpy(pkt.body.data(), fbb.GetBufferPointer(), pkt.size);
             field_->Broadcast(pkt);
             return;
         }

@@ -2,6 +2,7 @@
 #define _SERVER_INTERFACE_H_
 
 #include "pch.h"
+#include "network/client_session.h"
 
 namespace net {
 
@@ -75,7 +76,7 @@ namespace net {
                 });
         }
 
-        void MessageClient(std::shared_ptr<Session> client, const Packet& msg)
+        void MessageClient(SessionPtr client, const Packet& msg)
         {
             if (client && client->IsConnected())
             {
@@ -89,7 +90,7 @@ namespace net {
             }
         }
 
-        void MessageAllClients(const Packet& msg, std::shared_ptr<Session> ignore_client = nullptr)
+        void MessageAllClients(const Packet& msg, SessionPtr ignore_client = nullptr)
         {
             bool invalid_client_exists = false;
 
@@ -123,7 +124,7 @@ namespace net {
             while (message_count < max_messages && !queue_wait_for_send_.empty())
             {
                 auto msg = queue_wait_for_send_.pop_front();
-                auto clientsession = std::static_pointer_cast<Session>(msg.pacekt_owner_);
+                auto clientsession = msg.packet_owner_;
                 OnMessage(clientsession, msg.packet_);
                 message_count++;
             }
@@ -148,7 +149,7 @@ namespace net {
     protected:
         PacketQueue<PacketSession> queue_wait_for_send_;
 
-        std::deque<std::shared_ptr<Session>> sessions_;
+        std::deque<SessionPtr> sessions_;
         asio::io_context io_context_;
         std::thread thread_context_;
         asio::ip::tcp::acceptor acceptor_;

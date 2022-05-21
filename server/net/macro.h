@@ -57,16 +57,16 @@
 
 // "Protocol_"À» »« ÆÐÅ¶id
 #define BUILD_PACKET(protocol, ...)   \
-net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt; \
-pkt.header.id = Protocol_##protocol##;  \
+net::Packet pkt; \
+pkt.id = Protocol_##protocol##;  \
 flatbuffers::FlatBufferBuilder fbb(1024);   \
 auto builder = account::Create##protocol##Direct(fbb, ##__VA_ARGS__);    \
 fbb.Finish(builder);    \
 pkt << fbb;
 
 #define BUILD_SIMPLE_PACKET(protocol, ...)   \
-net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt; \
-pkt.header.id = Protocol_##protocol##;  \
+net::Packet pkt; \
+pkt.id = Protocol_##protocol##;  \
 flatbuffers::FlatBufferBuilder fbb(1024);   \
 auto builder = account::Create##protocol##(fbb, ##__VA_ARGS__);    \
 fbb.Finish(builder);    \

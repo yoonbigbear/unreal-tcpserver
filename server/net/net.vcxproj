@@ -177,7 +177,6 @@
   <ItemGroup>
     <ClInclude Include="client_interface.h" />
     <ClInclude Include="net_pch.h" />
-    <ClInclude Include="packet.h" />
     <ClInclude Include="server_interface.h" />
     <ClInclude Include="session.h" />
     <ClInclude Include="macro.h" />
