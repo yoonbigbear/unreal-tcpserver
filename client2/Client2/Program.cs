@@ -61,12 +61,18 @@ namespace Client2
 				builder.Finish(acc.Value);
 				var body = builder.SizedByteArray();
 
-				byte[] header = new byte[8];
-				Array.Copy(BitConverter.GetBytes((int)Protocol.LoginReq), 0, header, 0, sizeof(int));
-				Array.Copy(BitConverter.GetBytes(body.Length), 0, header, 4, sizeof(int));
+				byte[] sendBuf = new byte[body.Length + 4];
+				Array.Copy(BitConverter.GetBytes((ushort)Protocol.LoginReq), 0, sendBuf, 0, sizeof(ushort));
+				Array.Copy(BitConverter.GetBytes(body.Length), 0, sendBuf, 2, sizeof(ushort));
+				Array.Copy(body, 0, sendBuf, 4, body.Length);
+				socket.Send(sendBuf);
 
-				socket.Send(header);
-				socket.Send(body);
+				//byte[] header = new byte[8 + body.Length];
+				//Array.Copy(BitConverter.GetBytes((ushort)Protocol.LoginReq), 0, header, 0, sizeof(short));
+				//Array.Copy(BitConverter.GetBytes(body.Length), 0, header, 2, sizeof(short));
+				//Array.Copy(BitConverter.GetBytes(body), 0, header, 2, sizeof(short));
+				//socket.Send(header);
+				//socket.Send(body);
 			}
 
 			{
@@ -74,18 +80,16 @@ namespace Client2
 				socket.Receive(recvbuf);
 				{
 					var offset = 0;
-					var prot = BitConverter.ToUInt32(recvbuf, offset);
-					offset += 4;
-					var size = BitConverter.ToUInt32(recvbuf, offset);
-					offset += 4;
-					var body_buf = new byte[size];
-					socket.Receive(body_buf);
+					var prot = BitConverter.ToUInt16(recvbuf, offset);
+					offset += 2;
+					var size = BitConverter.ToUInt16(recvbuf, offset);
+					offset += 2;
 
 					Protocol rceived_id = (Protocol)prot;
 					Console.WriteLine($"{rceived_id.ToString()}");
 					{
 
-						var recv = new ByteBuffer(body_buf, 0);
+						var recv = new ByteBuffer(recvbuf, offset);
 						var wor = account.LoginAck.GetRootAsLoginAck(recv);
 						for (int i = 0; i < wor.CharactersLength; ++i)
 						{
@@ -128,30 +132,33 @@ namespace Client2
 				builder.Finish(b.Value);
 				var body = builder.SizedByteArray();
 
-				byte[] header = new byte[8];
-				Array.Copy(BitConverter.GetBytes((int)Protocol.SelectCharacterReq), 0, header, 0, sizeof(int));
-				Array.Copy(BitConverter.GetBytes(body.Length), 0, header, 4, sizeof(int));
+				byte[] sendBuf = new byte[body.Length + 4];
+				Array.Copy(BitConverter.GetBytes((ushort)Protocol.SelectCharacterReq), 0, sendBuf, 0, sizeof(ushort));
+				Array.Copy(BitConverter.GetBytes(body.Length), 0, sendBuf, 2, sizeof(ushort));
+				Array.Copy(body, 0, sendBuf, 4, body.Length);
 
-				socket.Send(header);
-				socket.Send(body);
+				//byte[] header = new byte[8];
+				//Array.Copy(BitConverter.GetBytes((int)Protocol.SelectCharacterReq), 0, header, 0, sizeof(int));
+				//Array.Copy(BitConverter.GetBytes(body.Length), 0, header, 4, sizeof(int));
+
+				//socket.Send(header);
+				socket.Send(sendBuf);
 
 				{
 					byte[] recvbuf = new byte[1024];
 					socket.Receive(recvbuf);
 					{
 						var offset = 0;
-						var prot = BitConverter.ToUInt32(recvbuf, offset);
-						offset += 4;
-						var size = BitConverter.ToUInt32(recvbuf, offset);
-						offset += 4;
-						var body_buf = new byte[size];
-						socket.Receive(body_buf);
+						var prot = BitConverter.ToUInt16(recvbuf, offset);
+						offset += 2;
+						var size = BitConverter.ToUInt16(recvbuf, offset);
+						offset += 2;
 
 						Protocol rceived_id = (Protocol)prot;
 						Console.WriteLine($"{rceived_id.ToString()}");
 						{
 
-							var recv = new ByteBuffer(body_buf, 0);
+							var recv = new ByteBuffer(recvbuf, offset);
 							var wor = account.SelectCharacterAck.GetRootAsSelectCharacterAck(recv);
 							
 							Console.WriteLine($"{wor.Position.Value.X}  {wor.Position.Value.Y}  {wor.Position.Value.Z}");
@@ -165,16 +172,18 @@ namespace Client2
 				byte[] buf = new byte[1024];
 				socket.Receive(buf);
 				{
-					var id = BitConverter.ToUInt32(buf, 0);
-					var size = BitConverter.ToUInt32(buf, 4);
+					var offset = 0;
+					var id = BitConverter.ToUInt16(buf, offset);
+					offset += 2;
+					var size = BitConverter.ToUInt16(buf, offset);
+					offset += 2;
+
 					switch ((Protocol)id)
 					{
 						case Protocol.MoveStartSync:
 							{
-								var body_buf = new byte[size];
-								socket.Receive(body_buf);
 
-								var recvBuf = new ByteBuffer(body_buf, 0);
+								var recvBuf = new ByteBuffer(buf, offset);
 								var wor = world.MoveStartSync.GetRootAsMoveStartSync(recvBuf);
 								var objid = wor.ObjId;
 								var dir = wor.Dir;
@@ -184,10 +193,7 @@ namespace Client2
 							break;
 						case Protocol.EnterFieldSync:
 							{
-								var body_buf = new byte[size];
-								socket.Receive(body_buf);
-
-								var recvBuf = new ByteBuffer(body_buf, 0);
+								var recvBuf = new ByteBuffer(buf, offset);
 								var wor = world.EnterFieldSync.GetRootAsEnterFieldSync(recvBuf);
 								for (int i = 0; i < wor.ObjIdLength; ++i)
 								{
@@ -199,10 +205,7 @@ namespace Client2
 							break;
 						case Protocol.MoveStopSync:
 							{
-								var body_buf = new byte[size];
-								socket.Receive(body_buf);
-
-								var recvBuf = new ByteBuffer(body_buf, 0);
+								var recvBuf = new ByteBuffer(buf, offset);
 								var wor = world.MoveStopSync.GetRootAsMoveStopSync(recvBuf);
 								var objid = wor.ObjId;
 								Console.WriteLine($"{objid}");

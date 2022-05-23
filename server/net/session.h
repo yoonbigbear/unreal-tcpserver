@@ -103,6 +103,15 @@ namespace net
                     {
                         if (length > 0)
                         {
+                            Packet packet;
+
+                            memcpy(&packet.id, tempbuffer_, 2);
+                            memcpy(&packet.size, tempbuffer_ + 2, 4);
+                            packet.body.resize(packet.size);
+                            LOG_INFO("{} sizeof packet", packet.size);
+                            memcpy(&packet.body, &tempbuffer_ + 4, packet.size);
+                            recv_packet_queue_.emplace_back(std::move(packet));
+                            WaitForRecv();
                         }
                     }
                     else
@@ -128,6 +137,11 @@ namespace net
                     }
                 }
             );
+        }
+
+        void AddToRecvQueue(BYTE* buffer, int legnth)
+        {
+
         }
 
     protected:
