@@ -95,23 +95,21 @@ namespace net
 
         void WaitForRecv()
         {
-            //async_read를 잘 받으려면 어떻게 해야 하는가
-            asio::async_read(socket_,
-                asio::buffer(&recv_packet_queue_.front(),
-                    recv_packet_queue_.front().size),
+            memset(&tempbuffer_, 0, sizeof(tempbuffer_));
+            socket_.async_read_some(
+                asio::buffer(tempbuffer_),
                 [this](std::error_code ec, std::size_t length) {
                     if (!ec)
                     {
-                        int i = 88;
-                        int j = i - 55;
-
+                        if (length > 0)
+                        {
+                        }
                     }
                     else
                     {
                         LOG_ERROR("[{}] Read Header Failure", id_);
                         Disconnect();
-                    }
-                });
+                    }});
         }
         void WriteMessage()
         {
@@ -136,6 +134,7 @@ namespace net
         asio::ip::tcp::socket socket_;
         asio::io_context& io_context_;
 
+        BYTE tempbuffer_[1024] = {};
         std::deque<Packet> recv_packet_queue_;
         std::deque<Packet> send_packet_queue_;
 
