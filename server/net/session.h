@@ -2,7 +2,7 @@
 #define _CONNECTION_H_
 
 #include "packet_queue.h"
-
+#include <concurrent_queue.h>
 using namespace boost;
 
 namespace net
@@ -104,21 +104,23 @@ namespace net
                         if (length > 0)
                         {
                             Packet packet;
-
                             memcpy(&packet.id, tempbuffer_, 2);
-                            memcpy(&packet.size, tempbuffer_ + 2, 4);
+                            memcpy(&packet.size, tempbuffer_ + 2, 2);
                             packet.body.resize(packet.size);
-                            LOG_INFO("{} sizeof packet", packet.size);
-                            memcpy(&packet.body, &tempbuffer_ + 4, packet.size);
-                            recv_packet_queue_.emplace_back(std::move(packet));
-                            WaitForRecv();
+                            memcpy(packet.body.data(), &tempbuffer_ + 4, packet.size);
+                            recv_packet_queue_.push(std::move(packet));
                         }
+
+                        WaitForRecv();
+
                     }
                     else
                     {
                         LOG_ERROR("[{}] Read Header Failure", id_);
                         Disconnect();
-                    }});
+                    }
+                    
+                });
         }
         void WriteMessage()
         {
@@ -139,17 +141,12 @@ namespace net
             );
         }
 
-        void AddToRecvQueue(BYTE* buffer, int legnth)
-        {
-
-        }
-
     protected:
         asio::ip::tcp::socket socket_;
         asio::io_context& io_context_;
 
         BYTE tempbuffer_[1024] = {};
-        std::deque<Packet> recv_packet_queue_;
+        concurrency::concurrent_queue<Packet> recv_packet_queue_;
         std::deque<Packet> send_packet_queue_;
 
         PacketQueue<PacketSession>& queue_for_send_;
