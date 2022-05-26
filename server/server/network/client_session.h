@@ -12,7 +12,7 @@ class ClientSession : public net::Session
 public:
     ClientSession() = delete;
     ClientSession(net::Session::owner parent, asio::io_context& io_context,
-        asio::ip::tcp::socket&& socket, net::PacketQueue<PacketSession>& in)
+        asio::ip::tcp::socket&& socket, PacketQueue<PacketSession>& in)
         : net::Session(parent, io_context, std::move(socket), in) {}
 
     virtual void Disconnect() override

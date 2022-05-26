@@ -53,7 +53,7 @@ namespace net {
                     {
                         std::cout << "[SERVER] New Connection: " << socket.remote_endpoint() << std::endl;
                         auto newconn =
-                            std::make_shared<Session>(Session::owner::server,
+                            std::make_shared<ClientSession>(Session::owner::server,
                                 io_context_, std::move(socket), queue_wait_for_send_);
 
                         if (OnClientConnect(newconn))
@@ -149,7 +149,7 @@ namespace net {
     protected:
         PacketQueue<PacketSession> queue_wait_for_send_;
 
-        std::deque<SessionPtr> sessions_;
+        std::deque<std::shared_ptr<ClientSession>> sessions_;
         asio::io_context io_context_;
         std::thread thread_context_;
         asio::ip::tcp::acceptor acceptor_;

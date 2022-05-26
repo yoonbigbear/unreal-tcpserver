@@ -3,6 +3,7 @@
 
 #include "packet_queue.h"
 #include <concurrent_queue.h>
+
 using namespace boost;
 
 namespace net
@@ -14,7 +15,24 @@ namespace net
         std::vector<uint8_t> body;
     };
 
-    class PacketSession;
+    class Session;
+    class PacketSession
+    {
+    public:
+        PacketSession() = default;
+        PacketSession(Packet&& packet, std::shared_ptr<Session> owner)
+        {
+            packet_ = packet;
+            packet_owner_ = owner;
+        }
+        PacketSession(Packet& packet, std::shared_ptr<Session> owner)
+        {
+            packet_ = packet;
+            packet_owner_ = owner;
+        }
+        Packet packet_;
+        std::shared_ptr<Session> packet_owner_;
+    };
 
     class Session : public std::enable_shared_from_this<Session>
     {
@@ -28,7 +46,7 @@ namespace net
         Session() = delete;
         Session(owner parent, asio::io_context& io_context,
             asio::ip::tcp::socket&& socket, PacketQueue<PacketSession>& in)
-            : io_context_(io_context), socket_(std::move(socket)), queue_for_send_(in)
+            : io_context_(io_context), socket_(std::move(socket)), recv_packet_queue_(in)
         {
             owner_type_ = parent;
         }
@@ -64,7 +82,6 @@ namespace net
                     });
             }
         }
-
 
         virtual void Disconnect()
         {
@@ -103,12 +120,7 @@ namespace net
                     {
                         if (length > 0)
                         {
-                            Packet packet;
-                            memcpy(&packet.id, tempbuffer_, 2);
-                            memcpy(&packet.size, tempbuffer_ + 2, 2);
-                            packet.body.resize(packet.size);
-                            memcpy(packet.body.data(), &tempbuffer_ + 4, packet.size);
-                            recv_packet_queue_.push(std::move(packet));
+                            AddToRecvQueue();
                         }
 
                         WaitForRecv();
@@ -141,27 +153,32 @@ namespace net
             );
         }
 
+        void AddToRecvQueue()
+        {
+            PacketSession msg;
+
+            memcpy(&msg.packet_.id, tempbuffer_, 2);
+            memcpy(&msg.packet_.size, tempbuffer_ + 2, 2);
+            msg.packet_.body.resize(msg.packet_.size);
+            memcpy(msg.packet_.body.data(), &tempbuffer_ + 4, msg.packet_.size);
+            msg.packet_owner_ = this->shared_from_this();
+            recv_packet_queue_.push_back(msg);
+        }
     protected:
         asio::ip::tcp::socket socket_;
         asio::io_context& io_context_;
 
         BYTE tempbuffer_[1024] = {};
-        concurrency::concurrent_queue<Packet> recv_packet_queue_;
+        PacketQueue<PacketSession>& recv_packet_queue_;
         std::deque<Packet> send_packet_queue_;
 
-        PacketQueue<PacketSession>& queue_for_send_;
         owner owner_type_ = owner::server;
 
         uint64_t id_ = 0;
         int acct_id_ = 0;
     };
 
-    class PacketSession
-    {
-    public:
-        Packet packet_;
-        std::shared_ptr<Session> packet_owner_;
-    };
+  
 
     using PacketSessionPtr = std::shared_ptr<PacketSession>;
     using SessionPtr = std::shared_ptr<Session>;
