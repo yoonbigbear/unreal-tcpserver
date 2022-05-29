@@ -157,10 +157,13 @@ namespace net
         {
             PacketSession msg;
 
-            memcpy(&msg.packet_.id, tempbuffer_, 2);
-            memcpy(&msg.packet_.size, tempbuffer_ + 2, 2);
+            int offset = 0;
+            memcpy(&msg.packet_.id, tempbuffer_, sizeof(short));
+            offset += sizeof(short);
+            memcpy(&msg.packet_.size, tempbuffer_ + offset, offset);
+            offset += sizeof(short);
             msg.packet_.body.resize(msg.packet_.size);
-            memcpy(msg.packet_.body.data(), &tempbuffer_ + 4, msg.packet_.size);
+            memcpy(msg.packet_.body.data(), tempbuffer_ + offset, msg.packet_.size);
             msg.packet_owner_ = this->shared_from_this();
             recv_packet_queue_.push_back(msg);
         }
