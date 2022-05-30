@@ -41,12 +41,33 @@ void PacketTest(CustomClient& c)
 
     //login account
     {
-        BUILD_PACKET(LoginReq, "sampleId", "samplePassword");
+        net::Packet pkt;
+        pkt.id = Protocol_LoginReq;
+
+        flatbuffers::FlatBufferBuilder fbb(1024);
+        auto id = fbb.CreateString("sampleid");
+        auto pw = fbb.CreateString("samplepassword");
+        account::LoginReqBuilder builder(fbb);
+        builder.add_id(id);
+        builder.add_pw(pw);
+        auto fin = builder.Finish();
+        fbb.Finish(fin);
+        pkt.size = fbb.GetSize();
+
+        pkt.body.resize(pkt.size);
+        memcpy(pkt.body.data(), fbb.GetBufferPointer(), pkt.size);
+    
         c.Send(pkt);
 
-        WAIT_UNTIL_BEGIN(Protocol::Protocol_LoginAck);
+        while (true) 
+        {
+            if (!c.Incoming().empty()) 
+            {
+                auto msg = c.Incoming().pop_front();
+                if (msg.packet_.id == Protocol::Protocol_LoginAck) 
+                {
 
-        auto body = flatbuffers::GetRoot<account::LoginAck>(msg.msg.body.data());
+        auto body = flatbuffers::GetRoot<account::LoginAck>(msg.packet_.body.data());
         if (body->result() == ResultCode_LoginSuccess)
         {
             if (body->characters()->size() > 0)
@@ -112,7 +133,7 @@ void PacketTest(CustomClient& c)
     }*/
 
     // select character
-    {
+   /* {
         BUILD_SIMPLE_PACKET(SelectCharacterReq, 484280193545015296);
         c.Send(pkt);
 
@@ -132,95 +153,95 @@ void PacketTest(CustomClient& c)
 
         break;
         WAIT_UNTIL_END;
-    }
+    }*/
 
-    auto start = std::chrono::high_resolution_clock::now();
-    auto now = std::chrono::high_resolution_clock::now();
+    //auto start = std::chrono::high_resolution_clock::now();
+    //auto now = std::chrono::high_resolution_clock::now();
     
-    std::unordered_map<uint32_t, GameObject> objs;
-    while (true)
-    {
-        now = std::chrono::high_resolution_clock::now();
-        auto interval = now - start;
-        start = now;
-        auto dt = interval.count() * 0.000'001;
+    //std::unordered_map<uint32_t, GameObject> objs;
+    //while (true)
+    //{
+    //    now = std::chrono::high_resolution_clock::now();
+    //    auto interval = now - start;
+    //    start = now;
+    //    auto dt = interval.count() * 0.000'001;
 
 
-        if (!c.Incoming().empty())
-        {
-            auto msg = c.Incoming().pop_front();
+    //    if (!c.Incoming().empty())
+    //    {
+    //        auto msg = c.Incoming().pop_front();
 
-            switch (msg.msg.header.id)
-            {
-            case Protocol::Protocol_EnterFieldSync:
-            {
-                auto body = flatbuffers::GetRoot<world::EnterFieldSync>(msg.msg.body.data());
-                if (body)
-                {
-                    auto id_list = body->obj_id();
-                    auto pos_list = body->pos();
+    //        switch (msg.msg.header.id)
+    //        {
+    //        case Protocol::Protocol_EnterFieldSync:
+    //        {
+    //            auto body = flatbuffers::GetRoot<world::EnterFieldSync>(msg.msg.body.data());
+    //            if (body)
+    //            {
+    //                auto id_list = body->obj_id();
+    //                auto pos_list = body->pos();
 
-                    auto count = id_list->size();
+    //                auto count = id_list->size();
 
-                    int id;
-                    GameObject obj;
-                    Vec3 pos;
-                    for (int i = 0; i < count; ++i)
-                    {
-                        id = id_list->Get(i);
-                        pos = *pos_list->Get(i);
+    //                int id;
+    //                GameObject obj;
+    //                Vec3 pos;
+    //                for (int i = 0; i < count; ++i)
+    //                {
+    //                    id = id_list->Get(i);
+    //                    pos = *pos_list->Get(i);
 
-                        LOG_INFO("[입장] obj:{} x: {} y: {} z: {}", id, pos.x(), pos.y(), pos.z());
-                        obj.v = pos;
-                        objs[id] = std::move(obj);
-                        
-                    }
-                }
-            }
-            break;
+    //                    LOG_INFO("[입장] obj:{} x: {} y: {} z: {}", id, pos.x(), pos.y(), pos.z());
+    //                    obj.v = pos;
+    //                    objs[id] = std::move(obj);
+    //                    
+    //                }
+    //            }
+    //        }
+    //        break;
 
-            case Protocol::Protocol_MoveStartSync:
-            {
-                auto body = flatbuffers::GetRoot<world::MoveStartSync>(msg.msg.body.data());
-                if (body)
-                {
-                    auto id = body->obj_id();
-                    Vec2 dir = *body->dir();
-                    float spd = body->speed();
-                    //LOG_INFO("obj:{} dir: {} {}", id, dir.x(), dir.y());
+    //        case Protocol::Protocol_MoveStartSync:
+    //        {
+    //            auto body = flatbuffers::GetRoot<world::MoveStartSync>(msg.msg.body.data());
+    //            if (body)
+    //            {
+    //                auto id = body->obj_id();
+    //                Vec2 dir = *body->dir();
+    //                float spd = body->speed();
+    //                //LOG_INFO("obj:{} dir: {} {}", id, dir.x(), dir.y());
 
-                    objs[id].d = dir;
-                    objs[id].spd = spd;
-                    objs[id].move = true;
-                }
-            }
-            break;
+    //                objs[id].d = dir;
+    //                objs[id].spd = spd;
+    //                objs[id].move = true;
+    //            }
+    //        }
+    //        break;
 
-            case Protocol::Protocol_MoveStopSync:
-            {
-                auto body = flatbuffers::GetRoot<world::MoveStopSync>(msg.msg.body.data());
-                if (body)
-                {
-                    auto id = body->obj_id();
-                    Vec3 pos = *body->pos();
-                    LOG_INFO("obj:{} pos: {} {} {}", id, objs[id].v.x(), objs[id].v.y(), objs[id].v.z());
-                    objs[id].d = Vec2(0,0);
-                    objs[id].move = false;
-                }
-            }
-            break;
-            }
-        }
+    //        case Protocol::Protocol_MoveStopSync:
+    //        {
+    //            auto body = flatbuffers::GetRoot<world::MoveStopSync>(msg.msg.body.data());
+    //            if (body)
+    //            {
+    //                auto id = body->obj_id();
+    //                Vec3 pos = *body->pos();
+    //                LOG_INFO("obj:{} pos: {} {} {}", id, objs[id].v.x(), objs[id].v.y(), objs[id].v.z());
+    //                objs[id].d = Vec2(0,0);
+    //                objs[id].move = false;
+    //            }
+    //        }
+    //        break;
+    //        }
+    //    }
 
-        for (auto& e : objs)
-        {
-            if (e.second.move)
-            {
-                auto next = e.second.v + (static_cast<float>(dt) * e.second.spd * e.second.d);
-                e.second.v = next;
-            }
-        }
+    //    for (auto& e : objs)
+    //    {
+    //        if (e.second.move)
+    //        {
+    //            auto next = e.second.v + (static_cast<float>(dt) * e.second.spd * e.second.d);
+    //            e.second.v = next;
+    //        }
+    //    }
 
-        
-    }
+    //    
+    //}
 }

@@ -11,7 +11,7 @@
 #include <result_code_generated.h>
 
 
-class CustomClient : public net::ClientInterface<Protocol>
+class CustomClient : public net::ClientInterface
 {
 public:
 
