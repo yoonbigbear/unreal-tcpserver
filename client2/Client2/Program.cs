@@ -49,8 +49,6 @@ namespace Client2
 
 			//LoginAccount
 			{
-
-
 				FlatBufferBuilder builder = new FlatBufferBuilder(1024);
 				var id = builder.CreateString("sampleId2");
 				var password = builder.CreateString("samplepassword2");
@@ -61,44 +59,38 @@ namespace Client2
 				builder.Finish(acc.Value);
 				var body = builder.SizedByteArray();
 
-				byte[] sendBuf = new byte[body.Length + (sizeof(ushort) + sizeof(ushort))];
+				//헤더 전송
+				byte[] sendBuf = new byte[(sizeof(ushort) + sizeof(ushort))];
 				Array.Copy(BitConverter.GetBytes((ushort)Protocol.LoginReq), 0, sendBuf, 0, sizeof(ushort));
 				Array.Copy(BitConverter.GetBytes((ushort)body.Length), 0, sendBuf, sizeof(ushort), sizeof(ushort));
-				Array.Copy(body, 0, sendBuf, (sizeof(ushort) + sizeof(ushort)), body.Length);
 				socket.Send(sendBuf);
 
-				//byte[] header = new byte[8 + body.Length];
-				//Array.Copy(BitConverter.GetBytes((ushort)Protocol.LoginReq), 0, header, 0, sizeof(short));
-				//Array.Copy(BitConverter.GetBytes(body.Length), 0, header, 2, sizeof(short));
-				//Array.Copy(BitConverter.GetBytes(body), 0, header, 2, sizeof(short));
-				//socket.Send(header);
-				//socket.Send(body);
+				//body 전송
+				byte[] pkt_body = new byte[body.Length];
+				Array.Copy(body, 0, pkt_body, 0, body.Length);
+				socket.Send(pkt_body);
 			}
 
 			{
-				byte[] recvbuf = new byte[1024];
-				ArraySegment<byte> buf = new ArraySegment<byte>(recvbuf);
-				socket.Receive(buf);
+				byte[] recvbuf = new byte[4];
+				socket.Receive(recvbuf);
 				{
-					var offset = 0;
-					var prot = BitConverter.ToUInt16(buf.Array, offset);
-					offset += sizeof(ushort);
-					var size = BitConverter.ToUInt16(buf.Array, offset);
-					offset += sizeof(ushort);
+					var prot = BitConverter.ToUInt16(recvbuf, 2);
+					var size = BitConverter.ToUInt16(recvbuf, 2);
 
 					Protocol rceived_id = (Protocol)prot;
 					Console.WriteLine($"{rceived_id.ToString()}");
 					{
 						byte[] recv = new byte[size];
-						Array.Copy(buf.Array, offset, recv, 0, size);
-						var bb = new ByteBuffer(recv, offset);
+						socket.Receive(recv);
+						var bb = new ByteBuffer(recv);
 
-						//var wor = account.LoginAck.GetRootAsLoginAck(bb);
-						//for (int i = 0; i < wor.CharactersLength; ++i)
-						//{
-						//	var datas = wor.Characters(i).Value;
-						//	Console.WriteLine($"{datas.CharId} {datas.Nickname} {datas.JobClass} {datas.CharId}");
-						//}
+						var wor = account.LoginAck.GetRootAsLoginAck(bb);
+						for (int i = 0; i < wor.CharactersLength; ++i)
+						{
+							var datas = wor.Characters(i).Value;
+							Console.WriteLine($"{datas.CharId} {datas.Nickname} {datas.JobClass} {datas.CharId}");
+						}
 					}
 				}
 			}
@@ -135,7 +127,7 @@ namespace Client2
 				builder.Finish(b.Value);
 				var body = builder.SizedByteArray();
 
-				byte[] sendBuf = new byte[body.Length + (sizeof(ushort) + sizeof(ushort))];
+				byte[] sendBuf = new byte[(sizeof(ushort) + sizeof(ushort))];
 				Array.Copy(BitConverter.GetBytes((ushort)Protocol.SelectCharacterReq), 0, sendBuf, 0, sizeof(ushort));
 				Array.Copy(BitConverter.GetBytes((ushort)body.Length), 0, sendBuf, sizeof(ushort), sizeof(ushort));
 				Array.Copy(body, 0, sendBuf, (sizeof(ushort) + sizeof(ushort)), body.Length);
@@ -149,7 +141,7 @@ namespace Client2
 				socket.Send(sendBuf);
 
 				{
-					byte[] recvbuf = new byte[1024];
+					byte[] recvbuf = new byte[4];
 					socket.Receive(recvbuf);
 					{
 						var offset = 0;
@@ -162,7 +154,7 @@ namespace Client2
 						Console.WriteLine($"{rceived_id.ToString()}");
 						{
 							byte[] packet_body = new byte[size];
-							Array.Copy(recvbuf, offset, packet_body, 0, size);
+							socket.Receive(packet_body);
 							var recv = new ByteBuffer(packet_body);
 							int leng = recv.Length;
 							var wor = account.SelectCharacterAck.GetRootAsSelectCharacterAck(recv);

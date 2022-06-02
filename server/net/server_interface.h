@@ -2,10 +2,10 @@
 #define _SERVER_INTERFACE_H_
 
 #include "pch.h"
-#include "network/client_session.h"
 
 namespace net {
 
+    template<typename T, typename U>
     class ServerInterface
     {
     public:
@@ -53,8 +53,8 @@ namespace net {
                     {
                         std::cout << "[SERVER] New Connection: " << socket.remote_endpoint() << std::endl;
                         auto newconn =
-                            std::make_shared<ClientSession>(Session::owner::server,
-                                io_context_, std::move(socket), queue_wait_for_send_);
+                            std::make_shared<U>(U::owner::server,
+                                io_context_, std::move(socket), message_in_);
 
                         if (OnClientConnect(newconn))
                         {
@@ -76,7 +76,7 @@ namespace net {
                 });
         }
 
-        void MessageClient(SessionPtr client, const Packet& msg)
+        void MessageClient(std::shared_ptr<U> client, const Message<T, flatbuffer>& msg)
         {
             if (client && client->IsConnected())
             {
@@ -90,7 +90,7 @@ namespace net {
             }
         }
 
-        void MessageAllClients(const Packet& msg, SessionPtr ignore_client = nullptr)
+        void MessageAllClients(const Message<T, flatbuffer> msg, std::shared_ptr<U> ignore_client = nullptr)
         {
             bool invalid_client_exists = false;
 
@@ -114,42 +114,40 @@ namespace net {
                 sessions_.erase(std::remove(sessions_.begin(), sessions_.end(), nullptr), sessions_.end());
         }
 
-        //큐에 있는 메세지 해소
         void Update(size_t max_messages = -1, bool wait = false)
         {
             if (wait)
-                queue_wait_for_send_.wait();
+                message_in_.wait();
 
             size_t message_count = 0;
-            while (message_count < max_messages && !queue_wait_for_send_.empty())
+            while (message_count < max_messages && !message_in_.empty())
             {
-                auto msg = queue_wait_for_send_.pop_front();
-                auto clientsession = msg.packet_owner_;
-                OnMessage(clientsession, msg.packet_);
+                auto msg = message_in_.pop_front();
+                auto clientsession = std::static_pointer_cast<U>(msg.remote);
+                OnMessage(clientsession, msg.msg);
                 message_count++;
             }
         }
 
     protected:
-        virtual bool OnClientConnect(SessionPtr client)
+        virtual bool OnClientConnect(std::shared_ptr<U> client)
         {
             return false;
         }
 
-        virtual void OnClientDisconnect(SessionPtr client)
+        virtual void OnClientDisconnect(std::shared_ptr<U> client)
         {
 
         }
 
-        virtual void OnMessage(SessionPtr client, Packet& msg)
+        virtual void OnMessage(std::shared_ptr<U> client, Message<T, flatbuffer>& msg)
         {
 
         }
 
     protected:
-        PacketQueue<PacketSession> queue_wait_for_send_;
-
-        std::deque<std::shared_ptr<ClientSession>> sessions_;
+        PacketQueue<OwnedMessage<T, flatbuffer>> message_in_;
+        std::deque<std::shared_ptr<U>> sessions_;
         asio::io_context io_context_;
         std::thread thread_context_;
         asio::ip::tcp::acceptor acceptor_;

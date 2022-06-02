@@ -7,6 +7,7 @@
 
 #include <protocol_generated.h>
 
+#include "network/client_session.h"
 #include "network/packet/packet_manager.h"
 #include "network/packet/account/account_packets.h"
 #include <protocol_generated.h>
@@ -17,10 +18,11 @@ using namespace boost;
 
 namespace net
 {
-    class CustomServer : public ServerInterface
+    template<typename T = ClientSession<Protocol, flatbuffers::FlatBufferBuilder>>
+    class CustomServer : public ServerInterface<Protocol, T>
     {
     public:
-        CustomServer(uint16_t port) : ServerInterface(port)
+        CustomServer(uint16_t port) : ServerInterface<Protocol, ClientSession<Protocol, flatbuffers::FlatBufferBuilder>>(port)
         {
             AccountPackets temp;
             temp.Start();
@@ -29,26 +31,26 @@ namespace net
         }
 
     protected:
-        virtual bool OnClientConnect(SessionPtr client) override
+        virtual bool OnClientConnect(std::shared_ptr<T> client) override
         {
             std::cout << "클라 세션 붙었음" << std::endl;
 
             return true;
         }
 
-        virtual void OnClientDisconnect(SessionPtr client) override
+        virtual void OnClientDisconnect(std::shared_ptr<T> client) override
         {
             std::cout << "Removing client [" << client << "]" << std::endl;
         }
 
-        virtual void OnMessage(SessionPtr session, Packet& msg) override
+        virtual void OnMessage(std::shared_ptr<T> session, Message<Protocol, flatbuffer>& msg) override
         {
-            auto func = PacketManager::instance().packet_handler(static_cast<Protocol>(msg.id));
+            auto func = PacketManager::instance().packet_handler(msg.header.id);
             if (func)
                 func(session, msg);
             else
-                LOG_ERROR("No Callback Func protocol:{}", EnumNameProtocol(static_cast<Protocol>(msg.id)));
-            
+                LOG_ERROR("No Callback Func protocol:{}", EnumNameProtocol(msg.header.id));
+
         }
     };
 

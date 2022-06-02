@@ -3,9 +3,8 @@
 
 #include <pch.h>
 
-#include "../server/network/client_session.h"
-
 namespace net {
+    template<typename T>
     class ClientInterface
     {
     public:
@@ -24,8 +23,8 @@ namespace net {
                 asio::ip::tcp::resolver resolver(io_context_);
                 asio::ip::tcp::resolver::results_type endpoints = resolver.resolve(host, std::to_string(port));
 
-                connection_ = std::make_unique<Session>
-                    (Session::owner::client, io_context_,
+                connection_ = std::make_unique<Session<T, flatbuffers::FlatBufferBuilder>>
+                    (Session<T, flatbuffers::FlatBufferBuilder>::owner::client, io_context_,
                         asio::ip::tcp::socket(io_context_), message_in_);
 
                 connection_->ConnectToServer(endpoints);
@@ -68,13 +67,13 @@ namespace net {
         }
 
     public:
-        void Send(Packet& msg)
+        void Send(const Message<T, flatbuffers::FlatBufferBuilder>& msg)
         {
             if (IsConnected())
                 connection_->Send(msg);
         }
 
-        PacketQueue<PacketSession>& Incoming()
+        PacketQueue<OwnedMessage<T, flatbuffers::FlatBufferBuilder>>& Incoming()
         {
             return message_in_;
         }
@@ -82,10 +81,10 @@ namespace net {
     protected:
         asio::io_context io_context_;
         std::thread thread_context_;
-        std::unique_ptr<Session> connection_;
+        std::unique_ptr<Session<T, flatbuffers::FlatBufferBuilder>> connection_;
 
     private:
-        PacketQueue<PacketSession> message_in_;
+        PacketQueue<OwnedMessage<T, flatbuffers::FlatBufferBuilder>> message_in_;
     };
 
     enum {

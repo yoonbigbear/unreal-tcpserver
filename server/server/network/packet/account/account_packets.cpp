@@ -20,12 +20,12 @@
 using snowflake_t = net::snowflake<1534832906275L>;
 
 
-void CreateAccount(SessionPtr session, const Packet& msg);
-void LoginAccount(SessionPtr session, const Packet& msg);
+void CreateAccount(session::Shared session, message& msg);
+void LoginAccount(session::Shared session, message& msg);
 
-void CreateCharacter(SessionPtr session, const Packet& msg);
-void CheckNickname(SessionPtr session, const Packet& msg);
-void SelectCharacter(SessionPtr session, const Packet& msg);
+void CreateCharacter(session::Shared session, message msg);
+void CheckNickname(session::Shared session, message msg);
+void SelectCharacter(session::Shared session, message msg);
 
 void AccountPackets::Start()
 {
@@ -36,7 +36,7 @@ void AccountPackets::Start()
     PacketManager::instance().Bind(Protocol_SelectCharacterReq, SelectCharacter);
 }
 
-void CreateAccount(SessionPtr session, const Packet& msg)
+void CreateAccount(session::Shared session, message& msg)
 {
     auto pkt = flatbuffers::GetRoot<account::CreateAccountReq>(msg.body.data());
     auto login_id = pkt->id()->str();
@@ -56,27 +56,12 @@ void CreateAccount(SessionPtr session, const Packet& msg)
 
             if (ret == 0)
             {
-                net::Packet pkt;
-                pkt.id = Protocol_CreateAccountAck;
-                flatbuffers::FlatBufferBuilder fbb(1024);
-                auto builder = account::CreateCreateAccountAckDirect(fbb, ResultCode_LoginSuccess);
-                fbb.Finish(builder);
-                pkt.size = fbb.GetSize();
-                pkt.body.resize(pkt.size);
-                std::memcpy(&pkt.body, fbb.GetBufferPointer(), pkt.size);
-
+                BUILD_PACKET(CreateAccountAck, ResultCode_LoginSuccess);
                 session->Send(pkt);
             }
             else
             {
-                net::Packet pkt;
-                pkt.id = Protocol_CreateAccountAck;
-                flatbuffers::FlatBufferBuilder fbb(1024);
-                auto builder = account::CreateCreateAccountAckDirect(fbb, ResultCode_AleadyExist);
-                fbb.Finish(builder);
-                pkt.size = fbb.GetSize();
-                pkt.body.resize(pkt.size);
-                std::memcpy(pkt.body.data(), fbb.GetBufferPointer(), pkt.size);
+                BUILD_PACKET(CreateAccountAck, ResultCode_AleadyExist);
                 session->Send(pkt);
             }
 
@@ -86,11 +71,11 @@ void CreateAccount(SessionPtr session, const Packet& msg)
         {
             LOG_ERROR("Failed create account: {}", e.what());
         }
-        
-    });
+
+        });
 }
 
-void LoginAccount(SessionPtr session, const Packet& msg)
+void LoginAccount(session::Shared session, message& msg)
 {
     auto pkt = flatbuffers::GetRoot<account::LoginReq>(msg.body.data());
     auto login_id = pkt->id()->str();
@@ -122,8 +107,8 @@ void LoginAccount(SessionPtr session, const Packet& msg)
                     if (exist == 1)
                     {
                         //캐릭터 숫자 몇인지 확인 후 캐릭터 정보까지 보내줘야함
-                        Packet pkt;
-                        pkt.id = Protocol_LoginAck;
+                        net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+                        pkt.header.id = Protocol_LoginAck;
 
                         flatbuffers::FlatBufferBuilder fbb(1024);
                         std::vector<flatbuffers::Offset<CharacterInfo>> character_infos;
@@ -131,16 +116,14 @@ void LoginAccount(SessionPtr session, const Packet& msg)
                         if (res.rowset_size() == 0)
                         {
                             //캐릭터 없음
-                            Packet pkt;
-                            pkt.id = Protocol_LoginAck;
+                            net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+                            pkt.header.id = Protocol_LoginAck;
                             flatbuffers::FlatBufferBuilder fbb(1024);
                             auto builder = account::LoginAckBuilder(fbb);
                             builder.add_result(ResultCode_LoginSuccess);
                             auto fin = builder.Finish();
                             fbb.Finish(fin);
-                            pkt.size = fbb.GetSize();
-                            pkt.body.resize(pkt.size);
-                            std::memcpy(pkt.body.data(), fbb.GetBufferPointer(), pkt.size);
+                            pkt << fbb;
                             session->Send(pkt);
 
                             DEBUG_LOG_INFO("계정 접속 성공. 캐릭터 없음");
@@ -161,9 +144,7 @@ void LoginAccount(SessionPtr session, const Packet& msg)
                             builder.add_characters(characters);
                             auto fin = builder.Finish();
                             fbb.Finish(fin);
-                            pkt.size = fbb.GetSize();
-                            pkt.body.resize(pkt.size);
-                            std::memcpy(pkt.body.data(), fbb.GetBufferPointer(), pkt.size);
+                            pkt << fbb;
                             session->Send(pkt);
 
                             DEBUG_LOG_INFO("계정 접속 성공. 캐릭터 보유.");
@@ -178,16 +159,14 @@ void LoginAccount(SessionPtr session, const Packet& msg)
             else
             {
                 //없는 아이디 이거나 틀린 비밀번호
-                Packet pkt;
-                pkt.id = Protocol_LoginAck;
+                net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+                pkt.header.id = Protocol_LoginAck;
                 flatbuffers::FlatBufferBuilder fbb(1024);
                 auto builder = account::LoginAckBuilder(fbb);
                 builder.add_result(ResultCode_LoginFailure);
                 auto fin = builder.Finish();
                 fbb.Finish(fin);
-                pkt.size = fbb.GetSize();
-                pkt.body.resize(pkt.size);
-                std::memcpy(pkt.body.data(), fbb.GetBufferPointer(), pkt.size);
+                pkt << fbb;
                 session->Send(pkt);
             }
         }
@@ -200,7 +179,7 @@ void LoginAccount(SessionPtr session, const Packet& msg)
 }
 
 
-void CreateCharacter(SessionPtr session, const Packet& msg)
+void CreateCharacter(session::Shared session, message msg)
 {
     //id를 새로 만들어줘야 하는데 일단은 그냥 하자
     snowflake_t uuid;
@@ -233,36 +212,32 @@ void CreateCharacter(SessionPtr session, const Packet& msg)
 
         if (ret == 0)
         {
-            Packet pkt;
-            pkt.id = Protocol_CreateCharacterAck;
+            net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+            pkt.header.id = Protocol_CreateCharacterAck;
             flatbuffers::FlatBufferBuilder fbb(1024);
             auto builder = account::LoginAckBuilder(fbb);
             builder.add_result(ResultCode_CreateSuccess);
             auto fin = builder.Finish();
             fbb.Finish(fin);
-            pkt.size = fbb.GetSize();
-            pkt.body.resize(pkt.size);
-            std::memcpy(pkt.body.data(), fbb.GetBufferPointer(), pkt.size);
+            pkt << fbb;
             session->Send(pkt);
         }
         else
         {
-            Packet pkt;
-            pkt.id = Protocol_CreateCharacterAck;
+            net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+            pkt.header.id = Protocol_CreateCharacterAck;
             flatbuffers::FlatBufferBuilder fbb(1024);
             auto builder = account::LoginAckBuilder(fbb);
             builder.add_result(ResultCode_CreateFailure);
             auto fin = builder.Finish();
             fbb.Finish(fin);
-            pkt.size = fbb.GetSize();
-            pkt.body.resize(pkt.size);
-            std::memcpy(pkt.body.data(), fbb.GetBufferPointer(), pkt.size);
+            pkt << fbb;
             session->Send(pkt);
         }
         });
 }
 
-void CheckNickname(SessionPtr session, const Packet& msg)
+void CheckNickname(session::Shared session, message msg)
 {
     auto pkt = flatbuffers::GetRoot<account::CheckCharacterNicknameReq>(msg.body.data());
     auto nickname = pkt->nickname()->str();
@@ -280,31 +255,27 @@ void CheckNickname(SessionPtr session, const Packet& msg)
             auto ret = DB::select_character_nickname(nickname);
             if (ret == 0)
             {
-                Packet pkt;
-                pkt.id = Protocol_CheckCharacterNicknameAck;
+                net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+                pkt.header.id = Protocol_CheckCharacterNicknameAck;
                 flatbuffers::FlatBufferBuilder fbb(1024);
                 auto builder = account::LoginAckBuilder(fbb);
                 builder.add_result(ResultCode_NotExist);
                 auto fin = builder.Finish();
                 fbb.Finish(fin);
-                pkt.size = fbb.GetSize();
-                pkt.body.resize(pkt.size);
-                std::memcpy(pkt.body.data(), fbb.GetBufferPointer(), pkt.size);
+                pkt << fbb;
                 session->Send(pkt);
 
             }
             else
             {
-                Packet pkt;
-                pkt.id = Protocol_CheckCharacterNicknameAck;
+                net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+                pkt.header.id = Protocol_CheckCharacterNicknameAck;
                 flatbuffers::FlatBufferBuilder fbb(1024);
                 auto builder = account::LoginAckBuilder(fbb);
                 builder.add_result(ResultCode_AleadyExist);
                 auto fin = builder.Finish();
                 fbb.Finish(fin);
-                pkt.size = fbb.GetSize();
-                pkt.body.resize(pkt.size);
-                std::memcpy(pkt.body.data(), fbb.GetBufferPointer(), pkt.size);
+                pkt << fbb;
                 session->Send(pkt);
             }
         }
@@ -315,7 +286,7 @@ void CheckNickname(SessionPtr session, const Packet& msg)
         });
 }
 
-void SelectCharacter(SessionPtr session, const Packet& msg)
+void SelectCharacter(session::Shared session, message msg)
 {
     //Req 패킷 수신
     auto pkt = flatbuffers::GetRoot<account::SelectCharacterReq>(msg.body.data());
@@ -338,17 +309,15 @@ void SelectCharacter(SessionPtr session, const Packet& msg)
             {
                 Vec3 pos(res.get<float>("pos_x"), res.get<float>("pos_y"), res.get<float>("pos_z"));
 
-                Packet pkt;
-                pkt.id = Protocol_SelectCharacterAck;
+                net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+                pkt.header.id = Protocol_SelectCharacterAck;
                 flatbuffers::FlatBufferBuilder fbb(1024);
                 auto builder = account::SelectCharacterAckBuilder(fbb);
                 builder.add_result(ResultCode_EnterGameSuccess);
                 builder.add_position(&pos);
                 auto fin = builder.Finish();
                 fbb.Finish(fin);
-                pkt.size = fbb.GetSize();
-                pkt.body.resize(pkt.size);
-                std::memcpy(pkt.body.data(), fbb.GetBufferPointer(), pkt.size);
+                pkt << fbb;
                 session->Send(pkt);
 
                 //캐릭터 선택 성공. 게임오브젝트 생성
@@ -357,25 +326,22 @@ void SelectCharacter(SessionPtr session, const Packet& msg)
                     character->session(session);
                     character->start();
                     WorldManager::instance().EnterField(0, character);
-                    DEBUG_LOG_INFO("캐릭터 입장");
                 }
             }
             else
             {
-                LOG_CRITICAL("없는 캐릭터 정보를 전송. acct_id:{} char_id:{}", session->acct_id(), char_id);
+                // LOG_CRITICAL("없는 캐릭터 정보를 전송. acct_id:{} char_id:{}", session->acct_id(), char_id);
                 Vec3 pos(0, 0, 0);
 
-                Packet pkt;
-                pkt.id = Protocol_SelectCharacterAck;
+                net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+                pkt.header.id = Protocol_SelectCharacterAck;
                 flatbuffers::FlatBufferBuilder fbb(1024);
                 auto builder = account::SelectCharacterAckBuilder(fbb);
                 builder.add_result(ResultCode_EnterGameSuccess);
                 builder.add_position(&pos);
                 auto fin = builder.Finish();
                 fbb.Finish(fin);
-                pkt.size = fbb.GetSize();
-                pkt.body.resize(pkt.size);
-                std::memcpy(pkt.body.data(), fbb.GetBufferPointer(), pkt.size);
+                pkt << fbb;
                 session->Send(pkt);
                 return;
             }

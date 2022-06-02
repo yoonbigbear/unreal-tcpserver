@@ -10,7 +10,7 @@ namespace net
     struct MessageHeader
     {
         T id;
-        uint32_t size = 0;
+        uint16_t size = 0;
     };
 
     template<typename T, typename U>
@@ -43,7 +43,7 @@ namespace net
 
             std::memcpy(msg.body.data() + i, &data, sizeof(DataType));
 
-            msg.header.size = static_cast<uint32_t>(msg.size());
+            msg.header.size = static_cast<uint16_t>(msg.size());
 
             return msg;
         }
@@ -58,7 +58,7 @@ namespace net
 
             std::memcpy(msg.body.data() + i, data.GetBufferPointer(), data.GetSize());
 
-            msg.header.size = static_cast<uint32_t>(msg.size());
+            msg.header.size = static_cast<uint16_t>(msg.size());
 
             return msg;
         }
@@ -74,18 +74,19 @@ namespace net
 
             msg.body.resize(i);
 
-            msg.header.size = static_cast<uint32_t>(msg.size());
+            msg.header.size = static_cast<uint16_t>(msg.size());
 
             return msg;
         }
     };
 
+    template <typename T, typename U>
     class Session;
 
     template <typename T, typename U>
     struct OwnedMessage
     {
-        std::shared_ptr<Session> remote = nullptr;
+        std::shared_ptr<Session<T, U>> remote = nullptr;
         Message<T, U> msg;
 
         friend std::ostream& operator<<(std::ostream& os, const OwnedMessage<T, U>& msg)

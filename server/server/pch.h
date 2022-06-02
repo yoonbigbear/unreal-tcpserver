@@ -37,5 +37,4 @@ using NpcPtr = std::shared_ptr<Npc>;
 class World;
 using FieldPtr = std::shared_ptr<World>;
 
-
 #endif // !_PCH_H_

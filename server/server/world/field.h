@@ -19,7 +19,8 @@ public:
 
     void Update(float dt);
 
-    void Broadcast(Packet msg);
+    template<typename message>
+    void Broadcast(message msg);
 
     class Navigation* navigation() { return navigation_; }
     //class PathFinderGrid* grids() { return grids_; }

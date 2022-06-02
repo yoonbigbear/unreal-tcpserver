@@ -65,14 +65,12 @@ void World::Enter(GameObjectPtr obj)
         obj_id_arr.push_back(e.second->obj_id());
     }
 
-    Packet pkt;
-    pkt.id = Protocol_EnterFieldSync;
+    net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+    pkt.header.id = Protocol_EnterFieldSync;
     flatbuffer fbb(1024);
     auto builder = world::CreateEnterFieldSyncDirect(fbb, &obj_id_arr, &obj_pos_arr);
     fbb.Finish(builder);
-    pkt.size = fbb.GetSize();
-    pkt.body.resize(pkt.size);
-    std::memcpy(pkt.body.data(), fbb.GetBufferPointer(), pkt.size);
+    pkt << fbb;
     Broadcast(pkt);
 
 }
@@ -99,7 +97,8 @@ void World::Update(float dt)
     lock_.unlock();
 }
 
-void World::Broadcast(Packet msg)
+template<typename message>
+void World::Broadcast(message msg)
 {
     auto list = players_;
     for (const auto& e : list)
