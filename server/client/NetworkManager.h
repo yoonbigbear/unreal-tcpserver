@@ -1,4 +1,5 @@
 #pragma once
+
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
@@ -9,7 +10,6 @@
 #include <account_generated.h>  
 #include <protocol_generated.h>
 #include <result_code_generated.h>
-
 
 class CustomClient : public net::ClientInterface
 {

@@ -8,6 +8,24 @@ using System.Threading.Tasks;
 
 namespace Client2
 {
+	public struct vector2
+	{
+		public float x;
+		public float y;
+	}
+	public struct vector3
+	{
+		public float x;
+		public float y;
+		public float z;	
+	}
+	public struct GameObject
+	{
+		public vector3 v;
+		public float spd;
+		public vector2 d;
+		public bool move;
+	}
 
 	class Program
 	{
@@ -16,7 +34,7 @@ namespace Client2
 		static IPAddress ipAddr = ipHost.AddressList[1]; // 0: ip6,  1: ip4
 		static IPEndPoint endPoint = new IPEndPoint(ipAddr, 11000);
 		static Socket socket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-		static async Task Main(string[] args)
+		static void Main(string[] args)
 		{
 			Console.WriteLine("Server Configuration");
 
@@ -72,27 +90,28 @@ namespace Client2
 			}
 
 			{
+				//헤더 수신
 				byte[] recvbuf = new byte[4];
 				socket.Receive(recvbuf);
+				var prot = BitConverter.ToUInt16(recvbuf, 0);
+				var size = BitConverter.ToUInt16(recvbuf, 2);
+
+				Protocol rceived_id = (Protocol)prot;
+				Console.WriteLine($"{rceived_id.ToString()}");
+
+
+				//바디 수신
+				byte[] recv = new byte[size];
+				socket.Receive(recv);
+				var bb = new ByteBuffer(recv);
+
+				var wor = account.LoginAck.GetRootAsLoginAck(bb);
+				for (int i = 0; i < wor.CharactersLength; ++i)
 				{
-					var prot = BitConverter.ToUInt16(recvbuf, 2);
-					var size = BitConverter.ToUInt16(recvbuf, 2);
-
-					Protocol rceived_id = (Protocol)prot;
-					Console.WriteLine($"{rceived_id.ToString()}");
-					{
-						byte[] recv = new byte[size];
-						socket.Receive(recv);
-						var bb = new ByteBuffer(recv);
-
-						var wor = account.LoginAck.GetRootAsLoginAck(bb);
-						for (int i = 0; i < wor.CharactersLength; ++i)
-						{
-							var datas = wor.Characters(i).Value;
-							Console.WriteLine($"{datas.CharId} {datas.Nickname} {datas.JobClass} {datas.CharId}");
-						}
-					}
+					var datas = wor.Characters(i).Value;
+					Console.WriteLine($"{datas.CharId} {datas.Nickname} {datas.JobClass} {datas.CharId}");
 				}
+
 			}
 
 
@@ -127,93 +146,122 @@ namespace Client2
 				builder.Finish(b.Value);
 				var body = builder.SizedByteArray();
 
+				//헤더 전송
 				byte[] sendBuf = new byte[(sizeof(ushort) + sizeof(ushort))];
 				Array.Copy(BitConverter.GetBytes((ushort)Protocol.SelectCharacterReq), 0, sendBuf, 0, sizeof(ushort));
 				Array.Copy(BitConverter.GetBytes((ushort)body.Length), 0, sendBuf, sizeof(ushort), sizeof(ushort));
-				Array.Copy(body, 0, sendBuf, (sizeof(ushort) + sizeof(ushort)), body.Length);
 				socket.Send(sendBuf);
 
-				//byte[] header = new byte[8];
-				//Array.Copy(BitConverter.GetBytes((int)Protocol.SelectCharacterReq), 0, header, 0, sizeof(int));
-				//Array.Copy(BitConverter.GetBytes(body.Length), 0, header, 4, sizeof(int));
-
-				//socket.Send(header);
-				socket.Send(sendBuf);
+				//body 전송
+				byte[] pkt_body = new byte[body.Length];
+				Array.Copy(body, 0, pkt_body, 0, body.Length);
+				socket.Send(pkt_body);
 
 				{
+					//헤더 수신
 					byte[] recvbuf = new byte[4];
 					socket.Receive(recvbuf);
-					{
-						var offset = 0;
-						var prot = BitConverter.ToUInt16(recvbuf, offset);
-						offset += 2;
-						var size = BitConverter.ToUInt16(recvbuf, offset);
-						offset += 2;
+					var prot = BitConverter.ToUInt16(recvbuf, 0);
+					var size = BitConverter.ToUInt16(recvbuf, 2);
+					Protocol rceived_id = (Protocol)prot;
+					Console.WriteLine($"{rceived_id.ToString()}");
 
-						Protocol rceived_id = (Protocol)prot;
-						Console.WriteLine($"{rceived_id.ToString()}");
-						{
-							byte[] packet_body = new byte[size];
-							socket.Receive(packet_body);
-							var recv = new ByteBuffer(packet_body);
-							int leng = recv.Length;
-							var wor = account.SelectCharacterAck.GetRootAsSelectCharacterAck(recv);
-							
-							Console.WriteLine($"{wor.Position.Value.X}  {wor.Position.Value.Y}  {wor.Position.Value.Z}");
-						}
-					}
+					//바디 수신
+					byte[] packet_body = new byte[size];
+					socket.Receive(packet_body);
+					var recv = new ByteBuffer(packet_body);
+
+					var wor = account.SelectCharacterAck.GetRootAsSelectCharacterAck(recv);
+
+					Console.WriteLine($"{wor.Position.Value.X}  {wor.Position.Value.Y}  {wor.Position.Value.Z}");
 				}
 			}
 
+
+
+			Dictionary<uint, GameObject> objs = new Dictionary<uint, GameObject>();
+
+			var start = DateTime.Now;
+			var now = DateTime.Now;
 			while (true)
 			{
-				byte[] buf = new byte[1024];
+				now = DateTime.Now;
+				var interval = now - start;
+				start = now;
+				float dt = (float)interval.TotalMilliseconds;
+
+				byte[] buf = new byte[4];
 				socket.Receive(buf);
 				{
-					var offset = 0;
-					var id = BitConverter.ToUInt16(buf, offset);
-					offset += 2;
-					var size = BitConverter.ToUInt16(buf, offset);
-					offset += 2;
+					var id = BitConverter.ToUInt16(buf, 0);
+					var size = BitConverter.ToUInt16(buf, 2);
+					byte[] packet_body = new byte[size];
+					socket.Receive(packet_body);
+					var recvBuf = new ByteBuffer(packet_body);
 
 					switch ((Protocol)id)
 					{
 						case Protocol.MoveStartSync:
 							{
-
-								var recvBuf = new ByteBuffer(buf, offset);
 								var wor = world.MoveStartSync.GetRootAsMoveStartSync(recvBuf);
-								var objid = wor.ObjId;
-								var dir = wor.Dir;
+								uint objid = wor.ObjId;
+								var dir = wor.Dir.Value;
 								var spd = wor.Speed;
-								Console.WriteLine($"{objid}  {dir.Value.X}  {dir.Value.Y} {spd}");
+								//Console.WriteLine($"{objid}  {dir.Value.X}  {dir.Value.Y} {spd}");
+								var obj = objs[objid];
+								obj.spd = spd;
+								obj.move = true;
+
+								obj.d.x = dir.X;
+								obj.d.y = dir.Y;
 							}
 							break;
 						case Protocol.EnterFieldSync:
 							{
-								var recvBuf = new ByteBuffer(buf, offset);
 								var wor = world.EnterFieldSync.GetRootAsEnterFieldSync(recvBuf);
 								for (int i = 0; i < wor.ObjIdLength; ++i)
 								{
 									var objid = wor.ObjId(i);
 									var pos = wor.Pos(i);
-									Console.WriteLine($"{objid} {pos.Value.X} {pos.Value.Y} {pos.Value.Z}");
+									Console.WriteLine($" 입장 {objid} {pos.Value.X} {pos.Value.Y} {pos.Value.Z}");
+
+									GameObject obj = new GameObject();
+									obj.v.x = pos.Value.X;
+									obj.v.y = pos.Value.Y;
+									obj.v.z = pos.Value.Z;
+
+									objs.TryAdd(objid, obj);
 								}
 							}
 							break;
 						case Protocol.MoveStopSync:
 							{
-								var recvBuf = new ByteBuffer(buf, offset);
 								var wor = world.MoveStopSync.GetRootAsMoveStopSync(recvBuf);
 								var objid = wor.ObjId;
-								Console.WriteLine($"{objid}");
+								var pos = wor.Pos;
+								var obj = objs[objid];
+
+								Console.WriteLine($" 도착 {objid} {pos.Value.X} {pos.Value.Y} {pos.Value.Z}");
+
+								obj.d.x = 0;
+								obj.d.y = 0;
+								obj.move = false;
 							}
 							break;
 					}
 ;
 				}
+
+				foreach(var obj in objs)
+				{
+					var e = obj.Value;
+					if (e.move)
+					{
+						e.v.x = e.v.x + (dt * e.spd * e.d.x);
+						e.v.y = e.v.y + (dt * e.spd * e.d.y);
+					}
+				}
 			}
-			//await k;
 		}
 	}
 }
