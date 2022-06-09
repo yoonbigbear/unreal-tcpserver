@@ -2,23 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct vector2
+public class GameObject
 {
-	public float x;
-	public float y;
-}
-public struct vector3
-{
-	public float x;
-	public float y;
-	public float z;
-}
-public struct GameObject
-{
-	public vector3 v;
+	public Vector3 v;
 	public float spd;
-	public vector2 d;
-	public bool move;
+	public Vector2 d;
+    public bool move;
 }
 
 public class FieldObject : MonoBehaviour

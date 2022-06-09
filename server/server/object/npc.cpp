@@ -34,7 +34,7 @@ void Npc::Update(float dt)
         move_ = true;
 
         auto dir = transform()->dest() - transform()->position();
-        b2Vec2 d(dir.x, dir.y);
+        b2Vec2 d(dir.x, dir.z);
         auto length = d.Normalize();
         auto vec2 = Vec2(d.x, d.y);
 
