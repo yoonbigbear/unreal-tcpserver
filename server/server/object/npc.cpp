@@ -28,31 +28,40 @@ void Npc::Update(float dt)
 
     if (!move_)
     {
+        //도착한 상태. 이제 다음 위치로 이동한다.
+
+        //도착지 설정
         float p[3] = {};
         field_->navigation()->RandomPoint(p);
         transform()->dest(p);
         move_ = true;
 
+        //도착지 방향 (vec2)
         auto dir = transform()->dest() - transform()->position();
         b2Vec2 d(dir.x, dir.z);
         auto length = d.Normalize();
         auto vec2 = Vec2(d.x, d.y);
 
+        //버퍼전송
         net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
         pkt.header.id = Protocol_MoveStartSync;
         flatbuffer fbb(1024);
 
-        auto builder = world::CreateMoveStartSync(fbb, obj_id(), &vec2, 0.01f);
+        auto builder = world::CreateMoveStartSync(fbb, obj_id(), &vec2, spd_);
         fbb.Finish(builder);
         pkt << fbb;
         field_->Broadcast(pkt);
     }
     else
     {
+        // 도착하지 않은 상태는 이동한다.
+        // 
+        // 이동 방향
         auto dir = transform()->dest() - transform()->position();
-        b2Vec2 d(dir.x, dir.y);
+        b2Vec2 d(dir.x, dir.z);
         auto length = d.Normalize();
 
+        //도착했을 경우
         if (length < 1)
         {
             LOG_INFO("obj:{} pos: {} {} {}", obj_id(),
@@ -74,7 +83,14 @@ void Npc::Update(float dt)
             return;
         }
 
-        auto next = transform()->position() + (dt * 0.01f * d);
-        transform()->position().Set(next.x, next.y, transform()->position().z);
+        // 위치 이동
+        b2Vec2 pos = b2Vec2(transform()->position().x, transform()->position().z);
+        auto next = pos + (dt * spd_ * d);
+        transform()->position().Set(next.x, transform()->position().y, next.y);
+
+        //LOG_WARNING("obj:{} moving: {} {} {}", obj_id(),
+        //    transform()->position().x,
+        //    transform()->position().y,
+        //    transform()->position().z);
     }
 }

@@ -25,6 +25,7 @@ private:
     AIPtr ai_;
 
     bool move_ = false;
+    float spd_ = 0.01f;
 };
 
 

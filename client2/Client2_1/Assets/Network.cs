@@ -135,7 +135,11 @@ public class Network : MonoBehaviour
                     objs[objid].d.x = 0;
                     objs[objid].d.y = 0;
                     objs[objid].move = false;
-                    Debug.Log($" 도착 {objid} {objs[objid].v.x} {objs[objid].v.y} {objs[objid].v.z}");
+                    Debug.Log($" 예상 {objid} {objs[objid].v.x} {objs[objid].v.y} {objs[objid].v.z}");
+                    Debug.Log($" 실제 {objid} {pos.Value.X} {pos.Value.Y} {pos.Value.Z}");
+                    objs[objid].v.x = pos.Value.X;
+                    objs[objid].v.y = pos.Value.Y;
+                    objs[objid].v.z = pos.Value.Z;
                 }
                 break;
         }
@@ -154,10 +158,10 @@ public class Network : MonoBehaviour
             var e = obj.Value;
             if (e.move)
             {
-                Vector2 pre = new Vector2(e.v.x, e.v.y);
-                pre = pre + (dt * 0.01f * e.d);
+                Vector2 pre = new Vector2(e.v.x, e.v.z);
+                pre = pre + (dt * e.spd * e.d);
                 e.v.x = pre.x;
-                e.v.y = pre.y;
+                e.v.z = pre.y;
             }
         }
     }
