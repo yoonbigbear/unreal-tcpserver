@@ -16,6 +16,8 @@ public class Network : MonoBehaviour
     static Socket socket = new Socket(endPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
     static SocketAsyncEventArgs recvArgs = new SocketAsyncEventArgs();
 
+    public GameObject field_object_prefab;
+
     Dictionary<uint, GameObject> objs = new Dictionary<uint, GameObject>();
 
     DateTime start;
@@ -24,32 +26,10 @@ public class Network : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         Connector connector = new Connector();
         socket.Connect(endPoint);
 
-        FlatBufferBuilder builder = new FlatBufferBuilder(1024);
-        var id = builder.CreateString("sampleId2");
-        var password = builder.CreateString("samplepassword2");
-        account.LoginReq.StartLoginReq(builder);
-        account.LoginReq.AddId(builder, id);
-        account.LoginReq.AddPw(builder, password);
-        var acc = account.LoginReq.EndLoginReq(builder);
-        builder.Finish(acc.Value);
-        var body = builder.SizedByteArray();
-
-        //헤더 전송
-        byte[] sendBuf = new byte[(sizeof(ushort) + sizeof(ushort))];
-        Array.Copy(BitConverter.GetBytes((ushort)Protocol.LoginReq), 0, sendBuf, 0, sizeof(ushort));
-        Array.Copy(BitConverter.GetBytes((ushort)body.Length), 0, sendBuf, sizeof(ushort), sizeof(ushort));
-        socket.Send(sendBuf);
-
-        //body 전송
-        byte[] pkt_body = new byte[body.Length];
-        Array.Copy(body, 0, pkt_body, 0, body.Length);
-        socket.Send(pkt_body);
-
-        start = DateTime.Now;
-        now = DateTime.Now;
         Function();
 
         //        StartCoroutine(Packetreceive());
@@ -101,10 +81,10 @@ public class Network : MonoBehaviour
                     var dir = wor.Dir.Value;
                     var spd = wor.Speed;
 
-                    objs[objid].spd = spd;
-                    objs[objid].move = true;
-                    objs[objid].d.x = dir.X;
-                    objs[objid].d.y = dir.Y;
+                    var fieldobj = objs[objid].GetComponent<FieldObject>();
+                    fieldobj.spd = spd;
+                    fieldobj.d = new Vector2(dir.X, dir.Y);
+                    fieldobj.move = true;
 
                 }
                 break;
@@ -116,12 +96,14 @@ public class Network : MonoBehaviour
                         var objid = wor.ObjId(i);
                         var pos = wor.Pos(i);
 
-                        GameObject obj = new GameObject();
-                        obj.v.x = pos.Value.X;
-                        obj.v.y = pos.Value.Y;
-                        obj.v.z = pos.Value.Z;
+                        var obj = Instantiate(field_object_prefab);
 
-                        Debug.Log($" 입장 {objid} {obj.v.x} {obj.v.y} {obj.v.z}");
+                        obj.gameObject.transform.position = new Vector3(
+                            pos.Value.X, pos.Value.Y, pos.Value.Z);
+
+                        Debug.Log($" 입장 {objid} {obj.transform.position.x} " +
+							$"{obj.transform.position.y} {obj.transform.position.z}");
+
                         objs.TryAdd(objid, obj);
                     }
                 }
@@ -132,37 +114,27 @@ public class Network : MonoBehaviour
                     var objid = wor.ObjId;
                     var pos = wor.Pos;
 
-                    objs[objid].d.x = 0;
-                    objs[objid].d.y = 0;
-                    objs[objid].move = false;
-                    Debug.Log($" 예상 {objid} {objs[objid].v.x} {objs[objid].v.y} {objs[objid].v.z}");
-                    Debug.Log($" 실제 {objid} {pos.Value.X} {pos.Value.Y} {pos.Value.Z}");
-                    objs[objid].v.x = pos.Value.X;
-                    objs[objid].v.y = pos.Value.Y;
-                    objs[objid].v.z = pos.Value.Z;
+                    var fieldobj = objs[objid].GetComponent<FieldObject>();
+                    fieldobj.d = new Vector2(0,0);
+                    fieldobj.move = false;
+
+                    //Debug.Log($" 예상 {objid} {objs[objid].v.x} {objs[objid].v.y} {objs[objid].v.z}");
+                    //Debug.Log($" 실제 {objid} {pos.Value.X} {pos.Value.Y} {pos.Value.Z}");
+                    objs[objid].transform.position = new Vector3(
+                            pos.Value.X, pos.Value.Y, pos.Value.Z);
                 }
                 break;
-        }
-    }
-    // Update is called once per frame
-    void Update()
-    {
-
-        now = DateTime.Now;
-        var interval = now - start;
-        start = now;
-        float dt = (float)interval.TotalMilliseconds;
-
-        foreach (var obj in objs)
-        {
-            var e = obj.Value;
-            if (e.move)
-            {
-                Vector2 pre = new Vector2(e.v.x, e.v.z);
-                pre = pre + (dt * e.spd * e.d);
-                e.v.x = pre.x;
-                e.v.z = pre.y;
-            }
+            case Protocol.CreateAccountAck:
+                {
+                    var wor = account.CreateAccountAck.GetRootAsCreateAccountAck(recvBuf);
+                    var result = wor.Result;
+                    
+                    if ((ResultCode)result == ResultCode.CreateSuccess)
+					{
+                        //씬 이동
+					}
+                }
+                break;
         }
     }
 
@@ -183,6 +155,53 @@ public class Network : MonoBehaviour
         Function();
     }
 
+    public void Login(string _id, string _password)
+    {
+        FlatBufferBuilder builder = new FlatBufferBuilder(1024);
+        var id = builder.CreateString(_id);
+        var password = builder.CreateString(_password);
+        account.LoginReq.StartLoginReq(builder);
+        account.LoginReq.AddId(builder, id);
+        account.LoginReq.AddPw(builder, password);
+        var acc = account.LoginReq.EndLoginReq(builder);
+        builder.Finish(acc.Value);
+        var body = builder.SizedByteArray();
+
+        //헤더 전송
+        byte[] sendBuf = new byte[(sizeof(ushort) + sizeof(ushort))];
+        Array.Copy(BitConverter.GetBytes((ushort)Protocol.LoginReq), 0, sendBuf, 0, sizeof(ushort));
+        Array.Copy(BitConverter.GetBytes((ushort)body.Length), 0, sendBuf, sizeof(ushort), sizeof(ushort));
+        socket.Send(sendBuf);
+
+        //body 전송
+        byte[] pkt_body = new byte[body.Length];
+        Array.Copy(body, 0, pkt_body, 0, body.Length);
+        socket.Send(pkt_body);
+    }
+
+    public void CreateAccount(string _id, string _password)
+	{
+        FlatBufferBuilder builder = new FlatBufferBuilder(1024);
+        var id = builder.CreateString(_id);
+        var password = builder.CreateString(_password);
+        account.CreateAccountReq.StartCreateAccountReq(builder);
+        account.CreateAccountReq.AddId(builder, id);
+        account.CreateAccountReq.AddPw(builder, password);
+        var acc = account.CreateAccountReq.EndCreateAccountReq(builder);
+        builder.Finish(acc.Value);
+        var body = builder.SizedByteArray();
+
+        //헤더 전송
+        byte[] sendBuf = new byte[(sizeof(ushort) + sizeof(ushort))];
+        Array.Copy(BitConverter.GetBytes((ushort)Protocol.CreateAccountReq), 0, sendBuf, 0, sizeof(ushort));
+        Array.Copy(BitConverter.GetBytes((ushort)body.Length), 0, sendBuf, sizeof(ushort), sizeof(ushort));
+        socket.Send(sendBuf);
+
+        //body 전송
+        byte[] pkt_body = new byte[body.Length];
+        Array.Copy(body, 0, pkt_body, 0, body.Length);
+        socket.Send(pkt_body);
+    }
 }
 
 
