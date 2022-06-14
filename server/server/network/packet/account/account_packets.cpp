@@ -202,7 +202,7 @@ void CreateCharacter(session::Shared session, message msg)
         try
         {
             // 1 을 강제로 넣는데, 로그인할때 유저세션이 가지고 있도록 수정해야한다.
-            ret = DB::create_character(id, 1, nickname, class_id);
+            ret = DB::create_character(id, session->acct_id(), nickname, class_id);
         }
         catch (std::exception e)
         {

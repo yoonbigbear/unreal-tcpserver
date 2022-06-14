@@ -6,6 +6,8 @@ using System.Net.Sockets;
 using UnityEngine;
 using FlatBuffers;
 using Cysharp.Threading.Tasks;
+using UnityEngine.SceneManagement;
+
 
 public class Network : MonoBehaviour
 {
@@ -47,32 +49,25 @@ public class Network : MonoBehaviour
                         var datas = wor.Characters(i).Value;
                         Console.WriteLine($"{datas.CharId} {datas.Nickname} {datas.JobClass} {datas.CharId}");
                     }
-
-                    FlatBufferBuilder builder = new FlatBufferBuilder(1024);
-                    account.SelectCharacterReq.StartSelectCharacterReq(builder);
-                    account.SelectCharacterReq.AddCharId(builder, 484280193545015295);
-                    var b = account.SelectCharacterReq.EndSelectCharacterReq(builder);
-                    builder.Finish(b.Value);
-                    var body = builder.SizedByteArray();
-
-                    //헤더 전송
-                    byte[] sendBuf = new byte[(sizeof(ushort) + sizeof(ushort))];
-                    Array.Copy(BitConverter.GetBytes((ushort)Protocol.SelectCharacterReq), 0, sendBuf, 0, sizeof(ushort));
-                    Array.Copy(BitConverter.GetBytes((ushort)body.Length), 0, sendBuf, sizeof(ushort), sizeof(ushort));
-                    socket.Send(sendBuf);
-
-                    //body 전송
-                    byte[] pkt_body = new byte[body.Length];
-                    Array.Copy(body, 0, pkt_body, 0, body.Length);
-                    socket.Send(pkt_body);
                 }
                 break;
             case Protocol.SelectCharacterAck:
                 {
                     var wor = account.SelectCharacterAck.GetRootAsSelectCharacterAck(recvBuf);
 
-                    Console.WriteLine($"{wor.Position.Value.X}  {wor.Position.Value.Y}  {wor.Position.Value.Z}");
+                    if (wor.Result == (ushort)ResultCode.EnterGameSuccess)
+                    {
+                        SceneManager.LoadScene(1);
+                        Console.WriteLine($"{wor.Position.Value.X}  {wor.Position.Value.Y}  {wor.Position.Value.Z}");
+                    }
+
                 }
+                break;
+            case Protocol.CreateCharacterAck:
+				{
+                    //씬 이동
+                    
+				}
                 break;
             case Protocol.MoveStartSync:
                 {
@@ -195,6 +190,52 @@ public class Network : MonoBehaviour
         byte[] sendBuf = new byte[(sizeof(ushort) + sizeof(ushort))];
         Array.Copy(BitConverter.GetBytes((ushort)Protocol.CreateAccountReq), 0, sendBuf, 0, sizeof(ushort));
         Array.Copy(BitConverter.GetBytes((ushort)body.Length), 0, sendBuf, sizeof(ushort), sizeof(ushort));
+        socket.Send(sendBuf);
+
+        //body 전송
+        byte[] pkt_body = new byte[body.Length];
+        Array.Copy(body, 0, pkt_body, 0, body.Length);
+        socket.Send(pkt_body);
+    }
+
+    public void SelectCharacter(ulong id)
+	{
+        FlatBufferBuilder builder = new FlatBufferBuilder(1024);
+        account.SelectCharacterReq.StartSelectCharacterReq(builder);
+        account.SelectCharacterReq.AddCharId(builder, id);
+        var b = account.SelectCharacterReq.EndSelectCharacterReq(builder);
+        builder.Finish(b.Value);
+        var body = builder.SizedByteArray();
+
+        //헤더 전송
+        byte[] sendBuf = new byte[(sizeof(ushort) + sizeof(ushort))];
+        Array.Copy(BitConverter.GetBytes((ushort)Protocol.SelectCharacterReq), 0, sendBuf, 0, sizeof(ushort));
+        Array.Copy(BitConverter.GetBytes((ushort)body.Length), 0, sendBuf, sizeof(ushort), sizeof(ushort));
+        socket.Send(sendBuf);
+
+        //body 전송
+        byte[] pkt_body = new byte[body.Length];
+        Array.Copy(body, 0, pkt_body, 0, body.Length);
+        socket.Send(pkt_body);
+    }
+
+    public void CreateCharacter(string nickname)
+	{
+        FlatBufferBuilder builder = new FlatBufferBuilder(1024);
+        var name = builder.CreateString(nickname);
+        account.CreateCharacterReq.StartCreateCharacterReq(builder);
+        account.CreateCharacterReq.AddJobClass(builder, 1);
+        account.CreateCharacterReq.AddNickname(builder, name);
+        var b = account.CreateCharacterReq.EndCreateCharacterReq(builder);
+        builder.Finish(b.Value);
+        var body = builder.SizedByteArray();
+
+        //헤더 전송
+        byte[] sendBuf = new byte[(sizeof(ushort) + sizeof(ushort))];
+        Array.Copy(BitConverter.GetBytes((ushort)Protocol.CreateCharacterReq),
+            0, sendBuf, 0, sizeof(ushort));
+        Array.Copy(BitConverter.GetBytes((ushort)body.Length), 0, sendBuf,
+            sizeof(ushort), sizeof(ushort));
         socket.Send(sendBuf);
 
         //body 전송
