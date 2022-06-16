@@ -15,6 +15,7 @@ public:
     void Start(const char* path);
 
     void Enter(GameObjectPtr obj);
+    void EnterUser(GameObjectPtr obj);
     void Leave(uint64_t obj_id);
 
     void Update(float dt);

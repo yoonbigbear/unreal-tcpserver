@@ -17,7 +17,7 @@ WorldManager::~WorldManager()
 
 void WorldManager::Start()
 {
-    CreateSampleAI(0, 2);
+    CreateSampleAI(0, 200);
 }
 
 void WorldManager::EnterField(int field_id, GameObjectPtr obj)
@@ -25,9 +25,10 @@ void WorldManager::EnterField(int field_id, GameObjectPtr obj)
     auto field = fields_.at(field_id);
     if (field)
     {
-        field->Enter(obj);
+        field->EnterUser(obj);
     }
 }
+
 
 void WorldManager::LeaveField()
 {

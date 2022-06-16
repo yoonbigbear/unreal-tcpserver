@@ -47,10 +47,36 @@ void World::Start(const char* path)
 
 void World::Enter(GameObjectPtr obj)
 {
+    //필드 오브젝트 목록에 추가.
     lock_.lock();
     objects_.emplace(obj->obj_id(), obj);
-    if (obj->session())
-        players_.emplace(obj->obj_id(), obj);
+
+    lock_.unlock();
+
+    //sync 버퍼에 채울 오브젝트 목록
+    std::vector<Vec3> obj_pos_arr;
+    obj_pos_arr.reserve(objects_.size());
+    std::vector<uint32_t> obj_id_arr;
+    obj_id_arr.reserve(objects_.size());
+    obj_pos_arr.push_back(Vec3(obj->transform()->position().x,
+        obj->transform()->position().y,
+        obj->transform()->position().z));
+    obj_id_arr.push_back(obj->obj_id());
+
+    net::Message<Protocol, flatbuffers::FlatBufferBuilder> pkt;
+    pkt.header.id = Protocol_EnterFieldSync;
+    flatbuffer fbb(1024);
+    auto builder = world::CreateEnterFieldSyncDirect(fbb, &obj_id_arr, &obj_pos_arr);
+    fbb.Finish(builder);
+    pkt << fbb;
+    Broadcast(pkt);
+}
+
+void World::EnterUser(GameObjectPtr obj)
+{
+    lock_.lock();
+    objects_.emplace(obj->obj_id(), obj);
+    players_.emplace(obj->obj_id(), obj);
     lock_.unlock();
 
     std::vector<Vec3> obj_pos_arr;
@@ -71,9 +97,10 @@ void World::Enter(GameObjectPtr obj)
     auto builder = world::CreateEnterFieldSyncDirect(fbb, &obj_id_arr, &obj_pos_arr);
     fbb.Finish(builder);
     pkt << fbb;
-    Broadcast(pkt);
-
+    obj->session()->Send(pkt);
 }
+
+
 
 void World::Leave(uint64_t obj_id)
 {
